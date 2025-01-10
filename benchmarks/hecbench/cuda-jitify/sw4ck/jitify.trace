@@ -1,0 +1,89 @@
+File name, phase name, metric, unit
+kernel1.cpp, CUDA C++ Frontend, 99, ms
+kernel1.cpp, NVVM Optimizer, 23, ms
+kernel1.cpp, CUDA C++ Frontend, 234, ms
+kernel1.cpp, NVVM Optimizer, 381, ms
+kernel1.cpp, CUDA C++ Frontend, 204, ms
+kernel1.cpp, NVVM Optimizer, 339, ms
+kernel1.cpp, CUDA C++ Frontend, 200, ms
+kernel1.cpp, NVVM Optimizer, 335, ms
+kernel1.cpp, CUDA C++ Frontend, 176, ms
+kernel1.cpp, NVVM Optimizer, 250, ms
+kernel1.cpp, CUDA C++ Frontend, 234, ms
+kernel1.cpp, NVVM Optimizer, 390, ms
+kernel1.cpp, CUDA C++ Frontend, 233, ms
+kernel1.cpp, NVVM Optimizer, 378, ms
+kernel1.cpp, CUDA C++ Frontend, 202, ms
+kernel1.cpp, NVVM Optimizer, 333, ms
+kernel1.cpp, CUDA C++ Frontend, 203, ms
+kernel1.cpp, NVVM Optimizer, 330, ms
+kernel1.cpp, CUDA C++ Frontend, 176, ms
+kernel1.cpp, NVVM Optimizer, 246, ms
+kernel1.cpp, CUDA C++ Frontend, 235, ms
+kernel1.cpp, NVVM Optimizer, 389, ms
+kernel1.cpp, CUDA C++ Frontend, 98, ms
+kernel1.cpp, NVVM Optimizer, 23, ms
+kernel1.cpp, CUDA C++ Frontend, 234, ms
+kernel1.cpp, NVVM Optimizer, 382, ms
+kernel1.cpp, CUDA C++ Frontend, 202, ms
+kernel1.cpp, NVVM Optimizer, 339, ms
+kernel1.cpp, CUDA C++ Frontend, 201, ms
+kernel1.cpp, NVVM Optimizer, 335, ms
+kernel1.cpp, CUDA C++ Frontend, 176, ms
+kernel1.cpp, NVVM Optimizer, 250, ms
+kernel1.cpp, CUDA C++ Frontend, 234, ms
+kernel1.cpp, NVVM Optimizer, 390, ms
+kernel1.cpp, CUDA C++ Frontend, 233, ms
+kernel1.cpp, NVVM Optimizer, 377, ms
+kernel1.cpp, CUDA C++ Frontend, 202, ms
+kernel1.cpp, NVVM Optimizer, 334, ms
+kernel1.cpp, CUDA C++ Frontend, 201, ms
+kernel1.cpp, NVVM Optimizer, 330, ms
+kernel1.cpp, CUDA C++ Frontend, 176, ms
+kernel1.cpp, NVVM Optimizer, 246, ms
+kernel1.cpp, CUDA C++ Frontend, 234, ms
+kernel1.cpp, NVVM Optimizer, 389, ms
+kernel1.cpp, CUDA C++ Frontend, 98, ms
+kernel1.cpp, NVVM Optimizer, 23, ms
+kernel1.cpp, CUDA C++ Frontend, 233, ms
+kernel1.cpp, NVVM Optimizer, 382, ms
+kernel1.cpp, CUDA C++ Frontend, 202, ms
+kernel1.cpp, NVVM Optimizer, 337, ms
+kernel1.cpp, CUDA C++ Frontend, 202, ms
+kernel1.cpp, NVVM Optimizer, 335, ms
+kernel1.cpp, CUDA C++ Frontend, 175, ms
+kernel1.cpp, NVVM Optimizer, 249, ms
+kernel1.cpp, CUDA C++ Frontend, 234, ms
+kernel1.cpp, NVVM Optimizer, 391, ms
+kernel1.cpp, CUDA C++ Frontend, 233, ms
+kernel1.cpp, NVVM Optimizer, 376, ms
+kernel1.cpp, CUDA C++ Frontend, 201, ms
+kernel1.cpp, NVVM Optimizer, 334, ms
+kernel1.cpp, CUDA C++ Frontend, 200, ms
+kernel1.cpp, NVVM Optimizer, 330, ms
+kernel1.cpp, CUDA C++ Frontend, 176, ms
+kernel1.cpp, NVVM Optimizer, 246, ms
+kernel1.cpp, CUDA C++ Frontend, 234, ms
+kernel1.cpp, NVVM Optimizer, 386, ms
+kernel1.cpp, CUDA C++ Frontend, 98, ms
+kernel1.cpp, NVVM Optimizer, 23, ms
+kernel1.cpp, CUDA C++ Frontend, 233, ms
+kernel1.cpp, NVVM Optimizer, 382, ms
+kernel1.cpp, CUDA C++ Frontend, 201, ms
+kernel1.cpp, NVVM Optimizer, 337, ms
+kernel1.cpp, CUDA C++ Frontend, 200, ms
+kernel1.cpp, NVVM Optimizer, 335, ms
+kernel1.cpp, CUDA C++ Frontend, 175, ms
+kernel1.cpp, NVVM Optimizer, 250, ms
+kernel1.cpp, CUDA C++ Frontend, 233, ms
+kernel1.cpp, NVVM Optimizer, 390, ms
+kernel1.cpp, CUDA C++ Frontend, 233, ms
+kernel1.cpp, NVVM Optimizer, 378, ms
+kernel1.cpp, CUDA C++ Frontend, 203, ms
+kernel1.cpp, NVVM Optimizer, 332, ms
+kernel1.cpp, CUDA C++ Frontend, 200, ms
+kernel1.cpp, NVVM Optimizer, 329, ms
+kernel1.cpp, CUDA C++ Frontend, 175, ms
+kernel1.cpp, NVVM Optimizer, 246, ms
+kernel1.cpp, CUDA C++ Frontend, 233, ms
+kernel1.cpp, NVVM Optimizer, 387, ms

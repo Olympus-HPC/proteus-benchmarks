@@ -1,0 +1,8 @@
+__pycache__
+proteus-env
+plots
+results
+.vscode
+*~
+*.swp
+*.swo

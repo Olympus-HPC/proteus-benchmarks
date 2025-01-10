@@ -1,0 +1,33 @@
+File name, phase name, metric, unit
+kernel.h, CUDA C++ Frontend, 53, ms
+kernel.h, NVVM Optimizer, 24, ms
+kernel.h, CUDA C++ Frontend, 47, ms
+kernel.h, NVVM Optimizer, 114, ms
+kernel.h, CUDA C++ Frontend, 49, ms
+kernel.h, NVVM Optimizer, 24, ms
+kernel.h, CUDA C++ Frontend, 47, ms
+kernel.h, NVVM Optimizer, 114, ms
+kernel.h, CUDA C++ Frontend, 58, ms
+kernel.h, NVVM Optimizer, 24, ms
+kernel.h, CUDA C++ Frontend, 48, ms
+kernel.h, NVVM Optimizer, 114, ms
+kernel.h, CUDA C++ Frontend, 52, ms
+kernel.h, NVVM Optimizer, 24, ms
+kernel.h, CUDA C++ Frontend, 48, ms
+kernel.h, NVVM Optimizer, 114, ms
+kernel.h, CUDA C++ Frontend, 47, ms
+kernel.h, NVVM Optimizer, 24, ms
+kernel.h, CUDA C++ Frontend, 46, ms
+kernel.h, NVVM Optimizer, 114, ms
+kernel.h, CUDA C++ Frontend, 47, ms
+kernel.h, NVVM Optimizer, 24, ms
+kernel.h, CUDA C++ Frontend, 47, ms
+kernel.h, NVVM Optimizer, 114, ms
+kernel.h, CUDA C++ Frontend, 61, ms
+kernel.h, NVVM Optimizer, 24, ms
+kernel.h, CUDA C++ Frontend, 48, ms
+kernel.h, NVVM Optimizer, 114, ms
+kernel.h, CUDA C++ Frontend, 50, ms
+kernel.h, NVVM Optimizer, 24, ms
+kernel.h, CUDA C++ Frontend, 51, ms
+kernel.h, NVVM Optimizer, 114, ms

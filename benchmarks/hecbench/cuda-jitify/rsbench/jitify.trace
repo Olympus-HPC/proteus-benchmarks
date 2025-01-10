@@ -1,0 +1,17 @@
+File name, phase name, metric, unit
+simulation.cu, CUDA C++ Frontend, 51, ms
+simulation.cu, NVVM Optimizer, 26, ms
+simulation.cu, CUDA C++ Frontend, 52, ms
+simulation.cu, NVVM Optimizer, 347, ms
+simulation.cu, CUDA C++ Frontend, 49, ms
+simulation.cu, NVVM Optimizer, 26, ms
+simulation.cu, CUDA C++ Frontend, 52, ms
+simulation.cu, NVVM Optimizer, 347, ms
+simulation.cu, CUDA C++ Frontend, 49, ms
+simulation.cu, NVVM Optimizer, 26, ms
+simulation.cu, CUDA C++ Frontend, 52, ms
+simulation.cu, NVVM Optimizer, 347, ms
+simulation.cu, CUDA C++ Frontend, 49, ms
+simulation.cu, NVVM Optimizer, 26, ms
+simulation.cu, CUDA C++ Frontend, 52, ms
+simulation.cu, NVVM Optimizer, 347, ms

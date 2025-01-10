@@ -1,0 +1,55 @@
+File name, phase name, metric, unit
+the_kernel, CUDA C++ Frontend, 54, ms
+the_kernel, NVVM Optimizer, 55, ms
+the_kernel, PTX Translation, 48, ms
+the_kernel, CUDA C++ Frontend, 47, ms
+the_kernel, NVVM Optimizer, 53, ms
+the_kernel, PTX Translation, 84, ms
+the_kernel, CUDA C++ Frontend, 47, ms
+the_kernel, NVVM Optimizer, 24, ms
+the_kernel, PTX Translation, 48, ms
+the_kernel, CUDA C++ Frontend, 47, ms
+the_kernel, NVVM Optimizer, 53, ms
+the_kernel, PTX Translation, 84, ms
+the_kernel, CUDA C++ Frontend, 47, ms
+the_kernel, NVVM Optimizer, 24, ms
+the_kernel, PTX Translation, 49, ms
+the_kernel, CUDA C++ Frontend, 46, ms
+the_kernel, NVVM Optimizer, 53, ms
+the_kernel, PTX Translation, 84, ms
+the_kernel, CUDA C++ Frontend, 46, ms
+the_kernel, NVVM Optimizer, 24, ms
+the_kernel, PTX Translation, 48, ms
+the_kernel, CUDA C++ Frontend, 46, ms
+the_kernel, NVVM Optimizer, 54, ms
+the_kernel, PTX Translation, 84, ms
+the_kernel, CUDA C++ Frontend, 47, ms
+the_kernel, NVVM Optimizer, 24, ms
+the_kernel, PTX Translation, 48, ms
+the_kernel, CUDA C++ Frontend, 45, ms
+the_kernel, NVVM Optimizer, 53, ms
+the_kernel, PTX Translation, 84, ms
+the_kernel, CUDA C++ Frontend, 45, ms
+the_kernel, NVVM Optimizer, 24, ms
+the_kernel, PTX Translation, 48, ms
+the_kernel, CUDA C++ Frontend, 46, ms
+the_kernel, NVVM Optimizer, 53, ms
+the_kernel, PTX Translation, 84, ms
+the_kernel, CUDA C++ Frontend, 58, ms
+the_kernel, NVVM Optimizer, 23, ms
+the_kernel, PTX Translation, 48, ms
+the_kernel, CUDA C++ Frontend, 46, ms
+the_kernel, NVVM Optimizer, 52, ms
+the_kernel, PTX Translation, 84, ms
+the_kernel, CUDA C++ Frontend, 47, ms
+the_kernel, NVVM Optimizer, 23, ms
+the_kernel, PTX Translation, 48, ms
+the_kernel, CUDA C++ Frontend, 46, ms
+the_kernel, NVVM Optimizer, 53, ms
+the_kernel, PTX Translation, 84, ms
+the_kernel, CUDA C++ Frontend, 45, ms
+the_kernel, NVVM Optimizer, 21, ms
+the_kernel, PTX Translation, 44, ms
+the_kernel, CUDA C++ Frontend, 43, ms
+the_kernel, NVVM Optimizer, 48, ms
+the_kernel, PTX Translation, 76, ms

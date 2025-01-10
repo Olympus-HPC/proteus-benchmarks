@@ -1,0 +1,9 @@
+File name, phase name, metric, unit
+CalcVolumeForceForElems_kernel, CUDA C++ Frontend, 41, ms
+CalcVolumeForceForElems_kernel, NVVM Optimizer, 21, ms
+CalcVolumeForceForElems_kernel, CUDA C++ Frontend, 41, ms
+CalcVolumeForceForElems_kernel, NVVM Optimizer, 21, ms
+CalcVolumeForceForElems_kernel, CUDA C++ Frontend, 42, ms
+CalcVolumeForceForElems_kernel, NVVM Optimizer, 21, ms
+CalcVolumeForceForElems_kernel, CUDA C++ Frontend, 43, ms
+CalcVolumeForceForElems_kernel, NVVM Optimizer, 21, ms
