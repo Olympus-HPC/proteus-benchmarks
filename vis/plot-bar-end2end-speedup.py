@@ -136,10 +136,10 @@ def visualize(df, machine, plot_dir):
         handletextpad=0.5,
         columnspacing=0.5,
         fancybox=False,
-        frameon=True,
+        frameon=False,
         shadow=False,
     )
-    fn = "{0}/1-figure-3-bar-end2end-speedup-{1}.pdf".format(plot_dir, machine)
+    fn = "{0}/bar-end2end-speedup-{1}.pdf".format(plot_dir, machine)
     print(f"Storing to {fn}")
     fig.savefig(fn, bbox_inches="tight")
     plt.close(fig)

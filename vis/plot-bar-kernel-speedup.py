@@ -103,7 +103,7 @@ def visualize(df, machine, plot_dir):
     plt.tight_layout()
     ax.legend(
         ncol=len(bar_order),
-        bbox_to_anchor=(0, -0.1, 1., -0.1),
+        bbox_to_anchor=(0, -0.1, 1.0, -0.1),
         handlelength=1.0,
         handletextpad=0.1,
         columnspacing=0.5,
@@ -111,7 +111,7 @@ def visualize(df, machine, plot_dir):
         shadow=False,
         frameon=False,
     )
-    fn = "{0}/figure-4-bar-kernel-speedup-{1}.pdf".format(plot_dir, machine)
+    fn = "{0}/bar-kernel-speedup-{1}.pdf".format(plot_dir, machine)
     print(f"Storing to {fn}")
     fig.savefig(fn, bbox_inches="tight")
     plt.close(fig)

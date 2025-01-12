@@ -120,7 +120,7 @@ def visualize(df, machine, plot_dir):
         shadow=False,
         frameon=False,
     )
-    fn = "{0}/figure-6-bar-end2end-speedup-noopt-{1}.pdf".format(plot_dir, machine)
+    fn = "{0}/bar-end2end-speedup-noopt-{1}.pdf".format(plot_dir, machine)
     print(f"Storing to {fn}")
     fig.savefig(fn, bbox_inches="tight")
     plt.close(fig)

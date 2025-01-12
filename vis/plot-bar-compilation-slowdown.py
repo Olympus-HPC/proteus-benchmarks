@@ -74,6 +74,7 @@ def visualize(df, machine, plot_dir):
     offset = 0
     uniq = tmp_df.Benchmark.unique()
     bar_order = sorted(tmp_df.label.unique())
+    bar_order.remove("AOT")
     spread = bar_width * (len(bar_order) + 1)
     ind = np.arange(0, spread * len(uniq), spread)[: len(uniq)]
     for bar in bar_order:
@@ -110,8 +111,8 @@ def visualize(df, machine, plot_dir):
     plt.xticks(rotation=15)
     plt.tight_layout()
     ax.legend(
-        ncol=1,
-        bbox_to_anchor=(0, -0.1, 1., -0.1),
+        ncol=len(bar_order),
+        bbox_to_anchor=(0, -0.1, 1.0, -0.1),
         handlelength=1.0,
         handletextpad=0.5,
         fancybox=False,
@@ -119,7 +120,7 @@ def visualize(df, machine, plot_dir):
         frameon=False,
     )
 
-    fn = "{0}/figure-5-bar-compilation-time-slowdown-{1}.pdf".format(plot_dir, machine)
+    fn = "{0}/bar-compilation-time-slowdown-{1}.pdf".format(plot_dir, machine)
     print(f"Storing to {fn}")
     fig.savefig(fn, bbox_inches="tight")
     plt.close(fig)
