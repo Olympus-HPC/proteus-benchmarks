@@ -6,3 +6,8 @@ results
 *~
 *.swp
 *.swo
+*.o
+*.x
+benchmarks/**/*.csv
+.proteus
+.proteus-logs
