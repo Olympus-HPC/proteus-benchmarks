@@ -64,7 +64,7 @@ We explain the trickiest ones.
 
 The option `--profmode` executes a benchmark program: 
 1. without using a profiler in `direct` mode to collect end-to-end execution time measurements; or
-2. using a machine-specific profiler (i.e., `nvprof` for CUDA and `rocprof` for HIP) in `profiler' mode to collect measurements for a GPU trace; or
+2. using a machine-specific profiler (i.e., `nvprof` for CUDA and `rocprof` for HIP) in `profiler` mode to collect measurements for a GPU trace; or
 3. using a machine-specific profiler and collecting GPU performance counters in `metrics` mode
 
 
