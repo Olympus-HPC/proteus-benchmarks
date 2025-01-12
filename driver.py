@@ -416,6 +416,9 @@ def main():
         help="proteus env var configuration",
         type=json.loads,
     )
+    parser.add_argument(
+        "--suffix", help="add custom suffix to save CSV files", default=""
+    )
     args = parser.parse_args()
 
     with open(args.toml, "rb") as f:
@@ -479,20 +482,20 @@ def main():
         # Store the intermediate, benchmark results.
         metrics_suffix = "-metrics" if metrics else ""
         results_profiler.to_csv(
-            f"{res_dir}/{args.machine}-{e.benchmark}-{args.exemode}-results-profiler{metrics_suffix}.csv"
+            f"{res_dir}/{args.machine}-{e.benchmark}-{args.exemode}-{args.suffix}-results-profiler{metrics_suffix}.csv"
         )
         caching_profiler.to_csv(
-            f"{res_dir}/{args.machine}-{e.benchmark}-{args.exemode}-caching-profiler{metrics_suffix}.csv"
+            f"{res_dir}/{args.machine}-{e.benchmark}-{args.exemode}-{args.suffix}-caching-profiler{metrics_suffix}.csv"
         )
 
     def gather_results():
         results, caching = e.build_and_run(args.reps)
         # Store the intermediate, benchmark results.
         results.to_csv(
-            f"{res_dir}/{args.machine}-{e.benchmark}-{args.exemode}-results.csv"
+            f"{res_dir}/{args.machine}-{e.benchmark}-{args.exemode}-{args.suffix}-results.csv"
         )
         caching.to_csv(
-            f"{res_dir}/{args.machine}-{e.benchmark}-{args.exemode}-caching.csv"
+            f"{res_dir}/{args.machine}-{e.benchmark}-{args.exemode}-{args.suffix}-caching.csv"
         )
 
     # Build, run, and collect results for each experiment as gathered by glob
