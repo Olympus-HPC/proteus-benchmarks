@@ -53,8 +53,6 @@ def visualize(df, machine, plot_dir):
     drop_columns = ["Compile", "StoredCache", "Bounds", "RuntimeConstprop", "Input"]
 
     df["label"] = df.apply(assign_label, axis=1)
-    print("df42\n", df)
-    input("k")
     df = df[df.label != "DROP"]
 
     df = df.drop(columns=drop_columns)
@@ -74,8 +72,6 @@ def visualize(df, machine, plot_dir):
     tmp_df = (
         df.groupby(["Benchmark", "label"]).mean()[["ExeTime", "Speedup"]].reset_index()
     )
-    print("df\n", tmp_df)
-    input("k")
 
     sizes = set_size(TEXT_WIDTH, 0.5)
     fig, ax = plt.subplots(figsize=sizes)
@@ -170,8 +166,6 @@ def main():
         / row["ExeTime"],
         axis=1,
     )
-    print("df1\n", df)
-    input("k")
     visualize(df, args.machine, args.plot_dir)
 
 
