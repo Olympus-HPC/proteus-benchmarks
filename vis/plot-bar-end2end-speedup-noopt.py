@@ -1,5 +1,4 @@
 import pandas as pd
-from matplotlib.ticker import ScalarFormatter
 import argparse
 import matplotlib.pyplot as plt
 import numpy as np
@@ -32,7 +31,7 @@ def assign_label(row):
     return "Proteus"
 
 
-def visualize(df, machine, plot_dir):
+def visualize(df, machine, plot_dir, format):
     plot_dir = pathlib.Path(plot_dir)
     plot_dir.mkdir(parents=True, exist_ok=True)
     df = (
@@ -120,9 +119,9 @@ def visualize(df, machine, plot_dir):
         shadow=False,
         frameon=False,
     )
-    fn = "{0}/bar-end2end-speedup-noopt-{1}.pdf".format(plot_dir, machine)
+    fn = f"{plot_dir}/bar-end2end-speedup-noopt-{machine}.{format}"
     print(f"Storing to {fn}")
-    fig.savefig(fn, bbox_inches="tight")
+    fig.savefig(fn, bbox_inches="tight", dpi=300)
     plt.close(fig)
 
 
@@ -131,9 +130,7 @@ def main():
     parser.add_argument(
         "--dir", help="path to directory containing result files", required=True
     )
-
     parser.add_argument("--plot-dir", help="directory to store plots in", required=True)
-
     parser.add_argument(
         "-m",
         "--machine",
@@ -141,8 +138,9 @@ def main():
         choices=("amd", "nvidia"),
         required=True,
     )
-
+    parser.add_argument("-f", "--format", help="output image format", default="pdf")
     args = parser.parse_args()
+
     dfs = list()
     for fn in glob.glob(f"{args.dir}/{args.machine}*-results.csv"):
         df = pd.read_csv(fn, index_col=0)
@@ -166,7 +164,7 @@ def main():
         / row["ExeTime"],
         axis=1,
     )
-    visualize(df, args.machine, args.plot_dir)
+    visualize(df, args.machine, args.plot_dir, args.format)
 
 
 if __name__ == "__main__":
