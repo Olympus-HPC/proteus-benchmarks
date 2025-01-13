@@ -36,7 +36,7 @@ def assign_label(row):
     return "Proteus"
 
 
-def visualize(df, machine, plot_dir, format):
+def visualize(df, machine, plot_dir, plot_title, format):
     plot_dir = pathlib.Path(plot_dir)
     plot_dir.mkdir(parents=True, exist_ok=True)
 
@@ -118,6 +118,7 @@ def visualize(df, machine, plot_dir, format):
 
         offset += bar_width
 
+    ax.set_title(plot_title)
     ax.set_ylabel("Speedup over AOT")
     ax.yaxis.set_major_formatter("{x:.1f}")
     ax.set_xticks(ind + bar_width * (len(bar_order) - 1) / 2)
@@ -159,6 +160,7 @@ def main():
         required=True,
     )
     parser.add_argument("-f", "--format", help="output image format", default="pdf")
+    parser.add_argument("--plot-title", help="set plot title", default="")
     args = parser.parse_args()
 
     dfs = list()
@@ -184,7 +186,7 @@ def main():
         / row["ExeTime"],
         axis=1,
     )
-    visualize(df, args.machine, args.plot_dir, args.format)
+    visualize(df, args.machine, args.plot_dir, args.plot_title, args.format)
 
 
 if __name__ == "__main__":
