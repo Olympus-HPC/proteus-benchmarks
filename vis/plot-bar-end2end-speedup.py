@@ -140,7 +140,7 @@ def visualize(df, machine, plot_dir, plot_title, format):
         frameon=False,
         shadow=False,
     )
-    fn = f"{plot_dir}/bar-end2end-speedup-{machine}.{format}"
+    fn = f"{plot_dir}/{machine}-bar-end2end-speedup.{format}"
     print(f"Storing to {fn}")
     fig.savefig(fn, bbox_inches="tight", dpi=300)
     plt.close(fig)

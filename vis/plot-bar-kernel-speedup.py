@@ -113,7 +113,7 @@ def visualize(df, machine, plot_dir, plot_title, format):
         shadow=False,
         frameon=False,
     )
-    fn = f"{plot_dir}/bar-kernel-speedup-{machine}.{format}"
+    fn = f"{plot_dir}/{machine}-bar-kernel-speedup.{format}"
     print(f"Storing to {fn}")
     fig.savefig(fn, bbox_inches="tight", dpi=300)
     plt.close(fig)

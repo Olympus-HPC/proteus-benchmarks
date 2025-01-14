@@ -121,7 +121,7 @@ def visualize(df, machine, plot_dir, plot_title, format):
         frameon=False,
     )
 
-    fn = f"{plot_dir}/bar-compilation-time-slowdown-{machine}.{format}"
+    fn = f"{plot_dir}/{machine}-bar-compilation-time-slowdown.{format}"
     print(f"Storing to {fn}")
     fig.savefig(fn, bbox_inches="tight", dpi=300)
     plt.close(fig)
