@@ -16,10 +16,7 @@ def assign_label(row):
     if row["Compile"] == "jitify":
         return "Jitify"
 
-    if not row["Bounds"]:
-        return "DROP"
-
-    if not row["RuntimeConstprop"]:
+    if not (row["Bounds"] and row["RuntimeConstprop"] and row["SpecializeDims"]):
         return "DROP"
 
     if row["StoredCache"]:
@@ -39,6 +36,7 @@ def generate_table(df, machine):
                 "StoredCache",
                 "Bounds",
                 "RuntimeConstprop",
+                "SpecializeDims",
             ]
         )
         .mean()
@@ -54,6 +52,7 @@ def generate_table(df, machine):
                 "StoredCache",
                 "Bounds",
                 "RuntimeConstprop",
+                "SpecializeDims",
             ]
         )
         .sem()
@@ -63,7 +62,14 @@ def generate_table(df, machine):
     sem_df.ExeTime = 100.0 * sem_df.ExeTime
     df["RelSem"] = sem_df.ExeTime / df.ExeTime
 
-    drop_columns = ["Compile", "StoredCache", "Bounds", "RuntimeConstprop", "Input"]
+    drop_columns = [
+        "Compile",
+        "StoredCache",
+        "Bounds",
+        "RuntimeConstprop",
+        "SpecializeDims",
+        "Input",
+    ]
 
     df["label"] = df.apply(assign_label, axis=1)
     df = df[df.label != "DROP"]

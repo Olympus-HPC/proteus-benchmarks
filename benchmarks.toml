@@ -29,7 +29,7 @@ jitify = "benchmarks/hecbench/cuda-jitify/LULESH"
 aot = "benchmarks/hecbench/hip/LULESH"
 proteus = "benchmarks/hecbench/hip/LULESH"
 [lulesh.inputs]
-default = "-s 128"
+default = "-s 128 -i 1000"
 
 [rsbench]
 [rsbench.nvidia]

@@ -27,6 +27,7 @@ class ProteusConfig:
             "ENV_PROTEUS_USE_STORED_CACHE",
             "ENV_PROTEUS_SET_LAUNCH_BOUNDS",
             "ENV_PROTEUS_SPECIALIZE_ARGS",
+            "ENV_PROTEUS_SPECIALIZE_DIMS",
         ]
         # Check expected
         for key, values in kwargs.items():
@@ -57,6 +58,7 @@ class AOTConfig:
                 "ENV_PROTEUS_USE_STORED_CACHE": "0",
                 "ENV_PROTEUS_SET_LAUNCH_BOUNDS": "0",
                 "ENV_PROTEUS_SPECIALIZE_ARGS": "0",
+                "ENV_PROTEUS_SPECIALIZE_DIMS": "0",
             }
         ]
 
@@ -68,6 +70,7 @@ class JitifyConfig:
                 "ENV_PROTEUS_USE_STORED_CACHE": "0",
                 "ENV_PROTEUS_SET_LAUNCH_BOUNDS": "0",
                 "ENV_PROTEUS_SPECIALIZE_ARGS": "0",
+                "ENV_PROTEUS_SPECIALIZE_DIMS": "0",
             }
         ]
 
@@ -234,6 +237,10 @@ class Executor:
                         False if env["ENV_PROTEUS_SPECIALIZE_ARGS"] == "0" else True
                     )
 
+                    specialize_dims = (
+                        False if env["ENV_PROTEUS_SPECIALIZE_DIMS"] == "0" else True
+                    )
+
                     if self.exemode == "proteus":
                         print("Proteus env", env)
 
@@ -283,6 +290,7 @@ class Executor:
 
                     if profiler:
                         df = profiler.parse(stats)
+                        os.remove(stats)
                         # Add new columns to the existing dataframe from the
                         # profiler.
                         df["Benchmark"] = self.benchmark
@@ -292,6 +300,7 @@ class Executor:
                         df["StoredCache"] = use_stored_cache
                         df["Bounds"] = set_launch_bounds
                         df["RuntimeConstprop"] = specialize_args
+                        df["SpecializeDims"] = specialize_dims
                         df["ExeSize"] = exe_size
                         df["ExeTime"] = t2 - t1
                         # Drop memcpy operations (because Proteus adds DtoH copies
@@ -317,6 +326,7 @@ class Executor:
                                 "StoredCache": [use_stored_cache],
                                 "Bounds": [set_launch_bounds],
                                 "RuntimeConstprop": [specialize_args],
+                                "SpecializeDims": [specialize_dims],
                                 "ExeSize": [exe_size],
                                 "ExeTime": [t2 - t1],
                             }
@@ -345,6 +355,7 @@ class Executor:
                     cache_df["StoredCache"] = use_stored_cache
                     cache_df["Bounds"] = set_launch_bounds
                     cache_df["RuntimeConstprop"] = specialize_args
+                    cache_df["SpecializeDims"] = specialize_dims
                     cache_df["repeat"] = repeat
                     cache_df["CacheSizeObj"] = cache_size_obj
                     cache_df["CacheSizeBC"] = cache_size_bc

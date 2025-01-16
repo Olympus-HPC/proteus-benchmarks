@@ -20,7 +20,12 @@ def assign_label(row):
     if row["Compile"] == "jitify":
         return "Jitify"
 
-    if row["StoredCache"] and (row["Bounds"] and row["RuntimeConstprop"]):
+    if (
+        row["StoredCache"]
+        and row["Bounds"]
+        and row["RuntimeConstprop"]
+        and row["SpecializeDims"]
+    ):
         return "Proteus"
 
     return "DROP"
@@ -38,6 +43,7 @@ def visualize(df, machine, plot_dir, plot_title, format):
                 "StoredCache",
                 "Bounds",
                 "RuntimeConstprop",
+                "SpecializeDims",
             ]
         )
         .mean()

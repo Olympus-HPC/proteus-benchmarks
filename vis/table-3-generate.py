@@ -66,6 +66,7 @@ def main():
             (df.StoredCache == True)
             & (df.Bounds == True)
             & (df.RuntimeConstprop == True)
+            & (df.SpecializeDims == True)
         ]
         df = df[["Benchmark", "CacheSize"]]
         df = df.groupby(["Benchmark"]).mean().reset_index()

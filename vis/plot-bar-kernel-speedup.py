@@ -22,10 +22,7 @@ def assign_label(row):
     if row["Compile"] == "jitify":
         return "Jitify"
 
-    if not row["Bounds"]:
-        return "DROP"
-
-    if not row["RuntimeConstprop"]:
+    if not (row["Bounds"] and row["RuntimeConstprop"] and row["SpecializeDims"]):
         return "DROP"
 
     if row["StoredCache"]:
@@ -148,6 +145,7 @@ def main():
                 "StoredCache",
                 "Bounds",
                 "RuntimeConstprop",
+                "SpecializeDims",
                 "RunIndex",
                 "repeat",
             ],
@@ -172,6 +170,7 @@ def main():
                 "StoredCache",
                 "Bounds",
                 "RuntimeConstprop",
+                "SpecializeDims",
                 "repeat",
             ]
         )["Duration"]

@@ -19,10 +19,7 @@ def assign_label(row):
     if row["Compile"] == "aot":
         return "AOT"
 
-    if row["Bounds"]:
-        return "DROP"
-
-    if row["RuntimeConstprop"]:
+    if row["Bounds"] or row["RuntimeConstprop"] or row["SpecializeDims"]:
         return "DROP"
 
     if row["StoredCache"]:
@@ -43,13 +40,21 @@ def visualize(df, machine, plot_dir, plot_title, format):
                 "StoredCache",
                 "Bounds",
                 "RuntimeConstprop",
+                "SpecializeDims",
             ]
         )
         .mean()
         .reset_index()
     )
 
-    drop_columns = ["Compile", "StoredCache", "Bounds", "RuntimeConstprop", "Input"]
+    drop_columns = [
+        "Compile",
+        "StoredCache",
+        "Bounds",
+        "RuntimeConstprop",
+        "SpecializeDims",
+        "Input",
+    ]
 
     df["label"] = df.apply(assign_label, axis=1)
     df = df[df.label != "DROP"]
