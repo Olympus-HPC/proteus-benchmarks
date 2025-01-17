@@ -248,19 +248,18 @@ class Executor:
                     if use_stored_cache:
                         # Delete amy previous cache files in the command path.
                         shutil.rmtree(".proteus")
-
-                    # Early on execute always a warmup run. If using the
-                    # stored cache, this run will generate the files for a
-                    # warm cache.
-                    # CAUTION: We need to create the cache jit binaries before running.
-                    # Especially, Proteus launch bounds, runtime constprop will be baked into
-                    # the binary so we need a "warmup" run for each setting before taking
-                    # the measurement.
-                    self.execute_command(
-                        cmd,
-                        env=cmd_env,
-                        cwd=str(self.path),
-                    )
+                        # Execute a warmup run if using the stored cache to
+                        # generate the cache files.  CAUTION: We need to create
+                        # the cache jit binaries right before running.
+                        # Especially, Proteus launch bounds, runtime args,
+                        # specialized dims will be baked into the binary so we
+                        # need a "warmup" run for each setting before taking the
+                        # measurement.
+                        self.execute_command(
+                            cmd,
+                            env=cmd_env,
+                            cwd=str(self.path),
+                        )
 
                     stats = f"{os.getcwd()}/{self.exemode}-{input_id}-{time.time()}.csv"
                     if profiler:
