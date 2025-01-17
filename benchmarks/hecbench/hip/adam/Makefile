@@ -34,7 +34,8 @@ CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Wall
 # Linker Flags
 LDFLAGS = -L${ROCM_PATH}/lib -L${ROCM_PATH}/llvm/lib \
 	$(shell ${ROCM_PATH}/llvm/bin/llvm-config --libs) \
-	$(shell ${ROCM_PATH}/llvm/bin/llvm-config --system-libs)
+	$(shell ${ROCM_PATH}/llvm/bin/llvm-config --system-libs) \
+	-llldCommon -llldELF
 
 # Debug Flags
 ifeq ($(DEBUG),yes)

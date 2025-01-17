@@ -19,7 +19,8 @@ endif
 
 LINKFLAGS = -L${ROCM_PATH}/lib -L${ROCM_PATH}/llvm/lib \
 	$(shell ${ROCM_PATH}/llvm/bin/llvm-config --libs) \
-	$(shell ${ROCM_PATH}/llvm/bin/llvm-config --system-libs)
+	$(shell ${ROCM_PATH}/llvm/bin/llvm-config --system-libs) \
+	-llldCommon -llldELF
 #LINKFLAGS += -L$(SILO_LIBS) -lsilo
 
 #INC_SILO:= -I$(SILO_INCLUDES)
