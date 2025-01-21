@@ -53,8 +53,8 @@ ifeq ($(OPTIMIZE),yes)
 endif
 
 ifeq ($(ENABLE_PROTEUS),yes)
-  CFLAGS += -fpass-plugin=$(PROTEUS_PATH)/lib/libProteusPass.so -DENABLE_PROTEUS
-  LDFLAGS += -Wl,-rpath,$(PROTEUS_PATH)/lib -L${PROTEUS_PATH}/lib/ -lproteus
+  CFLAGS += -fpass-plugin=${PROTEUS_PATH}/lib64/libProteusPass.so -DENABLE_PROTEUS
+  LDFLAGS += -Wl,-rpath,${PROTEUS_PATH}/lib64 -L${PROTEUS_PATH}/lib64/ -lproteus
 endif
 
 #===============================================================================

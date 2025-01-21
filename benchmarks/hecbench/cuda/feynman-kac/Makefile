@@ -53,9 +53,9 @@ endif
 
 ifeq ($(ENABLE_PROTEUS),yes)
   LIBLLVM_PATH=$(dir $(realpath $(CC)))../lib
-  CFLAGS += -fpass-plugin=$(PROTEUS_PATH)/lib/libProteusPass.so -DENABLE_PROTEUS
+  CFLAGS += -fpass-plugin=${PROTEUS_PATH}/lib64/libProteusPass.so -DENABLE_PROTEUS
   LDFLAGS += -Wl,-rpath,$(LIBLLVM_PATH) -L$(LIBLLVM_PATH) -lLLVM \
-	     -Wl,-rpath,$(PROTEUS_PATH)/lib -L$(PROTEUS_PATH)/lib/ -lproteus -lnvptxcompiler_static
+	     -Wl,-rpath,${PROTEUS_PATH}/lib64 -L${PROTEUS_PATH}/lib64/ -lproteus -lnvptxcompiler_static
 endif
 
 #===============================================================================

@@ -29,8 +29,8 @@ LINKFLAGS = -L${ROCM_PATH}/lib -L${ROCM_PATH}/llvm/lib \
 FLAGS += $(RFLAGS)
 
 ifeq ($(ENABLE_PROTEUS),yes)
-  FLAGS += -fpass-plugin=$(PROTEUS_PATH)/lib/libProteusPass.so -DENABLE_PROTEUS
-  LINKFLAGS += -Wl,-rpath,$(PROTEUS_PATH)/lib -L${PROTEUS_PATH}/lib/ -lproteus
+  FLAGS += -fpass-plugin=${PROTEUS_PATH}/lib64/libProteusPass.so -DENABLE_PROTEUS
+  LINKFLAGS += -Wl,-rpath,${PROTEUS_PATH}/lib64 -L${PROTEUS_PATH}/lib64/ -lproteus
 endif
 
 lulesh$(SUFFIX).x: allocator$(SUFFIX).o lulesh$(SUFFIX).o lulesh-comms$(SUFFIX).o lulesh-comms-gpu$(SUFFIX).o
