@@ -142,10 +142,14 @@ class Nvprof:
 
 
 class Executor:
-    def __init__(self, benchmark, path, exemode, inputs, cc, proteus_path, env_configs):
+    def __init__(self, benchmark, path, exemode, build_command, inputs, cc, proteus_path, env_configs):
         self.benchmark = benchmark
         self.path = path
-        self.exemode = exemode
+        self.exemode = exemod
+        # the build command is meant to be a full bash command to build the benchmark, eg
+        # `cmake -DCMAKE_BUILD_TYPE=Debug --build` or `make benchmark`
+        # If none is provided, it will default to `make`
+        self.build_command = 'make' if build_command == None else build_command  
         self.inputs = inputs
         self.cc = cc
         self.proteus_path = proteus_path
@@ -181,9 +185,8 @@ class Executor:
         cmd = "make clean"
         self.execute_command(cmd)
 
-    def build(self, do_jit):
+    def build(self, cmd, do_jit):
         os.chdir(self.path)
-        cmd = "make"
         env = os.environ.copy()
         env["ENABLE_PROTEUS"] = "yes" if do_jit else "no"
         env["PROTEUS_PATH"] = self.proteus_path
@@ -200,7 +203,7 @@ class Executor:
         t2 = time.perf_counter()
         return t2 - t1
 
-    def build_and_run(self, reps, profiler=None):
+    def build_and_run(self, build_command, reps, profiler=None):
         os.chdir(self.path)
 
         results = pd.DataFrame()
@@ -215,7 +218,7 @@ class Executor:
         self.clean()
         print("BUILD", self.path, "type", self.exemode)
 
-        ctime = self.build(self.exemode != "aot")
+        ctime = self.build(build_command, self.exemode != "aot")
         exe_size = Path(f"{self.path}/{exe}").stat().st_size
         print("=> BUILT")
 
