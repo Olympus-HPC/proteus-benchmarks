@@ -202,7 +202,10 @@ class Executor:
             "PROTEUS_PATH=" + env["PROTEUS_PATH"],
             "ENABLE_PROTEUS=" + env["ENABLE_PROTEUS"],
         )
-        self.execute_command(self.build_command, env=env)
+        if not isinstance(self.build_command, list):
+            self.build_command = [self.build_command]
+        for cmd in self.build_command:
+            self.execute_command(cmd, env=env)
         t2 = time.perf_counter()
         return t2 - t1
 
@@ -217,7 +220,7 @@ class Executor:
             or self.exemode == "jitify"
         ), "Expected aot or proteus or jitify for exemode"
 
-        self.clean()
+        #self.clean()
         print("BUILD", self.path, "type", self.exemode)
         ctime = self.build(self.exemode != "aot")
         exe_size = Path(f"{self.path}/{self.executable_name}").stat().st_size
@@ -474,7 +477,7 @@ def main():
     build_once = False
     # custom toml wide level build command specified
     if "build" in benchmark_configs:
-        build_command = benchmark_configs["build"][args.machine]
+        build_command = benchmark_configs["build"][args.machine]["command"]
         build_once = True
 
     for benchmark in args.bench if args.bench else benchmark_configs:
