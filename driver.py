@@ -142,18 +142,21 @@ class Nvprof:
 
 
 class Executor:
-    def __init__(self, benchmark, path, exemode, build_command, inputs, cc, proteus_path, env_configs):
+    def __init__(self, benchmark, path, executable_name, exemode, build_command, inputs, cc, proteus_path, env_configs, build_once):
         self.benchmark = benchmark
         self.path = path
-        self.exemode = exemod
+        self.executable_name = executable_name
+        self.exemode = exemode
         # the build command is meant to be a full bash command to build the benchmark, eg
         # `cmake -DCMAKE_BUILD_TYPE=Debug --build` or `make benchmark`
         # If none is provided, it will default to `make`
-        self.build_command = 'make' if build_command == None else build_command  
+        self.build_command = 'make' if build_command == None else build_command
         self.inputs = inputs
         self.cc = cc
         self.proteus_path = proteus_path
         self.env_configs = env_configs
+        self.build_once = build_once
+        self.built = False
 
     def __str__(self):
         return f"{self.benchmark} {self.path} {self.exemode}"
@@ -185,7 +188,7 @@ class Executor:
         cmd = "make clean"
         self.execute_command(cmd)
 
-    def build(self, cmd, do_jit):
+    def build(self, do_jit):
         os.chdir(self.path)
         env = os.environ.copy()
         env["ENABLE_PROTEUS"] = "yes" if do_jit else "no"
@@ -194,16 +197,16 @@ class Executor:
         t1 = time.perf_counter()
         print(
             "Build command",
-            cmd,
+            self.build_command,
             "CC=" + env["CC"],
             "PROTEUS_PATH=" + env["PROTEUS_PATH"],
             "ENABLE_PROTEUS=" + env["ENABLE_PROTEUS"],
         )
-        self.execute_command(cmd, env=env)
+        self.execute_command(self.build_command, env=env)
         t2 = time.perf_counter()
         return t2 - t1
 
-    def build_and_run(self, build_command, reps, profiler=None):
+    def build_and_run(self, reps, profiler=None):
         os.chdir(self.path)
 
         results = pd.DataFrame()
@@ -214,12 +217,10 @@ class Executor:
             or self.exemode == "jitify"
         ), "Expected aot or proteus or jitify for exemode"
 
-        exe = f"{self.benchmark}-{self.exemode}.x"
         self.clean()
         print("BUILD", self.path, "type", self.exemode)
-
-        ctime = self.build(build_command, self.exemode != "aot")
-        exe_size = Path(f"{self.path}/{exe}").stat().st_size
+        ctime = self.build(self.exemode != "aot")
+        exe_size = Path(f"{self.path}/{self.executable_name}").stat().st_size
         print("=> BUILT")
 
         for repeat in range(0, reps):
@@ -228,7 +229,7 @@ class Executor:
                     cmd_env = os.environ.copy()
                     for k, v in env.items():
                         cmd_env[k] = v
-                    cmd = f"./{exe} {args}"
+                    cmd = f"./{self.executable_name} {args}"
 
                     set_launch_bounds = (
                         False if env["ENV_PROTEUS_SET_LAUNCH_BOUNDS"] == "0" else True
@@ -464,19 +465,34 @@ def main():
         env_configs = JitifyConfig().get_env_configs()
     else:
         raise Exception(f"Invalid exemode {args.exemode}")
-
+    proteus_install = args.proteus_path
+    assert os.path.exists(proteus_install), f"Error: Proteus install path '{proteus_install}' does not exist!"
+    for env in env_configs:
+        env["PROTEUS_INSTALL_PATH"] = proteus_install
     experiments = []
+    build_command = None
+    build_once = False
+    # custom toml wide level build command specified
+    if "build" in benchmark_configs:
+        build_command = benchmark_configs["build"][args.machine]
+        build_once = True
+
     for benchmark in args.bench if args.bench else benchmark_configs:
+        if benchmark == "build":
+            continue
         config = benchmark_configs[benchmark]
         experiments.append(
             Executor(
                 benchmark,
-                Path.cwd() / Path(config[args.machine][args.exemode]),
+                Path.cwd() / Path(config[args.machine][args.exemode]["path"]),
+                Path(config[args.machine][args.exemode]["exe"]),
                 args.exemode,
+                build_command,
                 config["inputs"],
                 args.compiler,
                 args.proteus_path,
                 env_configs,
+                build_once
             )
         )
 

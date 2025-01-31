@@ -1,422 +1,500 @@
-[ATOMIC]
-[ATOMIC.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[ATOMIC.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[HISTOGRAM]
-[HISTOGRAM.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[HISTOGRAM.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[MEMCPY]
-[MEMCPY.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[MEMCPY.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[MEMSET]
-[MEMSET.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[MEMSET.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[REDUCE_SUM]
-[REDUCE_SUM.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[REDUCE_SUM.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[DEL_DOT_VEC_2D]
-[DEL_DOT_VEC_2D.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[DEL_DOT_VEC_2D.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[EDGE3D]
-[EDGE3D.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[EDGE3D.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[ENERGY]
-[ENERGY.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[ENERGY.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[FIR]
-[FIR.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[FIR.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[MATVEC_3D_STENCIL]
-[MATVEC_3D_STENCIL.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[MATVEC_3D_STENCIL.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[NODAL_ACCUMULATION_3D]
-[NODAL_ACCUMULATION_3D.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[NODAL_ACCUMULATION_3D.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[PRESSURE]
-[PRESSURE.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[PRESSURE.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[VOL3D]
-[VOL3D.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[VOL3D.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[ZONAL_ACCUMULATION_3D]
-[ZONAL_ACCUMULATION_3D.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[ZONAL_ACCUMULATION_3D.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[ARRAY_OF_PTRS]
-[ARRAY_OF_PTRS.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[ARRAY_OF_PTRS.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[COPY8]
-[COPY8.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[COPY8.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[DAXPY]
-[DAXPY.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[DAXPY.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[DAXPY_ATOMIC]
-[DAXPY_ATOMIC.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[DAXPY_ATOMIC.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[IF_QUAD]
-[IF_QUAD.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[IF_QUAD.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[INDEXLIST]
-[INDEXLIST.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[INDEXLIST.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[INDEXLIST_3LOOP]
-[INDEXLIST_3LOOP.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[INDEXLIST_3LOOP.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[INIT3]
-[INIT3.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[INIT3.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[INIT_VIEW1D]
-[INIT_VIEW1D.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[INIT_VIEW1D.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[INIT_VIEW1D_OFFSET]
-[INIT_VIEW1D_OFFSET.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[INIT_VIEW1D_OFFSET.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[MULADDSUB]
-[MULADDSUB.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[MULADDSUB.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[MULTI_REDUCE]
-[MULTI_REDUCE.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[MULTI_REDUCE.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[PI_ATOMIC]
-[PI_ATOMIC.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[PI_ATOMIC.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[PI_REDUCE]
-[PI_REDUCE.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[PI_REDUCE.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[REDUCE3_INT]
-[REDUCE3_INT.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[REDUCE3_INT.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[REDUCE_STRUCT]
-[REDUCE_STRUCT.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[REDUCE_STRUCT.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[TRAP_INT]
-[TRAP_INT.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[TRAP_INT.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[HALO_EXCHANGE]
-[HALO_EXCHANGE.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[HALO_EXCHANGE.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[HALO_PACKING]
-[HALO_PACKING.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[HALO_PACKING.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[HALO_SENDRECV]
-[HALO_SENDRECV.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[HALO_SENDRECV.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[DIFF_PREDICT]
-[DIFF_PREDICT.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[DIFF_PREDICT.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[EOS]
-[EOS.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[EOS.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[FIRST_DIFF]
-[FIRST_DIFF.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[FIRST_DIFF.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[FIRST_MIN]
-[FIRST_MIN.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[FIRST_MIN.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[FIRST_SUM]
-[FIRST_SUM.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[FIRST_SUM.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[GEN_LIN_RECUR]
-[GEN_LIN_RECUR.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[GEN_LIN_RECUR.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[HYDRO_1D]
-[HYDRO_1D.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[HYDRO_1D.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[INT_PREDICT]
-[INT_PREDICT.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[INT_PREDICT.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[PLANCKIAN]
-[PLANCKIAN.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[PLANCKIAN.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[TRIDIAG_ELIM]
-[TRIDIAG_ELIM.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[TRIDIAG_ELIM.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[POLYBENCH_GEMVER]
-[POLYBENCH_GEMVER.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[POLYBENCH_GEMVER.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[POLYBENCH_JACOBI_1D]
-[POLYBENCH_JACOBI_1D.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[POLYBENCH_JACOBI_1D.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
-
-[ADD]
-[ADD.nvidia]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  --size 100000000"
-[ADD.amd]
-aot = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  --size 100000000"
-proteus = "./bin/raja-perf.exe --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  --size 100000000"
-
+[RAJAPerf.build]
+[RAJAPerf.build.nvidia]
+default = ["mkdir build",
+           "export LLVM_INSTALL_DIR=$(llvm-config --prefix)",
+            """
+            cmake ../   -DCMAKE_BUILD_TYPE=Release \
+                        -DCMAKE_C_COMPILER=${LLVM_INSTALL_DIR}/bin/clang \
+                        -DCMAKE_CXX_COMPILER=${LLVM_INSTALL_DIR}/bin/clang++ \
+                        -DRAJA_ENABLE_EXTERNAL_ROCPRIM=Off \
+                        -DPROTEUS_INSTALL_DIR=${PROTEUS_INSTALL_PATH} \
+                        -DPROTEUS_ENABLE_CUDA=on \
+                        -DCMAKE_CUDA_ARCHITECTURES=70 \
+                        -DCMAKE_CUDA_COMPILER=${LLVM_INSTALL_DIR}/bin/clang++ \
+                        -B build \
+            """,
+            "make -j 4 raja-perf.exe"]
+[RAJAPerf.build.amd]
+default = ["mkdir build",
+            """
+            cmake ../   -DCMAKE_BUILD_TYPE=Release \
+                        -DCMAKE_C_COMPILER=/opt/rocm-6.2.1/llvm/bin/clang \
+                        -DCMAKE_CXX_COMPILER=/opt/rocm-6.2.1/llvm/bin/clang++ \
+                        -DRAJA_ENABLE_EXTERNAL_ROCPRIM=Off \
+                        -DPROTEUS_INSTALL_DIR=${PROTEUS_INSTALL_PATH} \
+                        -DENABLE_HIP=on \
+                        -DCMAKE_HIP_ARCHITECTURES=gfx90a  \
+                        -B build \
+                        """,
+            "make -j 4 raja-perf.exe"]
+
+[RAJAPerf.ATOMIC]
+[RAJAPerf.ATOMIC.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.ATOMIC.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.ATOMIC.inputs]
+default = "-k ATOMIC --disable-warmup --size 100000000"
+
+
+[RAJAPerf.HISTOGRAM]
+[RAJAPerf.HISTOGRAM.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.HISTOGRAM.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.HISTOGRAM.inputs]
+default = "-k HISTOGRAM --disable-warmup --size 100000000"
+
+[RAJAPerf.MEMCPY]
+[RAJAPerf.MEMCPY.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.MEMCPY.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.MEMCPY.inputs]
+default = "-k MEMCPY --disable-warmup --size 100000000"
+
+[RAJAPerf.MEMSET]
+[RAJAPerf.MEMSET.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.MEMSET.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.MEMSET.inputs]
+default = "-k MEMSET --disable-warmup --size 100000000"
+
+[RAJAPerf.REDUCE_SUM]
+[RAJAPerf.REDUCE_SUM.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.REDUCE_SUM.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.REDUCE_SUM.inputs]
+default = "-k REDUCE_SUM --disable-warmup --size 100000000"
+
+[RAJAPerf.DEL_DOT_VEC_2D]
+[RAJAPerf.DEL_DOT_VEC_2D.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.DEL_DOT_VEC_2D.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.DEL_DOT_VEC_2D.inputs]
+default = "-k DEL_DOT_VEC_2D --disable-warmup --size 100000000"
+
+[RAJAPerf.EDGE3D]
+[RAJAPerf.EDGE3D.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.EDGE3D.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.EDGE3D.inputs]
+default = "-k EDGE3D --disable-warmup --size 100000000"
+
+[RAJAPerf.ENERGY]
+[RAJAPerf.ENERGY.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.ENERGY.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.ENERGY.inputs]
+default = "-k ENERGY --disable-warmup --size 100000000"
+
+[RAJAPerf.FIR]
+[RAJAPerf.FIR.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.FIR.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.FIR.inputs]
+default = "-k FIR --disable-warmup --size 100000000"
+
+[RAJAPerf.MATVEC_3D_STENCIL]
+[RAJAPerf.MATVEC_3D_STENCIL.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.MATVEC_3D_STENCIL.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.MATVEC_3D_STENCIL.inputs]
+default = "-k MATVEC_3D_STENCIL --disable-warmup --size 100000000"
+
+[RAJAPerf.NODAL_ACCUMULATION_3D]
+[RAJAPerf.NODAL_ACCUMULATION_3D.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.NODAL_ACCUMULATION_3D.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.NODAL_ACCUMULATION_3D.inputs]
+default = "-k NODAL_ACCUMULATION_3D --disable-warmup --size 100000000"
+
+[RAJAPerf.PRESSURE]
+[RAJAPerf.PRESSURE.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.PRESSURE.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.PRESSURE.inputs]
+default = "-k PRESSURE --disable-warmup --size 100000000"
+
+[RAJAPerf.VOL3D]
+[RAJAPerf.VOL3D.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.VOL3D.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.VOL3D.inputs]
+default = "-k VOL3D --disable-warmup --size 100000000"
+
+[RAJAPerf.ZONAL_ACCUMULATION_3D]
+[RAJAPerf.ZONAL_ACCUMULATION_3D.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.ZONAL_ACCUMULATION_3D.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.ZONAL_ACCUMULATION_3D.inputs]
+default = "-k ZONAL_ACCUMULATION_3D --disable-warmup --size 100000000"
+
+[RAJAPerf.ARRAY_OF_PTRS]
+[RAJAPerf.ARRAY_OF_PTRS.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.ARRAY_OF_PTRS.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.ARRAY_OF_PTRS.inputs]
+default = "-k ARRAY_OF_PTRS --disable-warmup --size 100000000"
+
+[RAJAPerf.COPY8]
+[RAJAPerf.COPY8.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.COPY8.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.COPY8.inputs]
+default = "-k COPY8 --disable-warmup --size 100000000"
+
+[RAJAPerf.DAXPY]
+[RAJAPerf.DAXPY.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.DAXPY.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.DAXPY.inputs]
+default = "-k DAXPY --disable-warmup --size 100000000"
+
+[RAJAPerf.DAXPY_ATOMIC]
+[RAJAPerf.DAXPY_ATOMIC.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.DAXPY_ATOMIC.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.DAXPY_ATOMIC.inputs]
+default = "-k DAXPY_ATOMIC --disable-warmup --size 100000000"
+
+[RAJAPerf.IF_QUAD]
+[RAJAPerf.IF_QUAD.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.IF_QUAD.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.IF_QUAD.inputs]
+default = "-k IF_QUAD --disable-warmup --size 100000000"
+
+[RAJAPerf.INDEXLIST]
+[RAJAPerf.INDEXLIST.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.INDEXLIST.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.INDEXLIST.inputs]
+default = "-k INDEXLIST --disable-warmup --size 100000000"
+
+[RAJAPerf.INDEXLIST_3LOOP]
+[RAJAPerf.INDEXLIST_3LOOP.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.INDEXLIST_3LOOP.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.INDEXLIST_3LOOP.inputs]
+default = "-k INDEXLIST_3LOOP --disable-warmup --size 100000000"
+
+[RAJAPerf.INIT3]
+[RAJAPerf.INIT3.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.INIT3.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.INIT3.inputs]
+default = "-k INIT3 --disable-warmup --size 100000000"
+
+[RAJAPerf.INIT_VIEW1D]
+[RAJAPerf.INIT_VIEW1D.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.INIT_VIEW1D.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.INIT_VIEW1D.inputs]
+default = "-k INIT_VIEW1D --disable-warmup --size 100000000"
+
+[RAJAPerf.INIT_VIEW1D_OFFSET]
+[RAJAPerf.INIT_VIEW1D_OFFSET.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.INIT_VIEW1D_OFFSET.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.INIT_VIEW1D_OFFSET.inputs]
+default = "-k INIT_VIEW1D_OFFSET --disable-warmup --size 100000000"
+
+[RAJAPerf.MULADDSUB]
+[RAJAPerf.MULADDSUB.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.MULADDSUB.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.MULADDSUB.inputs]
+default = "-k MULADDSUB --disable-warmup --size 100000000"
+
+[RAJAPerf.MULTI_REDUCE]
+[RAJAPerf.MULTI_REDUCE.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.MULTI_REDUCE.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.MULTI_REDUCE.inputs]
+default = "-k MULTI_REDUCE --disable-warmup --size 100000000"
+
+[RAJAPerf.PI_ATOMIC]
+[RAJAPerf.PI_ATOMIC.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.PI_ATOMIC.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.PI_ATOMIC.inputs]
+default = "-k PI_ATOMIC --disable-warmup --size 100000000"
+
+[RAJAPerf.PI_REDUCE]
+[RAJAPerf.PI_REDUCE.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.PI_REDUCE.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.PI_REDUCE.inputs]
+default = "-k PI_REDUCE --disable-warmup --size 100000000"
+
+[RAJAPerf.REDUCE3_INT]
+[RAJAPerf.REDUCE3_INT.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.REDUCE3_INT.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.REDUCE3_INT.inputs]
+default = "-k REDUCE3_INT --disable-warmup --size 100000000"
+
+[RAJAPerf.REDUCE_STRUCT]
+[RAJAPerf.REDUCE_STRUCT.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.REDUCE_STRUCT.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.REDUCE_STRUCT.inputs]
+default = "-k REDUCE_STRUCT --disable-warmup --size 100000000"
+
+[RAJAPerf.TRAP_INT]
+[RAJAPerf.TRAP_INT.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.TRAP_INT.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.TRAP_INT.inputs]
+default = "-k TRAP_INT --disable-warmup --size 100000000"
+
+[RAJAPerf.HALO_EXCHANGE]
+[RAJAPerf.HALO_EXCHANGE.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.HALO_EXCHANGE.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.HALO_EXCHANGE.inputs]
+default = "-k HALO_EXCHANGE --disable-warmup --size 100000000"
+
+[RAJAPerf.HALO_PACKING]
+[RAJAPerf.HALO_PACKING.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.HALO_PACKING.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.HALO_PACKING.inputs]
+default = "-k HALO_PACKING --disable-warmup --size 100000000"
+
+[RAJAPerf.HALO_SENDRECV]
+[RAJAPerf.HALO_SENDRECV.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.HALO_SENDRECV.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.HALO_SENDRECV.inputs]
+default = "-k HALO_SENDRECV --disable-warmup --size 100000000"
+
+[RAJAPerf.DIFF_PREDICT]
+[RAJAPerf.DIFF_PREDICT.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.DIFF_PREDICT.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.DIFF_PREDICT.inputs]
+default = "-k DIFF_PREDICT --disable-warmup --size 100000000"
+
+[RAJAPerf.EOS]
+[RAJAPerf.EOS.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.EOS.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.EOS.inputs]
+default = "-k EOS --disable-warmup --size 100000000"
+
+[RAJAPerf.FIRST_DIFF]
+[RAJAPerf.FIRST_DIFF.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.FIRST_DIFF.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.FIRST_DIFF.inputs]
+default = "-k FIRST_DIFF --disable-warmup --size 100000000"
+
+[RAJAPerf.FIRST_MIN]
+[RAJAPerf.FIRST_MIN.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.FIRST_MIN.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.FIRST_MIN.inputs]
+default = "-k FIRST_MIN --disable-warmup --size 100000000"
+
+[RAJAPerf.FIRST_SUM]
+[RAJAPerf.FIRST_SUM.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.FIRST_SUM.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.FIRST_SUM.inputs]
+default = "-k FIRST_SUM --disable-warmup --size 100000000"
+
+[RAJAPerf.GEN_LIN_RECUR]
+[RAJAPerf.GEN_LIN_RECUR.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.GEN_LIN_RECUR.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.GEN_LIN_RECUR.inputs]
+default = "-k GEN_LIN_RECUR --disable-warmup --size 100000000"
+
+[RAJAPerf.HYDRO_1D]
+[RAJAPerf.HYDRO_1D.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.HYDRO_1D.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.HYDRO_1D.inputs]
+default = "-k HYDRO_1D --disable-warmup --size 100000000"
+
+[RAJAPerf.INT_PREDICT]
+[RAJAPerf.INT_PREDICT.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.INT_PREDICT.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.INT_PREDICT.inputs]
+default = "-k INT_PREDICT --disable-warmup --size 100000000"
+
+[RAJAPerf.PLANCKIAN]
+[RAJAPerf.PLANCKIAN.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.PLANCKIAN.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.PLANCKIAN.inputs]
+default = "-k PLANCKIAN --disable-warmup --size 100000000"
+
+[RAJAPerf.TRIDIAG_ELIM]
+[RAJAPerf.TRIDIAG_ELIM.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.TRIDIAG_ELIM.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.TRIDIAG_ELIM.inputs]
+default = "-k TRIDIAG_ELIM --disable-warmup --size 100000000"
+
+[RAJAPerf.GEMVER]
+[RAJAPerf.GEMVER.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.GEMVER.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.GEMVER.inputs]
+default = "-k GEMVER --disable-warmup --size 100000000"
+
+[RAJAPerf.JACOBI_1D]
+[RAJAPerf.JACOBI_1D.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.JACOBI_1D.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.JACOBI_1D.inputs]
+default = "-k JACOBI_1D --disable-warmup --size 100000000"
+
+[RAJAPerf.ADD]
+[RAJAPerf.ADD.nvidia]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA RAJA_CUDA  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_CUDA Lambda_CUDA  "
+[RAJAPerf.ADD.amd]
+aot = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP RAJA_HIP  "
+proteus = "./bin/raja-perf.exe  --exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
+[RAJAPerf.ADD.inputs]
+default = "-k ADD --disable-warmup --size 100000000"
