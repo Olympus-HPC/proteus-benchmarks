@@ -142,10 +142,12 @@ class Nvprof:
 
 
 class Executor:
-    def __init__(self, benchmark, path, executable_name, exemode, build_command, inputs, cc, proteus_path, env_configs, build_once):
+    def __init__(self, benchmark, path, executable_name, extra_args, exemode,
+                build_command, inputs, cc, proteus_path, env_configs, build_once):
         self.benchmark = benchmark
         self.path = path
         self.executable_name = executable_name
+        self.extra_args = extra_args
         self.exemode = exemode
         # the build command is meant to be a full bash command to build the benchmark, eg
         # `cmake -DCMAKE_BUILD_TYPE=Debug --build` or `make benchmark`
@@ -232,7 +234,7 @@ class Executor:
                     cmd_env = os.environ.copy()
                     for k, v in env.items():
                         cmd_env[k] = v
-                    cmd = f"./{self.executable_name} {args}"
+                    cmd = f"{self.executable_name} {args} {self.extra_args}"
 
                     set_launch_bounds = (
                         False if env["ENV_PROTEUS_SET_LAUNCH_BOUNDS"] == "0" else True
@@ -489,6 +491,7 @@ def main():
                 benchmark,
                 Path.cwd() / Path(config[args.machine][args.exemode]["path"]),
                 Path(config[args.machine][args.exemode]["exe"]),
+                config[args.machine][args.exemode]["args"],
                 args.exemode,
                 build_command,
                 config["inputs"],
