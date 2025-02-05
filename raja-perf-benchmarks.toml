@@ -182,7 +182,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
 [EDGE3D.inputs]
-default = "-k EDGE3D --disable-warmup --size 1000"
+default = "-k EDGE3D --disable-warmup --size 100000000"
 
 [ENERGY]
 [ENERGY.nvidia]
@@ -204,7 +204,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
 [ENERGY.inputs]
-default = "-k ENERGY --disable-warmup --size 1000"
+default = "-k ENERGY --disable-warmup --size 100000000"
 
 [FIR]
 [FIR.nvidia]
@@ -226,7 +226,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--exclude-variants Base_Seq Lambda_Seq RAJA_Seq Base_HIP Lambda_HIP  "
 [FIR.inputs]
-default = "-k FIR --disable-warmup --size 1000"
+default = "-k FIR --disable-warmup --size 100000000"
 
 [MATVEC_3D_STENCIL]
 [MATVEC_3D_STENCIL.nvidia]
