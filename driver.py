@@ -143,7 +143,7 @@ class Nvprof:
 
 class Executor:
     def __init__(self, benchmark, path, executable_name, extra_args, exemode,
-                build_command, inputs, cc, proteus_path, env_configs, build_once):
+                build_command, inputs, cc, proteus_path, env_configs):
         self.benchmark = benchmark
         self.path = path
         self.executable_name = executable_name
@@ -157,8 +157,6 @@ class Executor:
         self.cc = cc
         self.proteus_path = proteus_path
         self.env_configs = env_configs
-        self.build_once = build_once
-        self.built = False
 
     def __str__(self):
         return f"{self.benchmark} {self.path} {self.exemode}"
@@ -497,8 +495,7 @@ def main():
                 config["inputs"],
                 args.compiler,
                 args.proteus_path,
-                env_configs,
-                build_once
+                env_configs
             )
         )
 

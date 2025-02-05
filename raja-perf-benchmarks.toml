@@ -1,7 +1,6 @@
 [build]
 [build.nvidia]
-command = ["mkdir build",
-           "export LLVM_INSTALL_DIR=$(llvm-config --prefix)",
+command = ["export LLVM_INSTALL_DIR=$(llvm-config --prefix)",
             """
             cmake       -DCMAKE_BUILD_TYPE=Release \
                         -DCMAKE_C_COMPILER=${LLVM_INSTALL_DIR}/bin/clang \
@@ -16,8 +15,7 @@ command = ["mkdir build",
             """,
             "cmake --build build --target raja-perf.exe -- -j 8"]
 [build.amd]
-command = ["mkdir build",
-            """
+command = ["""
             cmake       -DCMAKE_BUILD_TYPE=Release \
                         -DCMAKE_C_COMPILER=/opt/rocm-5.7.1/llvm/bin/clang \
                         -DCMAKE_CXX_COMPILER=/opt/rocm-5.7.1/llvm/bin/clang++ \
@@ -25,6 +23,7 @@ command = ["mkdir build",
                         -DPROTEUS_INSTALL_DIR=${PROTEUS_PATH} \
                         -DENABLE_HIP=on \
                         -DCMAKE_HIP_ARCHITECTURES=gfx90a  \
+                        -DGPU_TARGETS=gfx90a \
                         -DENABLE_JIT=On \
                         -B build \
                         """,
