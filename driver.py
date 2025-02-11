@@ -143,7 +143,7 @@ class Nvprof:
 
 class Executor:
     def __init__(self, benchmark, path, executable_name, extra_args, exemode,
-                build_command, inputs, cc, proteus_path, env_configs):
+                build_command, clean_command, inputs, cc, proteus_path, env_configs):
         self.benchmark = benchmark
         self.path = path
         self.executable_name = executable_name
@@ -153,6 +153,7 @@ class Executor:
         # `cmake -DCMAKE_BUILD_TYPE=Debug --build` or `make benchmark`
         # If none is provided, it will default to `make`
         self.build_command = 'make' if build_command == None else build_command
+        self.clean_command = clean_command
         self.inputs = inputs
         self.cc = cc
         self.proteus_path = proteus_path
@@ -185,8 +186,8 @@ class Executor:
 
     def clean(self):
         os.chdir(self.path)
-        cmd = "make clean"
-        self.execute_command(cmd)
+        if self.clean_command is not None:
+            self.execute_command(self.clean_command)
 
     def build(self, do_jit):
         os.chdir(self.path)
@@ -220,7 +221,7 @@ class Executor:
             or self.exemode == "jitify"
         ), "Expected aot or proteus or jitify for exemode"
 
-        #self.clean()
+        self.clean()
         print("BUILD", self.path, "type", self.exemode)
         ctime = self.build(self.exemode != "aot")
         exe_size = Path(f"{self.path}/{self.executable_name}").stat().st_size
@@ -476,26 +477,32 @@ def main():
     build_command = None
     build_once = False
     # custom toml wide level build command specified
-    if "build" in benchmark_configs:
+    if "build" in benchmark_configs and "command" in benchmark_configs["build"][args.machine]:
         build_command = benchmark_configs["build"][args.machine]["command"]
-        build_once = True
+    else:
+        raise Exception(
+            "Build instructions must be supplied on a toml-wide level"
+        )
 
     for benchmark in args.bench if args.bench else benchmark_configs:
         if benchmark == "build":
             continue
         config = benchmark_configs[benchmark]
+        extra_args = config[args.machine][args.exemode]["args"] if "args" in config[args.machine][args.exemode] else ""
+        clean_command = benchmark_configs["build"]["clean"] if "build" in benchmark_configs and "clean" in benchmark_configs["build"] else None
         experiments.append(
             Executor(
                 benchmark,
                 Path.cwd() / Path(config[args.machine][args.exemode]["path"]),
                 Path(config[args.machine][args.exemode]["exe"]),
-                config[args.machine][args.exemode]["args"],
+                extra_args,
                 args.exemode,
                 build_command,
+                clean_command,
                 config["inputs"],
                 args.compiler,
                 args.proteus_path,
-                env_configs
+                env_configs,
             )
         )
 

@@ -1,3 +1,13 @@
+[build]
+[build.nvidia]
+command = ["make"]
+[build.nvidia.clean]
+command = "make clean"
+[build.amd]
+command = ["make"]
+[build.amd.clean]
+command = "make clean"
+
 [adam]
 [adam.nvidia]
 [adam.nvidia.aot]
@@ -22,19 +32,19 @@ default = "160000 1600 1000"
 [feynman-kac.nvidia]
 [feynman-kac.nvidia.aot]
 path = "benchmarks/hecbench/cuda/feynman-kac"
-exe = "kac-aot.x"
+exe = "feynman-kac-aot.x"
 [feynman-kac.nvidia.proteus]
 path = "benchmarks/hecbench/cuda/feynman-kac"
-exe = "kac-proteus.x"
+exe = "feynman-kac-proteus.x"
 [feynman-kac.nvidia.jitify]
 path = "benchmarks/hecbench/cuda-jitify/feynman-kac"
-exe = "kac-jitify.x"
+exe = "feynman-kac-jitify.x"
 [feynman-kac.amd.aot]
 path = "benchmarks/hecbench/hip/feynman-kac"
-exe = "kac-aot.x"
+exe = "feynman-kac-aot.x"
 [feynman-kac.amd.proteus]
 path = "benchmarks/hecbench/hip/feynman-kac"
-exe = "kac-proteus.x"
+exe = "feynman-kac-proteus.x"
 [feynman-kac.inputs]
 default = "1"
 
@@ -42,19 +52,19 @@ default = "1"
 [lulesh.nvidia]
 [lulesh.nvidia.aot]
 path = "benchmarks/hecbench/cuda/LULESH"
-exe = "LULESH-aot.x"
+exe = "lulesh-aot.x"
 [lulesh.nvidia.proteus]
 path = "benchmarks/hecbench/cuda/LULESH"
-exe = "LULESH-proteus.x"
+exe = "lulesh-proteus.x"
 [lulesh.nvidia.jitify]
 path = "benchmarks/hecbench/cuda-jitify/LULESH"
-exe = "LULESH-jitify.x"
+exe = "lulesh-jitify.x"
 [lulesh.amd.aot]
 path = "benchmarks/hecbench/hip/LULESH"
-exe = "LULESH-aot.x"
+exe = "lulesh-aot.x"
 [lulesh.amd.proteus]
 path = "benchmarks/hecbench/hip/LULESH"
-exe = "LULESH-proteus.x"
+exe = "lulesh-proteus.x"
 [lulesh.inputs]
 default = "-s 128 -i 1000"
 
