@@ -713,28 +713,6 @@ args = "--variants RAJA_HIP "
 [TRAP_INT.inputs]
 default = "-k TRAP_INT --disable-warmup --size 1000"
 
-[HALO_EXCHANGE]
-[HALO_EXCHANGE.nvidia]
-[HALO_EXCHANGE.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[HALO_EXCHANGE.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[HALO_EXCHANGE.amd]
-[HALO_EXCHANGE.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[HALO_EXCHANGE.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[HALO_EXCHANGE.inputs]
-default = "-k HALO_EXCHANGE --disable-warmup --size 1000"
-
 [HALO_PACKING]
 [HALO_PACKING.nvidia]
 [HALO_PACKING.nvidia.aot]
