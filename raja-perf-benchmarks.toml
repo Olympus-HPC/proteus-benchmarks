@@ -735,28 +735,6 @@ args = "--variants RAJA_HIP "
 [HALO_PACKING.inputs]
 default = "-k HALO_PACKING --disable-warmup --size 1000"
 
-[HALO_SENDRECV]
-[HALO_SENDRECV.nvidia]
-[HALO_SENDRECV.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[HALO_SENDRECV.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[HALO_SENDRECV.amd]
-[HALO_SENDRECV.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[HALO_SENDRECV.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[HALO_SENDRECV.inputs]
-default = "-k HALO_SENDRECV --disable-warmup --size 1000"
-
 [DIFF_PREDICT]
 [DIFF_PREDICT.nvidia]
 [DIFF_PREDICT.nvidia.aot]
