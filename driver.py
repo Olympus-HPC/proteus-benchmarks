@@ -17,7 +17,7 @@ import tomllib
 def demangle(mangled_name):
     try:
         p = subprocess.run(
-            "llvm-cxxfilt " + mangled_name, check=True, text=True, capture_output=True, shell=True, **kwargs
+            "llvm-cxxfilt " + mangled_name, check=True, text=True, capture_output=True, shell=True
         )
     except subprocess.CalledProcessError as e:
         print("Failed cmd", e.cmd)
