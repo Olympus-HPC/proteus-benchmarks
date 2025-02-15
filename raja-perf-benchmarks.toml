@@ -449,50 +449,6 @@ args = "--variants RAJA_HIP "
 [IF_QUAD.inputs]
 default = "-k IF_QUAD --disable-warmup --size 1000"
 
-[INDEXLIST]
-[INDEXLIST.nvidia]
-[INDEXLIST.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[INDEXLIST.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[INDEXLIST.amd]
-[INDEXLIST.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[INDEXLIST.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[INDEXLIST.inputs]
-default = "-k INDEXLIST --disable-warmup --size 1000"
-
-[INDEXLIST_3LOOP]
-[INDEXLIST_3LOOP.nvidia]
-[INDEXLIST_3LOOP.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[INDEXLIST_3LOOP.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[INDEXLIST_3LOOP.amd]
-[INDEXLIST_3LOOP.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[INDEXLIST_3LOOP.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[INDEXLIST_3LOOP.inputs]
-default = "-k INDEXLIST_3LOOP --disable-warmup --size 1000"
-
 [INIT3]
 [INIT3.nvidia]
 [INIT3.nvidia.aot]

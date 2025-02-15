@@ -14,6 +14,21 @@ import json
 import tomllib
 
 
+def demangle(mangled_name):
+    try:
+        p = subprocess.run(
+            "llvm-cxxfilt " + mangled_name, check=True, text=True, capture_output=True, shell=True, **kwargs
+        )
+    except subprocess.CalledProcessError as e:
+        print("Failed cmd", e.cmd)
+        print("ret", e.returncode)
+        print("stdout\n", e.stdout)
+        print("stderr\n", e.stderr)
+        print(e)
+        raise e
+
+    return p.stdout
+
 class ProteusConfig:
     def check_valid(self, key, values):
         if key not in self.valid_keys:
@@ -91,7 +106,7 @@ class Rocprof:
         def get_hash(x):
             try:
                 hash_pos = 2
-                return cxxfilt.demangle(x.split("$")[hash_pos])
+                return demangle(x.split("$")[hash_pos])
             except IndexError:
                 return None
 
@@ -101,7 +116,7 @@ class Rocprof:
         df["Duration"] = df["EndNs"] - df["BeginNs"]
         df["Name"] = df["Name"].str.replace(" [clone .kd]", "", regex=False)
         df["Hash"] = df.Name.apply(lambda x: get_hash(x))
-        df["Name"] = df.Name.apply(lambda x: cxxfilt.demangle(x.split("$")[0]))
+        df["Name"] = df.Name.apply(lambda x: demangle(x.split("$")[0]))
         return df
 
 
@@ -120,7 +135,7 @@ class Nvprof:
         def get_hash(x):
             try:
                 hash_pos = 2
-                return cxxfilt.demangle(x.split("$")[hash_pos])
+                return demangle(x.split("$")[hash_pos])
             except IndexError:
                 return None
 
@@ -132,11 +147,11 @@ class Nvprof:
         df = df[1:]
         # Nvprof with metrics tracks only kernels.
         if self.metrics:
-            df["Kernel"] = df.Kernel.apply(lambda x: cxxfilt.demangle(x.split("$")[0]))
+            df["Kernel"] = df.Kernel.apply(lambda x: demangle(x.split("$")[0]))
             df.rename(columns={"Kernel": "Name"}, inplace=True)
         else:
             df["Hash"] = df.Name.apply(lambda x: get_hash(x))
-            df["Name"] = df.Name.apply(lambda x: cxxfilt.demangle(x.split("$")[0]))
+            df["Name"] = df.Name.apply(lambda x: demangle(x.split("$")[0]))
 
         return df
 
