@@ -158,7 +158,8 @@ class Nvprof:
 
 class Executor:
     def __init__(self, benchmark, path, executable_name, extra_args, exemode,
-                build_command, clean_command, inputs, cc, proteus_path, env_configs):
+                build_command, clean_command, inputs, cc, proteus_path, env_configs,
+                build_once, already_built):
         self.benchmark = benchmark
         self.path = path
         self.executable_name = executable_name
@@ -173,6 +174,8 @@ class Executor:
         self.cc = cc
         self.proteus_path = proteus_path
         self.env_configs = env_configs
+        self.build_once = build_once
+        self.already_built = already_built
 
     def __str__(self):
         return f"{self.benchmark} {self.path} {self.exemode}"
@@ -210,6 +213,9 @@ class Executor:
         env["ENABLE_PROTEUS"] = "yes" if do_jit else "no"
         env["PROTEUS_PATH"] = self.proteus_path
         env["CC"] = self.cc
+        if self.build_once and self.already_built:
+            print(self.benchmark)
+            return 0
         t1 = time.perf_counter()
         print(
             "Build command",
@@ -491,6 +497,10 @@ def main():
     experiments = []
     build_command = None
     build_once = False
+    already_built = False
+    if "build" in benchmark_configs and "build_once" in benchmark_configs["build"]:
+        build_once = True
+
     # custom toml wide level build command specified
     if "build" in benchmark_configs and "command" in benchmark_configs["build"][args.machine]:
         build_command = benchmark_configs["build"][args.machine]["command"]
@@ -518,8 +528,11 @@ def main():
                 args.compiler,
                 args.proteus_path,
                 env_configs,
+                build_once,
+                already_built
             )
         )
+        already_built = True
 
     def gather_profiler_results(metrics):
         if args.machine == "amd":

@@ -1,5 +1,7 @@
 # todo(bowen) make a forall_jit variant, and add a RAJA_HIP_JIT variant to RAJAPerf
 [build]
+[build.build_once]
+value = true
 [build.nvidia]
 command = ["export LLVM_INSTALL_DIR=$(llvm-config --prefix)",
             """
@@ -183,7 +185,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [EDGE3D.inputs]
-default = "-k EDGE3D --disable-warmup --size 100000000"
+default = "-k EDGE3D --disable-warmup --size 1000"
 
 [ENERGY]
 [ENERGY.nvidia]
@@ -205,7 +207,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [ENERGY.inputs]
-default = "-k ENERGY --disable-warmup --size 100000000"
+default = "-k ENERGY --disable-warmup --size 1000"
 
 [FIR]
 [FIR.nvidia]
@@ -227,7 +229,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [FIR.inputs]
-default = "-k FIR --disable-warmup --size 100000000"
+default = "-k FIR --disable-warmup --size 1000"
 
 [MATVEC_3D_STENCIL]
 [MATVEC_3D_STENCIL.nvidia]
