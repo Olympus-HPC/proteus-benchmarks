@@ -14,10 +14,10 @@ import json
 import tomllib
 
 
-def demangle(mangled_name):
+def demangle(potentially_mangled_name):
     try:
         p = subprocess.run(
-            "llvm-cxxfilt " + mangled_name, check=True, text=True, capture_output=True, shell=True
+            "llvm-cxxfilt " + "\"" + potentially_mangled_name + "\"", check=True, text=True, capture_output=True, shell=True
         )
     except subprocess.CalledProcessError as e:
         print("Failed cmd", e.cmd)
