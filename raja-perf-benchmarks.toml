@@ -52,7 +52,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [ATOMIC.inputs]
-default = "-k ATOMIC --disable-warmup --size 1000"
+default = "-k ATOMIC --disable-warmup --size 1000 --repfact .1"
 
 
 [HISTOGRAM]
@@ -75,7 +75,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [HISTOGRAM.inputs]
-default = "-k HISTOGRAM --disable-warmup --size 1000"
+default = "-k HISTOGRAM --disable-warmup --size 1000 --repfact .1"
 
 [MEMCPY]
 [MEMCPY.nvidia]
@@ -97,7 +97,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [MEMCPY.inputs]
-default = "-k MEMCPY --disable-warmup --size 1000"
+default = "-k MEMCPY --disable-warmup --size 1000 --repfact .1"
 
 [MEMSET]
 [MEMSET.nvidia]
@@ -119,7 +119,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [MEMSET.inputs]
-default = "-k MEMSET --disable-warmup --size 1000"
+default = "-k MEMSET --disable-warmup --size 1000 --repfact .1"
 
 [REDUCE_SUM]
 [REDUCE_SUM.nvidia]
@@ -141,7 +141,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [REDUCE_SUM.inputs]
-default = "-k REDUCE_SUM --disable-warmup --size 1000"
+default = "-k REDUCE_SUM --disable-warmup --size 1000 --repfact .1"
 
 [DEL_DOT_VEC_2D]
 [DEL_DOT_VEC_2D.nvidia]
@@ -163,7 +163,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [DEL_DOT_VEC_2D.inputs]
-default = "-k DEL_DOT_VEC_2D --disable-warmup --size 1000"
+default = "-k DEL_DOT_VEC_2D --disable-warmup --size 1000 --repfact .1"
 
 [EDGE3D]
 [EDGE3D.nvidia]
@@ -185,7 +185,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [EDGE3D.inputs]
-default = "-k EDGE3D --disable-warmup --size 1000"
+default = "-k EDGE3D --disable-warmup --size 1000 --repfact .1"
 
 [ENERGY]
 [ENERGY.nvidia]
@@ -207,7 +207,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [ENERGY.inputs]
-default = "-k ENERGY --disable-warmup --size 1000"
+default = "-k ENERGY --disable-warmup --size 1000 --repfact .1"
 
 [FIR]
 [FIR.nvidia]
@@ -229,7 +229,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [FIR.inputs]
-default = "-k FIR --disable-warmup --size 1000"
+default = "-k FIR --disable-warmup --size 1000 --repfact .1"
 
 [MATVEC_3D_STENCIL]
 [MATVEC_3D_STENCIL.nvidia]
@@ -251,7 +251,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [MATVEC_3D_STENCIL.inputs]
-default = "-k MATVEC_3D_STENCIL --disable-warmup --size 1000"
+default = "-k MATVEC_3D_STENCIL --disable-warmup --size 1000 --repfact .1"
 
 [NODAL_ACCUMULATION_3D]
 [NODAL_ACCUMULATION_3D.nvidia]
@@ -273,7 +273,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [NODAL_ACCUMULATION_3D.inputs]
-default = "-k NODAL_ACCUMULATION_3D --disable-warmup --size 1000"
+default = "-k NODAL_ACCUMULATION_3D --disable-warmup --size 1000 --repfact .1"
 
 [PRESSURE]
 [PRESSURE.nvidia]
@@ -295,7 +295,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [PRESSURE.inputs]
-default = "-k PRESSURE --disable-warmup --size 1000"
+default = "-k PRESSURE --disable-warmup --size 1000 --repfact .1"
 
 [VOL3D]
 [VOL3D.nvidia]
@@ -317,7 +317,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [VOL3D.inputs]
-default = "-k VOL3D --disable-warmup --size 1000"
+default = "-k VOL3D --disable-warmup --size 1000 --repfact .1"
 
 [ZONAL_ACCUMULATION_3D]
 [ZONAL_ACCUMULATION_3D.nvidia]
@@ -339,7 +339,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [ZONAL_ACCUMULATION_3D.inputs]
-default = "-k ZONAL_ACCUMULATION_3D --disable-warmup --size 1000"
+default = "-k ZONAL_ACCUMULATION_3D --disable-warmup --size 1000 --repfact .1"
 
 [ARRAY_OF_PTRS]
 [ARRAY_OF_PTRS.nvidia]
@@ -361,7 +361,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [ARRAY_OF_PTRS.inputs]
-default = "-k ARRAY_OF_PTRS --disable-warmup --size 1000"
+default = "-k ARRAY_OF_PTRS --disable-warmup --size 1000 --repfact .1"
 
 [COPY8]
 [COPY8.nvidia]
@@ -383,7 +383,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [COPY8.inputs]
-default = "-k COPY8 --disable-warmup --size 1000"
+default = "-k COPY8 --disable-warmup --size 1000 --repfact .1"
 
 [DAXPY]
 [DAXPY.nvidia]
@@ -405,7 +405,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [DAXPY.inputs]
-default = "-k DAXPY --disable-warmup --size 1000"
+default = "-k DAXPY --disable-warmup --size 1000 --repfact .1"
 
 [DAXPY_ATOMIC]
 [DAXPY_ATOMIC.nvidia]
@@ -427,7 +427,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [DAXPY_ATOMIC.inputs]
-default = "-k DAXPY_ATOMIC --disable-warmup --size 1000"
+default = "-k DAXPY_ATOMIC --disable-warmup --size 1000 --repfact .1"
 
 [IF_QUAD]
 [IF_QUAD.nvidia]
@@ -449,7 +449,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [IF_QUAD.inputs]
-default = "-k IF_QUAD --disable-warmup --size 1000"
+default = "-k IF_QUAD --disable-warmup --size 1000 --repfact .1"
 
 [INIT3]
 [INIT3.nvidia]
@@ -471,7 +471,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [INIT3.inputs]
-default = "-k INIT3 --disable-warmup --size 1000"
+default = "-k INIT3 --disable-warmup --size 1000 --repfact .1"
 
 [INIT_VIEW1D]
 [INIT_VIEW1D.nvidia]
@@ -493,7 +493,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [INIT_VIEW1D.inputs]
-default = "-k INIT_VIEW1D --disable-warmup --size 1000"
+default = "-k INIT_VIEW1D --disable-warmup --size 1000 --repfact .1"
 
 [INIT_VIEW1D_OFFSET]
 [INIT_VIEW1D_OFFSET.nvidia]
@@ -515,7 +515,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [INIT_VIEW1D_OFFSET.inputs]
-default = "-k INIT_VIEW1D_OFFSET --disable-warmup --size 1000"
+default = "-k INIT_VIEW1D_OFFSET --disable-warmup --size 1000 --repfact .1"
 
 [MULADDSUB]
 [MULADDSUB.nvidia]
@@ -537,7 +537,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [MULADDSUB.inputs]
-default = "-k MULADDSUB --disable-warmup --size 1000"
+default = "-k MULADDSUB --disable-warmup --size 1000 --repfact .1"
 
 [MULTI_REDUCE]
 [MULTI_REDUCE.nvidia]
@@ -559,7 +559,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [MULTI_REDUCE.inputs]
-default = "-k MULTI_REDUCE --disable-warmup --size 1000"
+default = "-k MULTI_REDUCE --disable-warmup --size 1000 --repfact .1"
 
 [PI_ATOMIC]
 [PI_ATOMIC.nvidia]
@@ -581,7 +581,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [PI_ATOMIC.inputs]
-default = "-k PI_ATOMIC --disable-warmup --size 1000"
+default = "-k PI_ATOMIC --disable-warmup --size 1000 --repfact .1"
 
 [PI_REDUCE]
 [PI_REDUCE.nvidia]
@@ -603,7 +603,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [PI_REDUCE.inputs]
-default = "-k PI_REDUCE --disable-warmup --size 1000"
+default = "-k PI_REDUCE --disable-warmup --size 1000 --repfact .1"
 
 [REDUCE3_INT]
 [REDUCE3_INT.nvidia]
@@ -625,7 +625,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [REDUCE3_INT.inputs]
-default = "-k REDUCE3_INT --disable-warmup --size 1000"
+default = "-k REDUCE3_INT --disable-warmup --size 1000 --repfact .1"
 
 [REDUCE_STRUCT]
 [REDUCE_STRUCT.nvidia]
@@ -647,7 +647,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [REDUCE_STRUCT.inputs]
-default = "-k REDUCE_STRUCT --disable-warmup --size 1000"
+default = "-k REDUCE_STRUCT --disable-warmup --size 1000 --repfact .1"
 
 [TRAP_INT]
 [TRAP_INT.nvidia]
@@ -669,7 +669,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [TRAP_INT.inputs]
-default = "-k TRAP_INT --disable-warmup --size 1000"
+default = "-k TRAP_INT --disable-warmup --size 1000 --repfact .1"
 
 [HALO_PACKING]
 [HALO_PACKING.nvidia]
@@ -691,7 +691,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [HALO_PACKING.inputs]
-default = "-k HALO_PACKING --disable-warmup --size 1000"
+default = "-k HALO_PACKING --disable-warmup --size 1000 --repfact .1"
 
 [DIFF_PREDICT]
 [DIFF_PREDICT.nvidia]
@@ -713,7 +713,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [DIFF_PREDICT.inputs]
-default = "-k DIFF_PREDICT --disable-warmup --size 1000"
+default = "-k DIFF_PREDICT --disable-warmup --size 1000 --repfact .1"
 
 [EOS]
 [EOS.nvidia]
@@ -735,7 +735,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [EOS.inputs]
-default = "-k EOS --disable-warmup --size 1000"
+default = "-k EOS --disable-warmup --size 1000 --repfact .1"
 
 [FIRST_DIFF]
 [FIRST_DIFF.nvidia]
@@ -757,7 +757,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [FIRST_DIFF.inputs]
-default = "-k FIRST_DIFF --disable-warmup --size 1000"
+default = "-k FIRST_DIFF --disable-warmup --size 1000 --repfact .1"
 
 [FIRST_MIN]
 [FIRST_MIN.nvidia]
@@ -779,7 +779,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [FIRST_MIN.inputs]
-default = "-k FIRST_MIN --disable-warmup --size 1000"
+default = "-k FIRST_MIN --disable-warmup --size 1000 --repfact .1"
 
 [FIRST_SUM]
 [FIRST_SUM.nvidia]
@@ -801,7 +801,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [FIRST_SUM.inputs]
-default = "-k FIRST_SUM --disable-warmup --size 1000"
+default = "-k FIRST_SUM --disable-warmup --size 1000 --repfact .1"
 
 [GEN_LIN_RECUR]
 [GEN_LIN_RECUR.nvidia]
@@ -823,7 +823,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [GEN_LIN_RECUR.inputs]
-default = "-k GEN_LIN_RECUR --disable-warmup --size 1000"
+default = "-k GEN_LIN_RECUR --disable-warmup --size 1000 --repfact .1"
 
 [HYDRO_1D]
 [HYDRO_1D.nvidia]
@@ -845,7 +845,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [HYDRO_1D.inputs]
-default = "-k HYDRO_1D --disable-warmup --size 1000"
+default = "-k HYDRO_1D --disable-warmup --size 1000 --repfact .1"
 
 [INT_PREDICT]
 [INT_PREDICT.nvidia]
@@ -867,7 +867,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [INT_PREDICT.inputs]
-default = "-k INT_PREDICT --disable-warmup --size 1000"
+default = "-k INT_PREDICT --disable-warmup --size 1000 --repfact .1"
 
 [PLANCKIAN]
 [PLANCKIAN.nvidia]
@@ -889,7 +889,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [PLANCKIAN.inputs]
-default = "-k PLANCKIAN --disable-warmup --size 1000"
+default = "-k PLANCKIAN --disable-warmup --size 1000 --repfact .1"
 
 [TRIDIAG_ELIM]
 [TRIDIAG_ELIM.nvidia]
@@ -911,7 +911,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [TRIDIAG_ELIM.inputs]
-default = "-k TRIDIAG_ELIM --disable-warmup --size 1000"
+default = "-k TRIDIAG_ELIM --disable-warmup --size 1000 --repfact .1"
 
 [GEMVER]
 [GEMVER.nvidia]
@@ -933,7 +933,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [GEMVER.inputs]
-default = "-k GEMVER --disable-warmup --size 1000"
+default = "-k GEMVER --disable-warmup --size 1000 --repfact .1"
 
 [JACOBI_1D]
 [JACOBI_1D.nvidia]
@@ -955,7 +955,7 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [JACOBI_1D.inputs]
-default = "-k JACOBI_1D --disable-warmup --size 1000"
+default = "-k JACOBI_1D --disable-warmup --size 1000 --repfact .1"
 
 [ADD]
 [ADD.nvidia]
@@ -977,4 +977,4 @@ path = "benchmarks/RAJAPerf"
 exe = "./build/bin/raja-perf.exe"
 args = "--variants RAJA_HIP "
 [ADD.inputs]
-default = "-k ADD --disable-warmup --size 1000"
+default = "-k ADD --disable-warmup --size 1000 --repfact .1"
