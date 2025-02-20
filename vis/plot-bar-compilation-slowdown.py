@@ -77,7 +77,7 @@ def visualize(df, machine, plot_dir, plot_title, format):
     sizes = set_size(TEXT_WIDTH, 0.5)
 
     benchmarks = df.Benchmark.unique()
-    batch_size = 6
+    batch_size = 4
     benchmarks = list(itertools.batched(benchmarks, batch_size))
     for i, batch in enumerate(benchmarks):
         plot_df = tmp_df[tmp_df.Benchmark.isin(batch)]
