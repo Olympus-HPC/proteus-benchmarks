@@ -514,8 +514,6 @@ def main():
         proteus_install
     ), f"Error: Proteus install path '{proteus_install}' does not exist!"
 
-    experiments = []
-    build_command = None
     try:
         build_once = group_config["build_once"]
     except KeyError:
@@ -526,6 +524,12 @@ def main():
     except KeyError:
         raise Exception("Build instructions are missing")
 
+    try:
+        clean_command = group_config["build"][args.machine]["clean"]["command"]
+    except KeyError:
+        clean_command = None
+
+    experiments = []
     for benchmark in args.bench if args.bench else benchmark_configs:
         # Skip the build key
         if benchmark == "build" or benchmark == "config":
@@ -543,11 +547,6 @@ def main():
             )
         except KeyError:
             pass
-
-        try:
-            clean_command = benchmark_configs["build"]["clean"]
-        except KeyError:
-            clean_command = None
 
         try:
             path = Path.cwd() / Path(config[args.machine][args.exemode]["path"])

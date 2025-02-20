@@ -1,10 +1,10 @@
 [hecbench]
 [hecbench.config.build.nvidia]
-command = ["make"]
+command = "make"
 [hecbench.config.build.nvidia.clean]
 command = "make clean"
 [hecbench.config.build.amd]
-command = ["make"]
+command = "make"
 [hecbench.config.build.amd.clean]
 command = "make clean"
 
