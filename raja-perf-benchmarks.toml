@@ -1,8 +1,10 @@
 # todo(bowen) make a forall_jit variant, and add a RAJA_HIP_JIT variant to RAJAPerf
-[build]
-[build.build_once]
-value = true
-[build.nvidia]
+[RAJAPerf]
+[RAJAPerf.config]
+path = "benchmarks/RAJAPerf"
+exe = "build/bin/raja-perf.exe"
+build_once = true
+[RAJAPerf.config.build.nvidia]
 command = ["export LLVM_INSTALL_DIR=$(llvm-config --prefix)",
             """
             cmake       -DCMAKE_BUILD_TYPE=Release \
@@ -17,7 +19,7 @@ command = ["export LLVM_INSTALL_DIR=$(llvm-config --prefix)",
                         -B build \
             """,
             "cmake --build build --target raja-perf.exe -- -j 8"]
-[build.amd]
+[RAJAPerf.config.build.amd]
 command = ["""
             cmake       -DCMAKE_BUILD_TYPE=Release \
                         -DCMAKE_C_COMPILER=/opt/rocm-6.2.1/llvm/bin/clang \
@@ -31,950 +33,226 @@ command = ["""
                         -B build \
                         """,
             "cmake --build build --target raja-perf.exe -- -j "]
+[RAJAPerf.config.nvidia.aot]
+args = "--variants Base_CUDA --disable-warmup"
+[RAJAPerf.config.nvidia.proteus]
+args = "--variants RAJA_CUDA --disable-warmup"
+[RAJAPerf.config.amd.aot]
+args = "--variants Base_HIP --disable-warmup"
+[RAJAPerf.config.amd.proteus]
+args = "--variants RAJA_HIP --disable-warmup" 
 
-[ATOMIC]
-[ATOMIC.nvidia]
-[ATOMIC.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[ATOMIC.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[ATOMIC.amd]
-[ATOMIC.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[ATOMIC.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[ATOMIC.inputs]
-default = "-k ATOMIC --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.ATOMIC]
+args = "-k ATOMIC"
+[RAJAPerf.ATOMIC.inputs]
+default = ""
 
+[RAJAPerf.HISTOGRAM]
+args = "-k HISTOGRAM"
+[RAJAPerf.HISTOGRAM.inputs]
+default = ""
 
-[HISTOGRAM]
-[HISTOGRAM.nvidia]
-[HISTOGRAM.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[HISTOGRAM.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[HISTOGRAM.amd]
-[HISTOGRAM.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[HISTOGRAM.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[HISTOGRAM.inputs]
-default = "-k HISTOGRAM --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.MEMCPY]
+args = "-k MEMCPY"
+[RAJAPerf.MEMCPY.inputs]
+default = ""
 
-[MEMCPY]
-[MEMCPY.nvidia]
-[MEMCPY.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[MEMCPY.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[MEMCPY.amd]
-[MEMCPY.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[MEMCPY.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[MEMCPY.inputs]
-default = "-k MEMCPY --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.MEMSET]
+args = "-k MEMSET"
+[RAJAPerf.MEMSET.inputs]
+default = ""
 
-[MEMSET]
-[MEMSET.nvidia]
-[MEMSET.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[MEMSET.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[MEMSET.amd]
-[MEMSET.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[MEMSET.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[MEMSET.inputs]
-default = "-k MEMSET --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.REDUCE_SUM]
+args = "-k REDUCE_SUM"
+[RAJAPerf.REDUCE_SUM.inputs]
+default = ""
 
-[REDUCE_SUM]
-[REDUCE_SUM.nvidia]
-[REDUCE_SUM.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[REDUCE_SUM.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[REDUCE_SUM.amd]
-[REDUCE_SUM.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[REDUCE_SUM.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[REDUCE_SUM.inputs]
-default = "-k REDUCE_SUM --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.DEL_DOT_VEC_2D]
+args = "-k DEL_DOT_VEC_2D"
+[RAJAPerf.DEL_DOT_VEC_2D.inputs]
+default = ""
 
-[DEL_DOT_VEC_2D]
-[DEL_DOT_VEC_2D.nvidia]
-[DEL_DOT_VEC_2D.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[DEL_DOT_VEC_2D.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[DEL_DOT_VEC_2D.amd]
-[DEL_DOT_VEC_2D.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[DEL_DOT_VEC_2D.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[DEL_DOT_VEC_2D.inputs]
-default = "-k DEL_DOT_VEC_2D --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.EDGE3D]
+args = "-k EDGE3D"
+[RAJAPerf.EDGE3D.inputs]
+default = ""
 
-[EDGE3D]
-[EDGE3D.nvidia]
-[EDGE3D.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[EDGE3D.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[EDGE3D.amd]
-[EDGE3D.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[EDGE3D.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[EDGE3D.inputs]
-default = "-k EDGE3D --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.ENERGY]
+args = "-k ENERGY"
+[RAJAPerf.ENERGY.inputs]
+default = ""
 
-[ENERGY]
-[ENERGY.nvidia]
-[ENERGY.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[ENERGY.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[ENERGY.amd]
-[ENERGY.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[ENERGY.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[ENERGY.inputs]
-default = "-k ENERGY --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.FIR]
+args = "-k FIR"
+[RAJAPerf.FIR.inputs]
+default = ""
 
-[FIR]
-[FIR.nvidia]
-[FIR.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[FIR.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[FIR.amd]
-[FIR.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[FIR.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[FIR.inputs]
-default = "-k FIR --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.MATVEC_3D_STENCIL]
+args = "-k MATVEC_3D_STENCIL"
+[RAJAPerf.MATVEC_3D_STENCIL.inputs]
+default = ""
 
-[MATVEC_3D_STENCIL]
-[MATVEC_3D_STENCIL.nvidia]
-[MATVEC_3D_STENCIL.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[MATVEC_3D_STENCIL.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[MATVEC_3D_STENCIL.amd]
-[MATVEC_3D_STENCIL.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[MATVEC_3D_STENCIL.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[MATVEC_3D_STENCIL.inputs]
-default = "-k MATVEC_3D_STENCIL --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.NODAL_ACCUMULATION_3D]
+args = "-k NODAL_ACCUMULATION_3D"
+[RAJAPerf.NODAL_ACCUMULATION_3D.inputs]
+default = ""
 
-[NODAL_ACCUMULATION_3D]
-[NODAL_ACCUMULATION_3D.nvidia]
-[NODAL_ACCUMULATION_3D.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[NODAL_ACCUMULATION_3D.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[NODAL_ACCUMULATION_3D.amd]
-[NODAL_ACCUMULATION_3D.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[NODAL_ACCUMULATION_3D.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[NODAL_ACCUMULATION_3D.inputs]
-default = "-k NODAL_ACCUMULATION_3D --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.PRESSURE]
+args = "-k PRESSURE"
+[RAJAPerf.PRESSURE.inputs]
+default = ""
 
-[PRESSURE]
-[PRESSURE.nvidia]
-[PRESSURE.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[PRESSURE.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[PRESSURE.amd]
-[PRESSURE.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[PRESSURE.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[PRESSURE.inputs]
-default = "-k PRESSURE --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.VOL3D]
+args = "-k VOL3D"
+[RAJAPerf.VOL3D.inputs]
+default = ""
 
-[VOL3D]
-[VOL3D.nvidia]
-[VOL3D.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[VOL3D.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[VOL3D.amd]
-[VOL3D.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[VOL3D.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[VOL3D.inputs]
-default = "-k VOL3D --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.ZONAL_ACCUMULATION_3D]
+args = "-k ZONAL_ACCUMULATION_3D"
+[RAJAPerf.ZONAL_ACCUMULATION_3D.inputs]
+default = ""
 
-[ZONAL_ACCUMULATION_3D]
-[ZONAL_ACCUMULATION_3D.nvidia]
-[ZONAL_ACCUMULATION_3D.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[ZONAL_ACCUMULATION_3D.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[ZONAL_ACCUMULATION_3D.amd]
-[ZONAL_ACCUMULATION_3D.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[ZONAL_ACCUMULATION_3D.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[ZONAL_ACCUMULATION_3D.inputs]
-default = "-k ZONAL_ACCUMULATION_3D --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.ARRAY_OF_PTRS]
+args = "-k ARRAY_OF_PTRS"
+[RAJAPerf.ARRAY_OF_PTRS.inputs]
+default = ""
 
-[ARRAY_OF_PTRS]
-[ARRAY_OF_PTRS.nvidia]
-[ARRAY_OF_PTRS.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[ARRAY_OF_PTRS.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[ARRAY_OF_PTRS.amd]
-[ARRAY_OF_PTRS.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[ARRAY_OF_PTRS.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[ARRAY_OF_PTRS.inputs]
-default = "-k ARRAY_OF_PTRS --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.COPY8]
+args = "-k COPY8"
+[RAJAPerf.COPY8.inputs]
+default = ""
 
-[COPY8]
-[COPY8.nvidia]
-[COPY8.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[COPY8.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[COPY8.amd]
-[COPY8.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[COPY8.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[COPY8.inputs]
-default = "-k COPY8 --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.DAXPY]
+args = "-k DAXPY"
+[RAJAPerf.DAXPY.inputs]
+default = ""
 
-[DAXPY]
-[DAXPY.nvidia]
-[DAXPY.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[DAXPY.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[DAXPY.amd]
-[DAXPY.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[DAXPY.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[DAXPY.inputs]
-default = "-k DAXPY --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.DAXPY_ATOMIC]
+args = "-k DAXPY_ATOMIC"
+[RAJAPerf.DAXPY_ATOMIC.inputs]
+default = ""
 
-[DAXPY_ATOMIC]
-[DAXPY_ATOMIC.nvidia]
-[DAXPY_ATOMIC.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[DAXPY_ATOMIC.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[DAXPY_ATOMIC.amd]
-[DAXPY_ATOMIC.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[DAXPY_ATOMIC.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[DAXPY_ATOMIC.inputs]
-default = "-k DAXPY_ATOMIC --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.IF_QUAD]
+args = "-k IF_QUAD"
+[RAJAPerf.IF_QUAD.inputs]
+default = ""
 
-[IF_QUAD]
-[IF_QUAD.nvidia]
-[IF_QUAD.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[IF_QUAD.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[IF_QUAD.amd]
-[IF_QUAD.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[IF_QUAD.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[IF_QUAD.inputs]
-default = "-k IF_QUAD --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.INIT3]
+args = "-k INIT3"
+[RAJAPerf.INIT3.inputs]
+default = ""
 
-[INIT3]
-[INIT3.nvidia]
-[INIT3.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[INIT3.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[INIT3.amd]
-[INIT3.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[INIT3.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[INIT3.inputs]
-default = "-k INIT3 --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.INIT_VIEW1D]
+args = "-k INIT_VIEW1D"
+[RAJAPerf.INIT_VIEW1D.inputs]
+default = ""
 
-[INIT_VIEW1D]
-[INIT_VIEW1D.nvidia]
-[INIT_VIEW1D.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[INIT_VIEW1D.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[INIT_VIEW1D.amd]
-[INIT_VIEW1D.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[INIT_VIEW1D.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[INIT_VIEW1D.inputs]
-default = "-k INIT_VIEW1D --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.INIT_VIEW1D_OFFSET]
+args = "-k INIT_VIEW1D_OFFSET"
+[RAJAPerf.INIT_VIEW1D_OFFSET.inputs]
+default = ""
 
-[INIT_VIEW1D_OFFSET]
-[INIT_VIEW1D_OFFSET.nvidia]
-[INIT_VIEW1D_OFFSET.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[INIT_VIEW1D_OFFSET.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[INIT_VIEW1D_OFFSET.amd]
-[INIT_VIEW1D_OFFSET.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[INIT_VIEW1D_OFFSET.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[INIT_VIEW1D_OFFSET.inputs]
-default = "-k INIT_VIEW1D_OFFSET --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.MULADDSUB]
+args = "-k MULADDSUB"
+[RAJAPerf.MULADDSUB.inputs]
+default = ""
 
-[MULADDSUB]
-[MULADDSUB.nvidia]
-[MULADDSUB.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[MULADDSUB.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[MULADDSUB.amd]
-[MULADDSUB.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[MULADDSUB.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[MULADDSUB.inputs]
-default = "-k MULADDSUB --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.MULTI_REDUCE]
+args = "-k MULTI_REDUCE"
+[RAJAPerf.MULTI_REDUCE.inputs]
+default = ""
 
-[MULTI_REDUCE]
-[MULTI_REDUCE.nvidia]
-[MULTI_REDUCE.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[MULTI_REDUCE.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[MULTI_REDUCE.amd]
-[MULTI_REDUCE.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[MULTI_REDUCE.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[MULTI_REDUCE.inputs]
-default = "-k MULTI_REDUCE --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.PI_ATOMIC]
+args = "-k PI_ATOMIC"
+[RAJAPerf.PI_ATOMIC.inputs]
+default = ""
 
-[PI_ATOMIC]
-[PI_ATOMIC.nvidia]
-[PI_ATOMIC.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[PI_ATOMIC.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[PI_ATOMIC.amd]
-[PI_ATOMIC.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[PI_ATOMIC.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[PI_ATOMIC.inputs]
-default = "-k PI_ATOMIC --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.PI_REDUCE]
+args = "-k PI_REDUCE"
+[RAJAPerf.PI_REDUCE.inputs]
+default = ""
 
-[PI_REDUCE]
-[PI_REDUCE.nvidia]
-[PI_REDUCE.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[PI_REDUCE.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[PI_REDUCE.amd]
-[PI_REDUCE.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[PI_REDUCE.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[PI_REDUCE.inputs]
-default = "-k PI_REDUCE --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.REDUCE3_INT]
+args = "-k REDUCE3_INT"
+[RAJAPerf.REDUCE3_INT.inputs]
+default = ""
 
-[REDUCE3_INT]
-[REDUCE3_INT.nvidia]
-[REDUCE3_INT.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[REDUCE3_INT.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[REDUCE3_INT.amd]
-[REDUCE3_INT.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[REDUCE3_INT.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[REDUCE3_INT.inputs]
-default = "-k REDUCE3_INT --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.REDUCE_STRUCT]
+args = "-k REDUCE_STRUCT"
+[RAJAPerf.REDUCE_STRUCT.inputs]
+default = ""
 
-[REDUCE_STRUCT]
-[REDUCE_STRUCT.nvidia]
-[REDUCE_STRUCT.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[REDUCE_STRUCT.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[REDUCE_STRUCT.amd]
-[REDUCE_STRUCT.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[REDUCE_STRUCT.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[REDUCE_STRUCT.inputs]
-default = "-k REDUCE_STRUCT --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.TRAP_INT]
+args = "-k TRAP_INT"
+[RAJAPerf.TRAP_INT.inputs]
+default = ""
 
-[TRAP_INT]
-[TRAP_INT.nvidia]
-[TRAP_INT.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[TRAP_INT.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[TRAP_INT.amd]
-[TRAP_INT.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[TRAP_INT.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[TRAP_INT.inputs]
-default = "-k TRAP_INT --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.HALO_PACKING]
+args = "-k HALO_PACKING"
+[RAJAPerf.HALO_PACKING.inputs]
+default = ""
 
-[HALO_PACKING]
-[HALO_PACKING.nvidia]
-[HALO_PACKING.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[HALO_PACKING.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[HALO_PACKING.amd]
-[HALO_PACKING.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[HALO_PACKING.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[HALO_PACKING.inputs]
-default = "-k HALO_PACKING --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.DIFF_PREDICT]
+args = "-k DIFF_PREDICT"
+[RAJAPerf.DIFF_PREDICT.inputs]
+default = ""
 
-[DIFF_PREDICT]
-[DIFF_PREDICT.nvidia]
-[DIFF_PREDICT.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[DIFF_PREDICT.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[DIFF_PREDICT.amd]
-[DIFF_PREDICT.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[DIFF_PREDICT.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[DIFF_PREDICT.inputs]
-default = "-k DIFF_PREDICT --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.EOS]
+args = "-k EOS"
+[RAJAPerf.EOS.inputs]
+default = ""
 
-[EOS]
-[EOS.nvidia]
-[EOS.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[EOS.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[EOS.amd]
-[EOS.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[EOS.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[EOS.inputs]
-default = "-k EOS --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.FIRST_DIFF]
+args = "-k FIRST_DIFF"
+[RAJAPerf.FIRST_DIFF.inputs]
+default = ""
 
-[FIRST_DIFF]
-[FIRST_DIFF.nvidia]
-[FIRST_DIFF.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[FIRST_DIFF.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[FIRST_DIFF.amd]
-[FIRST_DIFF.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[FIRST_DIFF.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[FIRST_DIFF.inputs]
-default = "-k FIRST_DIFF --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.FIRST_MIN]
+args = "-k FIRST_MIN"
+[RAJAPerf.FIRST_MIN.inputs]
+default = ""
 
-[FIRST_MIN]
-[FIRST_MIN.nvidia]
-[FIRST_MIN.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[FIRST_MIN.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[FIRST_MIN.amd]
-[FIRST_MIN.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[FIRST_MIN.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[FIRST_MIN.inputs]
-default = "-k FIRST_MIN --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.FIRST_SUM]
+args = "-k FIRST_SUM"
+[RAJAPerf.FIRST_SUM.inputs]
+default = ""
 
-[FIRST_SUM]
-[FIRST_SUM.nvidia]
-[FIRST_SUM.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[FIRST_SUM.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[FIRST_SUM.amd]
-[FIRST_SUM.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[FIRST_SUM.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[FIRST_SUM.inputs]
-default = "-k FIRST_SUM --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.GEN_LIN_RECUR]
+args = "-k GEN_LIN_RECUR"
+[RAJAPerf.GEN_LIN_RECUR.inputs]
+default = ""
 
-[GEN_LIN_RECUR]
-[GEN_LIN_RECUR.nvidia]
-[GEN_LIN_RECUR.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[GEN_LIN_RECUR.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[GEN_LIN_RECUR.amd]
-[GEN_LIN_RECUR.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[GEN_LIN_RECUR.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[GEN_LIN_RECUR.inputs]
-default = "-k GEN_LIN_RECUR --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.HYDRO_1D]
+args = "-k HYDRO_1D"
+[RAJAPerf.HYDRO_1D.inputs]
+default = ""
 
-[HYDRO_1D]
-[HYDRO_1D.nvidia]
-[HYDRO_1D.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[HYDRO_1D.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[HYDRO_1D.amd]
-[HYDRO_1D.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[HYDRO_1D.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[HYDRO_1D.inputs]
-default = "-k HYDRO_1D --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.INT_PREDICT]
+args = "-k INT_PREDICT"
+[RAJAPerf.INT_PREDICT.inputs]
+default = ""
 
-[INT_PREDICT]
-[INT_PREDICT.nvidia]
-[INT_PREDICT.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[INT_PREDICT.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[INT_PREDICT.amd]
-[INT_PREDICT.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[INT_PREDICT.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[INT_PREDICT.inputs]
-default = "-k INT_PREDICT --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.PLANCKIAN]
+args = "-k PLANCKIAN"
+[RAJAPerf.PLANCKIAN.inputs]
+default = ""
 
-[PLANCKIAN]
-[PLANCKIAN.nvidia]
-[PLANCKIAN.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[PLANCKIAN.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[PLANCKIAN.amd]
-[PLANCKIAN.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[PLANCKIAN.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[PLANCKIAN.inputs]
-default = "-k PLANCKIAN --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.TRIDIAG_ELIM]
+args = "-k TRIDIAG_ELIM"
+[RAJAPerf.TRIDIAG_ELIM.inputs]
+default = ""
 
-[TRIDIAG_ELIM]
-[TRIDIAG_ELIM.nvidia]
-[TRIDIAG_ELIM.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[TRIDIAG_ELIM.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[TRIDIAG_ELIM.amd]
-[TRIDIAG_ELIM.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[TRIDIAG_ELIM.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[TRIDIAG_ELIM.inputs]
-default = "-k TRIDIAG_ELIM --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.GEMVER]
+args = "-k GEMVER"
+[RAJAPerf.GEMVER.inputs]
+default = ""
 
-[GEMVER]
-[GEMVER.nvidia]
-[GEMVER.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[GEMVER.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[GEMVER.amd]
-[GEMVER.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[GEMVER.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[GEMVER.inputs]
-default = "-k GEMVER --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.JACOBI_1D]
+args = "-k JACOBI_1D"
+[RAJAPerf.JACOBI_1D.inputs]
+default = ""
 
-[JACOBI_1D]
-[JACOBI_1D.nvidia]
-[JACOBI_1D.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[JACOBI_1D.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[JACOBI_1D.amd]
-[JACOBI_1D.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[JACOBI_1D.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[JACOBI_1D.inputs]
-default = "-k JACOBI_1D --disable-warmup --size 1000 --repfact .1"
-
-[ADD]
-[ADD.nvidia]
-[ADD.nvidia.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_CUDA  "
-[ADD.nvidia.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_CUDA "
-[ADD.amd]
-[ADD.amd.aot]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants Base_HIP "
-[ADD.amd.proteus]
-path = "benchmarks/RAJAPerf"
-exe = "./build/bin/raja-perf.exe"
-args = "--variants RAJA_HIP "
-[ADD.inputs]
-default = "-k ADD --disable-warmup --size 1000 --repfact .1"
+[RAJAPerf.ADD]
+args = "-k ADD"
+[RAJAPerf.ADD.inputs]
+default = ""
