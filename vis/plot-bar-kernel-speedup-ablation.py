@@ -4,8 +4,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pathlib
 import glob
-
-import os, sys
+import itertools
+import os
+import sys
 
 sys.path.insert(0, os.getcwd())
 
@@ -71,59 +72,67 @@ def visualize(df, machine, plot_dir, plot_title, format):
     tmp_df = tmp_df.sort_values(by="Benchmark", ascending=True)
 
     sizes = set_size(TEXT_WIDTH, 0.5)
-    fig, ax = plt.subplots(figsize=sizes)
-    bar_width = 0.3
-    offset = 0
-    uniq = tmp_df.Benchmark.unique()
-    spread = bar_width * (len(bar_order) + 1)
-    ind = np.arange(0, spread * len(uniq), spread)[: len(uniq)]
-    for bar in bar_order:
-        rect = ax.bar(
-            ind + offset,
-            tmp_df[tmp_df.label == bar]["Speedup"],
-            bar_width,
-            label=bar,
-        )
 
-        if bar != "AOT":
-            bar_labels = ["%.2f" % v for v in tmp_df[tmp_df.label == bar]["Speedup"]]
-            ax.bar_label(
-                rect,
-                fmt="%g",
-                labels=bar_labels,
-                padding=0.5,
-                fontsize=8,
-                rotation=90,
+    benchmarks = df.Benchmark.unique()
+    batch_size = 4
+    benchmarks = list(itertools.batched(benchmarks, batch_size))
+    for i, batch in enumerate(benchmarks):
+        plot_df = tmp_df[tmp_df.Benchmark.isin(batch)]
+        fig, ax = plt.subplots(figsize=sizes)
+        bar_width = 0.3
+        offset = 0
+        spread = bar_width * (len(bar_order) + 1)
+        ind = np.arange(0, spread * len(batch), spread)[: len(batch)]
+        for bar in bar_order:
+            rect = ax.bar(
+                ind + offset,
+                plot_df[plot_df.label == bar]["Speedup"],
+                bar_width,
+                label=bar,
             )
-        offset += bar_width
 
-    ax.set_title(plot_title)
-    ax.set_ylabel("Speedup over AOT\n(kernel time only)")
-    ax.yaxis.set_major_formatter("{x: .1f}")
-    ax.set_xticks(ind + bar_width * (len(bar_order) - 1) / 2)
-    ax.set_xticklabels(tmp_df.Benchmark.unique())
-    yticks = ax.get_yticks()
-    ax.set_ylim((yticks.min(), yticks.max()))
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
+            if bar != "AOT":
+                bar_labels = [
+                    "%.2f" % v for v in plot_df[plot_df.label == bar]["Speedup"]
+                ]
+                ax.bar_label(
+                    rect,
+                    fmt="%g",
+                    labels=bar_labels,
+                    padding=0.5,
+                    fontsize=8,
+                    rotation=90,
+                )
+            offset += bar_width
 
-    plt.xticks(rotation=15)
-    plt.tight_layout()
-    ax.legend(
-        ncol=len(bar_order),
-        bbox_to_anchor=(0, -0.1, 1.0, -0.1),
-        handlelength=1.0,
-        handletextpad=0.1,
-        columnspacing=0.5,
-        fontsize="8",
-        fancybox=False,
-        shadow=False,
-        frameon=False,
-    )
-    fn = f"{plot_dir}/{machine}-bar-kernel-speedup-ablation.{format}"
-    print(f"Storing to {fn}")
-    fig.savefig(fn, bbox_inches="tight", dpi=300)
-    plt.close(fig)
+        ax.set_title(plot_title)
+        ax.set_ylabel("Speedup over AOT\n(kernel time only)")
+        ax.yaxis.set_major_formatter("{x: .1f}")
+        ax.set_xticks(ind + bar_width * (len(bar_order) - 1) / 2)
+        ax.set_xticklabels(plot_df.Benchmark.unique())
+        yticks = ax.get_yticks()
+        ax.set_ylim((yticks.min(), yticks.max()))
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+
+        plt.xticks(rotation=15)
+        plt.tight_layout()
+        ax.legend(
+            ncol=len(bar_order),
+            bbox_to_anchor=(-0.2, 1.35),
+            loc="upper left",
+            handlelength=1.0,
+            handletextpad=0.1,
+            columnspacing=0.5,
+            fontsize=6,
+            fancybox=False,
+            shadow=False,
+            frameon=False,
+        )
+        fn = f"{plot_dir}/{machine}-bar-kernel-speedup-ablation-{i}.{format}"
+        print(f"Storing to {fn}")
+        fig.savefig(fn, bbox_inches="tight", dpi=300)
+        plt.close(fig)
 
 
 def main():
