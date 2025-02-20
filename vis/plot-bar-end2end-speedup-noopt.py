@@ -6,6 +6,7 @@ import pathlib
 import glob
 import os
 import sys
+import itertools
 
 TEXT_WIDTH = 506.295
 
@@ -78,58 +79,65 @@ def visualize(df, machine, plot_dir, plot_title, format):
     )
 
     sizes = set_size(TEXT_WIDTH, 0.5)
-    fig, ax = plt.subplots(figsize=sizes)
-    bar_width = 0.3
-    uniq = tmp_df.Benchmark.unique()
-    spread = bar_width * (len(bar_order) + 1)
-    ind = np.arange(0, spread * len(uniq), spread)[: len(uniq)]
-    offset = 0
-    for i, bar in enumerate(bar_order):
-        rect = ax.bar(
-            ind + offset,
-            tmp_df[tmp_df.label == bar]["Speedup"],
-            bar_width,
-            color=c_map[bar],
-            label=bar,
-        )
-        # NOTE: For whatever reason fmt (even when passed with %) does not format
-        # to 2 digits. I am rounding now explicitly through pandas functionality
-        if bar != "AOT":
-            ax.bar_label(
-                rect,
-                fmt="{:,.2f}",
-                labels=tmp_df[tmp_df.label == bar]["Speedup"].round(2).tolist(),
-                padding=0.5,
-                fontsize=8,
-                rotation=90,
+    benchmarks = df.Benchmark.unique()
+    batch_size = 4
+    benchmarks = list(itertools.batched(benchmarks, batch_size))
+    for i, batch in enumerate(benchmarks):
+        plot_df = tmp_df[tmp_df.Benchmark.isin(batch)]
+        fig, ax = plt.subplots(figsize=sizes)
+        bar_width = 0.3
+        spread = bar_width * (len(bar_order) + 1)
+        ind = np.arange(0, spread * len(batch), spread)[: len(batch)]
+        offset = 0
+        for bar in bar_order:
+            rect = ax.bar(
+                ind + offset,
+                plot_df[plot_df.label == bar]["Speedup"],
+                bar_width,
+                color=c_map[bar],
+                label=bar,
             )
-        offset += bar_width
+            # NOTE: For whatever reason fmt (even when passed with %) does not format
+            # to 2 digits. I am rounding now explicitly through pandas functionality
+            if bar != "AOT":
+                ax.bar_label(
+                    rect,
+                    fmt="{:,.2f}",
+                    labels=plot_df[plot_df.label == bar]["Speedup"].round(2).tolist(),
+                    padding=0.5,
+                    fontsize=8,
+                    rotation=90,
+                )
+            offset += bar_width
 
-    ax.set_title(plot_title)
-    ax.set_ylabel("Speedup over AOT\nw/o JIT opt.")
-    ax.yaxis.set_major_formatter("{x: .1f}")
-    ax.set_xticks(ind + bar_width * (len(bar_order) - 1) / 2)
-    ax.set_xticklabels(tmp_df.Benchmark.unique())
-    yticks = ax.get_yticks()
-    ax.set_ylim((yticks.min(), yticks.max()))
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
+        ax.set_title(plot_title)
+        ax.set_ylabel("Speedup over AOT\nw/o JIT opt.")
+        ax.yaxis.set_major_formatter("{x: .1f}")
+        ax.set_xticks(ind + bar_width * (len(bar_order) - 1) / 2)
+        ax.set_xticklabels(batch)
+        yticks = ax.get_yticks()
+        ax.set_ylim((yticks.min(), yticks.max()))
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
 
-    plt.xticks(rotation=15)
-    plt.tight_layout()
-    ax.legend(
-        ncol=2,
-        bbox_to_anchor=(0, -0.1, 1.0, -0.1),
-        handlelength=1.0,
-        handletextpad=0.5,
-        fancybox=False,
-        shadow=False,
-        frameon=False,
-    )
-    fn = f"{plot_dir}/{machine}-bar-end2end-speedup-noopt.{format}"
-    print(f"Storing to {fn}")
-    fig.savefig(fn, bbox_inches="tight", dpi=300)
-    plt.close(fig)
+        plt.xticks(rotation=15)
+        plt.tight_layout()
+        ax.legend(
+            ncol=len(bar_order),
+            bbox_to_anchor=(-0.2, 1.25),
+            loc="upper left",
+            handlelength=1.0,
+            handletextpad=0.5,
+            columnspacing=0.5,
+            fancybox=False,
+            shadow=False,
+            frameon=False,
+            fontsize=8,
+        )
+        fn = f"{plot_dir}/{machine}-bar-end2end-speedup-noopt-{i}.{format}"
+        print(f"Storing to {fn}")
+        fig.savefig(fn, bbox_inches="tight", dpi=300)
+        plt.close(fig)
 
 
 def main():

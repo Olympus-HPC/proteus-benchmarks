@@ -1,0 +1,129 @@
+[hecbench]
+[hecbench.config.build.nvidia]
+command = "make"
+[hecbench.config.build.nvidia.clean]
+command = "make clean"
+[hecbench.config.build.amd]
+command = "make"
+[hecbench.config.build.amd.clean]
+command = "make clean"
+
+[hecbench.adam]
+[hecbench.adam.nvidia]
+[hecbench.adam.nvidia.aot]
+path = "benchmarks/hecbench/cuda/adam"
+exe = "adam-aot.x"
+[hecbench.adam.nvidia.proteus]
+path = "benchmarks/hecbench/cuda/adam"
+exe = "adam-proteus.x"
+[hecbench.adam.nvidia.jitify]
+path = "benchmarks/hecbench/cuda-jitify/adam"
+exe = "adam-jitify.x"
+[hecbench.adam.amd.aot]
+path = "benchmarks/hecbench/hip/adam"
+exe = "adam-aot.x"
+[hecbench.adam.amd.proteus]
+path = "benchmarks/hecbench/hip/adam"
+exe = "adam-proteus.x"
+[hecbench.adam.inputs]
+default = "160000 1600 1000"
+
+[hecbench.feynman-kac]
+[hecbench.feynman-kac.nvidia]
+[hecbench.feynman-kac.nvidia.aot]
+path = "benchmarks/hecbench/cuda/feynman-kac"
+exe = "feynman-kac-aot.x"
+[hecbench.feynman-kac.nvidia.proteus]
+path = "benchmarks/hecbench/cuda/feynman-kac"
+exe = "feynman-kac-proteus.x"
+[hecbench.feynman-kac.nvidia.jitify]
+path = "benchmarks/hecbench/cuda-jitify/feynman-kac"
+exe = "feynman-kac-jitify.x"
+[hecbench.feynman-kac.amd.aot]
+path = "benchmarks/hecbench/hip/feynman-kac"
+exe = "feynman-kac-aot.x"
+[hecbench.feynman-kac.amd.proteus]
+path = "benchmarks/hecbench/hip/feynman-kac"
+exe = "feynman-kac-proteus.x"
+[hecbench.feynman-kac.inputs]
+default = "1"
+
+[hecbench.lulesh]
+[hecbench.lulesh.nvidia]
+[hecbench.lulesh.nvidia.aot]
+path = "benchmarks/hecbench/cuda/LULESH"
+exe = "lulesh-aot.x"
+[hecbench.lulesh.nvidia.proteus]
+path = "benchmarks/hecbench/cuda/LULESH"
+exe = "lulesh-proteus.x"
+[hecbench.lulesh.nvidia.jitify]
+path = "benchmarks/hecbench/cuda-jitify/LULESH"
+exe = "lulesh-jitify.x"
+[hecbench.lulesh.amd.aot]
+path = "benchmarks/hecbench/hip/LULESH"
+exe = "lulesh-aot.x"
+[hecbench.lulesh.amd.proteus]
+path = "benchmarks/hecbench/hip/LULESH"
+exe = "lulesh-proteus.x"
+[hecbench.lulesh.inputs]
+default = "-s 128 -i 1000"
+
+[hecbench.rsbench]
+[hecbench.rsbench.nvidia]
+[hecbench.rsbench.nvidia.aot]
+path = "benchmarks/hecbench/cuda/rsbench"
+exe = "rsbench-aot.x"
+[hecbench.rsbench.nvidia.proteus]
+path = "benchmarks/hecbench/cuda/rsbench"
+exe = "rsbench-proteus.x"
+[hecbench.rsbench.nvidia.jitify]
+path = "benchmarks/hecbench/cuda-jitify/rsbench"
+exe = "rsbench-jitify.x"
+[hecbench.rsbench.amd.aot]
+path = "benchmarks/hecbench/hip/rsbench"
+exe = "rsbench-aot.x"
+[hecbench.rsbench.amd.proteus]
+path = "benchmarks/hecbench/hip/rsbench"
+exe = "rsbench-proteus.x"
+[hecbench.rsbench.inputs]
+default = "-s large -m event"
+
+[hecbench.sw4ck]
+[hecbench.sw4ck.nvidia]
+[hecbench.sw4ck.nvidia.aot]
+path = "benchmarks/hecbench/cuda/sw4ck"
+exe = "sw4ck-aot.x"
+[hecbench.sw4ck.nvidia.proteus]
+path = "benchmarks/hecbench/cuda/sw4ck"
+exe = "sw4ck-proteus.x"
+[hecbench.sw4ck.nvidia.jitify]
+path = "benchmarks/hecbench/cuda-jitify/sw4ck"
+exe = "sw4ck-jitify.x"
+[hecbench.sw4ck.amd.aot]
+path = "benchmarks/hecbench/hip/sw4ck"
+exe = "sw4ck-aot.x"
+[hecbench.sw4ck.amd.proteus]
+path = "benchmarks/hecbench/hip/sw4ck"
+exe = "sw4ck-proteus.x"
+[hecbench.sw4ck.inputs]
+default = "sw4ck.in 100"
+
+[hecbench.wsm5]
+[hecbench.wsm5.nvidia]
+[hecbench.wsm5.nvidia.aot]
+path = "benchmarks/hecbench/cuda/wsm5"
+exe = "wsm5-aot.x"
+[hecbench.wsm5.nvidia.proteus]
+path = "benchmarks/hecbench/cuda/wsm5"
+exe = "wsm5-proteus.x"
+[hecbench.wsm5.nvidia.jitify]
+path = "benchmarks/hecbench/cuda-jitify/wsm5"
+exe = "wsm5-jitify.x"
+[hecbench.wsm5.amd.aot]
+path = "benchmarks/hecbench/hip/wsm5"
+exe = "wsm5-aot.x"
+[hecbench.wsm5.amd.proteus]
+path = "benchmarks/hecbench/hip/wsm5"
+exe = "wsm5-proteus.x"
+[hecbench.wsm5.inputs]
+default = "10"

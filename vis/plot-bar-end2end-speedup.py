@@ -7,8 +7,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pathlib
 import glob
-
-import os, sys
+import itertools
+import os
+import sys
 
 sys.path.insert(0, os.getcwd())
 
@@ -89,66 +90,75 @@ def visualize(df, machine, plot_dir, plot_title, format):
     tmp_df = tmp_df.sort_values(by="Benchmark", ascending=True)
 
     sizes = set_size(width=506.95, fraction=0.5)
-    fig, ax = plt.subplots(figsize=sizes)
-    bar_width = 0.3
-    offset = 0
-    bar_order = sorted(tmp_df.label.unique())
-    bar_order.remove("AOT")
-    spread = bar_width * (len(bar_order) + 1)
-    ind = np.arange(0, spread * len(tmp_df.Benchmark.unique()), spread)
-    for bar in bar_order:
-        # speedup = (
-        #    tmp_df[tmp_df.label == "AOT"]["ExeTime"].values
-        #    / tmp_df[tmp_df.label == bar]["ExeTime"].values
-        # )
-        rect = ax.bar(
-            ind + offset,
-            # speedup,
-            tmp_df[tmp_df.label == bar]["Speedup"],
-            bar_width,
-            label=bar,
-        )
-
-        if bar != "AOT":
-            bar_labels = ["%.2f" % v for v in tmp_df[tmp_df.label == bar]["Speedup"]]
-            # bar_labels = ["%.2f" % v for v in speedup]
-            ax.bar_label(
-                rect,
-                fmt="%g",
-                labels=bar_labels,
-                padding=0.5,
-                fontsize=8,
-                rotation=90,
+    benchmarks = df.Benchmark.unique()
+    batch_size = 4
+    benchmarks = list(itertools.batched(benchmarks, batch_size))
+    for i, batch in enumerate(benchmarks):
+        plot_df = tmp_df[tmp_df.Benchmark.isin(batch)]
+        fig, ax = plt.subplots(figsize=sizes)
+        bar_width = 0.3
+        offset = 0
+        bar_order = sorted(plot_df.label.unique())
+        bar_order.remove("AOT")
+        spread = bar_width * (len(bar_order) + 1)
+        ind = np.arange(0, spread * len(batch), spread)[: len(batch)]
+        for bar in bar_order:
+            # speedup = (
+            #    plot_df[plot_df.label == "AOT"]["ExeTime"].values
+            #    / plot_df[plot_df.label == bar]["ExeTime"].values
+            # )
+            rect = ax.bar(
+                ind + offset,
+                # speedup,
+                plot_df[plot_df.label == bar]["Speedup"],
+                bar_width,
+                label=bar,
             )
 
-        offset += bar_width
+            if bar != "AOT":
+                bar_labels = [
+                    "%.2f" % v for v in plot_df[plot_df.label == bar]["Speedup"]
+                ]
+                # bar_labels = ["%.2f" % v for v in speedup]
+                ax.bar_label(
+                    rect,
+                    fmt="%g",
+                    labels=bar_labels,
+                    padding=0.5,
+                    fontsize=8,
+                    rotation=90,
+                )
 
-    ax.set_title(plot_title)
-    ax.set_ylabel("Speedup over AOT")
-    ax.yaxis.set_major_formatter("{x:.1f}")
-    ax.set_xticks(ind + bar_width * (len(bar_order) - 1) / 2)
-    ax.set_xticklabels(tmp_df.Benchmark.unique())
-    yticks = ax.get_yticks()
-    ax.set_ylim((yticks.min(), yticks.max()))
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
+            offset += bar_width
 
-    plt.xticks(rotation=15)
-    plt.tight_layout()
-    ax.legend(
-        ncol=len(bar_order),
-        bbox_to_anchor=(0, -0.1, 1.0, -0.1),
-        handlelength=1.0,
-        handletextpad=0.5,
-        columnspacing=0.5,
-        fancybox=False,
-        frameon=False,
-        shadow=False,
-    )
-    fn = f"{plot_dir}/{machine}-bar-end2end-speedup.{format}"
-    print(f"Storing to {fn}")
-    fig.savefig(fn, bbox_inches="tight", dpi=300)
-    plt.close(fig)
+        ax.set_title(plot_title)
+        ax.set_ylabel("Speedup over AOT")
+        ax.yaxis.set_major_formatter("{x:.1f}")
+        ax.set_xticks(ind + bar_width * (len(bar_order) - 1) / 2)
+        ax.set_xticklabels(batch)
+        yticks = ax.get_yticks()
+        ax.set_ylim((yticks.min(), yticks.max()))
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+
+        plt.xticks(rotation=15)
+        plt.tight_layout()
+        ax.legend(
+            ncol=len(bar_order),
+            bbox_to_anchor=(-0.2, 1.25),
+            loc="upper left",
+            handlelength=1.0,
+            handletextpad=0.5,
+            columnspacing=0.5,
+            fancybox=False,
+            frameon=False,
+            shadow=False,
+            fontsize=8,
+        )
+        fn = f"{plot_dir}/{machine}-bar-end2end-speedup-{i}.{format}"
+        print(f"Storing to {fn}")
+        fig.savefig(fn, bbox_inches="tight", dpi=300)
+        plt.close(fig)
 
 
 def main():

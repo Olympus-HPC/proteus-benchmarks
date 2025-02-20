@@ -4,7 +4,6 @@ from pathlib import Path
 import pathlib
 import subprocess
 import os
-import cxxfilt
 import time
 import pprint
 import re
@@ -12,6 +11,21 @@ from itertools import product
 import shutil
 import json
 import tomllib
+import functools
+
+
+@functools.cache
+def demangle(potentially_mangled_name):
+    result = subprocess.run(
+        ["llvm-cxxfilt", potentially_mangled_name],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"Demangling error: {result.stderr}")
+
+    return result.stdout.strip()
 
 
 class ProteusConfig:
@@ -91,7 +105,7 @@ class Rocprof:
         def get_hash(x):
             try:
                 hash_pos = 2
-                return cxxfilt.demangle(x.split("$")[hash_pos])
+                return x.split("$")[hash_pos]
             except IndexError:
                 return None
 
@@ -101,7 +115,7 @@ class Rocprof:
         df["Duration"] = df["EndNs"] - df["BeginNs"]
         df["Name"] = df["Name"].str.replace(" [clone .kd]", "", regex=False)
         df["Hash"] = df.Name.apply(lambda x: get_hash(x))
-        df["Name"] = df.Name.apply(lambda x: cxxfilt.demangle(x.split("$")[0]))
+        df["Name"] = df.Name.apply(lambda x: demangle(x.split("$")[0]))
         return df
 
 
@@ -120,7 +134,7 @@ class Nvprof:
         def get_hash(x):
             try:
                 hash_pos = 2
-                return cxxfilt.demangle(x.split("$")[hash_pos])
+                return x.split("$")[hash_pos]
             except IndexError:
                 return None
 
@@ -132,24 +146,50 @@ class Nvprof:
         df = df[1:]
         # Nvprof with metrics tracks only kernels.
         if self.metrics:
-            df["Kernel"] = df.Kernel.apply(lambda x: cxxfilt.demangle(x.split("$")[0]))
+            df["Kernel"] = df.Kernel.apply(lambda x: demangle(x.split("$")[0]))
             df.rename(columns={"Kernel": "Name"}, inplace=True)
         else:
             df["Hash"] = df.Name.apply(lambda x: get_hash(x))
-            df["Name"] = df.Name.apply(lambda x: cxxfilt.demangle(x.split("$")[0]))
+            df["Name"] = df.Name.apply(lambda x: demangle(x.split("$")[0]))
 
         return df
 
 
 class Executor:
-    def __init__(self, benchmark, path, exemode, inputs, cc, proteus_path, env_configs):
+
+    # Class-wide flag to avoid re-building when build_once is True.
+    build_done = False
+
+    def __init__(
+        self,
+        benchmark,
+        path,
+        executable_name,
+        extra_args,
+        exemode,
+        build_command,
+        clean_command,
+        inputs,
+        cc,
+        proteus_path,
+        env_configs,
+        build_once,
+    ):
         self.benchmark = benchmark
         self.path = path
+        self.executable_name = executable_name
+        self.extra_args = extra_args
         self.exemode = exemode
+        # the build command is meant to be a full bash command to build the benchmark, eg
+        # `cmake -DCMAKE_BUILD_TYPE=Debug --build` or `make benchmark`
+        # If none is provided, it will default to `make`
+        self.build_command = "make" if build_command == None else build_command
+        self.clean_command = clean_command
         self.inputs = inputs
         self.cc = cc
         self.proteus_path = proteus_path
         self.env_configs = env_configs
+        self.build_once = build_once
 
     def __str__(self):
         return f"{self.benchmark} {self.path} {self.exemode}"
@@ -178,25 +218,32 @@ class Executor:
 
     def clean(self):
         os.chdir(self.path)
-        cmd = "make clean"
-        self.execute_command(cmd)
+        if self.clean_command is not None:
+            self.execute_command(self.clean_command)
 
     def build(self, do_jit):
         os.chdir(self.path)
-        cmd = "make"
         env = os.environ.copy()
         env["ENABLE_PROTEUS"] = "yes" if do_jit else "no"
         env["PROTEUS_PATH"] = self.proteus_path
         env["CC"] = self.cc
+        if self.build_once and Executor.build_done:
+            print(f"Build done with build once in effect for {self.benchmark}")
+            return -1
+
+        Executor.build_done = True
         t1 = time.perf_counter()
         print(
             "Build command",
-            cmd,
+            self.build_command,
             "CC=" + env["CC"],
             "PROTEUS_PATH=" + env["PROTEUS_PATH"],
             "ENABLE_PROTEUS=" + env["ENABLE_PROTEUS"],
         )
-        self.execute_command(cmd, env=env)
+        if not isinstance(self.build_command, list):
+            self.build_command = [self.build_command]
+        for cmd in self.build_command:
+            self.execute_command(cmd, env=env)
         t2 = time.perf_counter()
         return t2 - t1
 
@@ -211,12 +258,10 @@ class Executor:
             or self.exemode == "jitify"
         ), "Expected aot or proteus or jitify for exemode"
 
-        exe = f"{self.benchmark}-{self.exemode}.x"
         self.clean()
         print("BUILD", self.path, "type", self.exemode)
-
         ctime = self.build(self.exemode != "aot")
-        exe_size = Path(f"{self.path}/{exe}").stat().st_size
+        exe_size = Path(f"{self.path}/{self.executable_name}").stat().st_size
         print("=> BUILT")
 
         for repeat in range(0, reps):
@@ -225,7 +270,7 @@ class Executor:
                     cmd_env = os.environ.copy()
                     for k, v in env.items():
                         cmd_env[k] = v
-                    cmd = f"./{exe} {args}"
+                    cmd = f"./{self.executable_name} {args} {self.extra_args}"
 
                     set_launch_bounds = (
                         False if env["ENV_PROTEUS_SET_LAUNCH_BOUNDS"] == "0" else True
@@ -247,7 +292,7 @@ class Executor:
                     # Delete any previous generated Proteus stored cache.
                     if use_stored_cache:
                         # Delete amy previous cache files in the command path.
-                        shutil.rmtree(".proteus")
+                        shutil.rmtree(".proteus", ignore_errors=True)
                         # Execute a warmup run if using the stored cache to
                         # generate the cache files.  CAUTION: We need to create
                         # the cache jit binaries right before running.
@@ -285,7 +330,7 @@ class Executor:
                             # Size in bytes.
                             cache_size_bc += file.stat().st_size
                         # Delete amy previous cache files in the command path.
-                        shutil.rmtree(".proteus")
+                        shutil.rmtree(".proteus", ignore_errors=True)
 
                     if profiler:
                         df = profiler.parse(stats)
@@ -376,41 +421,38 @@ def main():
         required=True,
     )
     parser.add_argument(
-        "-c", "--compiler", help="path to the compiler executable", required=True
+        "-c",
+        "--compiler",
+        help="path to the compiler executable",
     )
     parser.add_argument(
         "-j",
         "--proteus-path",
         help="path to proteus install directory",
-        required=True,
     )
     parser.add_argument(
         "-x",
         "--exemode",
         help="execution mode",
         choices=("aot", "proteus", "jitify"),
-        required=True,
     )
     parser.add_argument(
         "-p",
         "--profmode",
         help="profiling mode",
         choices=("direct", "profiler", "metrics"),
-        required=True,
     )
     parser.add_argument(
         "-m",
         "--machine",
         help="the machine running on: amd|nvidia",
         choices=("amd", "nvidia"),
-        required=True,
     )
     parser.add_argument(
         "-r",
         "--reps",
         help="number of repeats per experiment",
         type=int,
-        required=True,
     )
     parser.add_argument(
         "-l",
@@ -432,10 +474,16 @@ def main():
     args = parser.parse_args()
 
     with open(args.toml, "rb") as f:
-        benchmark_configs = tomllib.load(f)
+        benchmark_group_configs = tomllib.load(f)
+        assert (
+            len(benchmark_group_configs.keys()) == 1
+        ), "Expected single, top-level key for the benchmark group"
+        benchmark_group = list(benchmark_group_configs)[0]
+        benchmark_configs = benchmark_group_configs[benchmark_group]
+        group_config = benchmark_configs.pop("config", None)
 
     if args.list:
-        pprint.pprint(benchmark_configs)
+        pprint.pprint(benchmark_group_configs)
         return
 
     for bench in args.bench:
@@ -461,19 +509,69 @@ def main():
         env_configs = JitifyConfig().get_env_configs()
     else:
         raise Exception(f"Invalid exemode {args.exemode}")
+    proteus_install = args.proteus_path
+    assert os.path.exists(
+        proteus_install
+    ), f"Error: Proteus install path '{proteus_install}' does not exist!"
+
+    try:
+        build_once = group_config["build_once"]
+    except KeyError:
+        build_once = False
+
+    try:
+        build_command = group_config["build"][args.machine]["command"]
+    except KeyError:
+        raise Exception("Build instructions are missing")
+
+    try:
+        clean_command = group_config["build"][args.machine]["clean"]["command"]
+    except KeyError:
+        clean_command = None
 
     experiments = []
     for benchmark in args.bench if args.bench else benchmark_configs:
+        # Skip the build key
+        if benchmark == "build" or benchmark == "config":
+            continue
+
         config = benchmark_configs[benchmark]
+        try:
+            extra_args = config["args"]
+        except KeyError:
+            extra_args = ""
+
+        try:
+            extra_args = (
+                extra_args + " " + group_config[args.machine][args.exemode]["args"]
+            )
+        except KeyError:
+            pass
+
+        try:
+            path = Path.cwd() / Path(config[args.machine][args.exemode]["path"])
+        except KeyError:
+            path = Path.cwd() / Path(group_config["path"])
+
+        try:
+            exe = Path(config[args.machine][args.exemode]["exe"])
+        except KeyError:
+            exe = Path(group_config["exe"])
+
         experiments.append(
             Executor(
                 benchmark,
-                Path.cwd() / Path(config[args.machine][args.exemode]),
+                path,
+                exe,
+                extra_args,
                 args.exemode,
+                build_command,
+                clean_command,
                 config["inputs"],
                 args.compiler,
                 args.proteus_path,
                 env_configs,
+                build_once,
             )
         )
 

@@ -2,9 +2,9 @@ import pandas as pd
 import argparse
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.ticker import ScalarFormatter
 import pathlib
 import glob
+import itertools
 
 TEXT_WIDTH = 506.295
 
@@ -75,62 +75,70 @@ def visualize(df, machine, plot_dir, plot_title, format):
     tmp_df = tmp_df.sort_values(by="Benchmark", ascending=True)
 
     sizes = set_size(TEXT_WIDTH, 0.5)
-    fig, ax = plt.subplots(figsize=sizes)
-    bar_width = 0.3
-    offset = 0
-    uniq = tmp_df.Benchmark.unique()
-    bar_order = sorted(tmp_df.label.unique())
-    bar_order.remove("AOT")
-    spread = bar_width * (len(bar_order) + 1)
-    ind = np.arange(0, spread * len(uniq), spread)[: len(uniq)]
-    for bar in bar_order:
-        slowdown = (
-            tmp_df[tmp_df.label == bar]["Ctime"].values
-            / tmp_df[tmp_df.label == "AOT"]["Ctime"].values
-        )
-        rect = ax.bar(
-            ind + offset,
-            slowdown,
-            bar_width,
-            label=bar,
-        )
 
-        ax.bar_label(
-            rect,
-            fmt="{:,.1f}",
-            labels=slowdown.round(1),
-            padding=0.5,
+    benchmarks = df.Benchmark.unique()
+    batch_size = 4
+    benchmarks = list(itertools.batched(benchmarks, batch_size))
+    for i, batch in enumerate(benchmarks):
+        plot_df = tmp_df[tmp_df.Benchmark.isin(batch)]
+        fig, ax = plt.subplots(figsize=sizes)
+        bar_width = 0.3
+        offset = 0
+        bar_order = sorted(plot_df.label.unique())
+        bar_order.remove("AOT")
+        spread = bar_width * (len(bar_order) + 1)
+        ind = np.arange(0, spread * len(batch), spread)[: len(batch)]
+        for bar in bar_order:
+            slowdown = (
+                plot_df[plot_df.label == bar]["Ctime"].values
+                / plot_df[plot_df.label == "AOT"]["Ctime"].values
+            )
+            rect = ax.bar(
+                ind + offset,
+                slowdown,
+                bar_width,
+                label=bar,
+            )
+
+            ax.bar_label(
+                rect,
+                fmt="{:,.1f}",
+                labels=slowdown.round(1),
+                padding=0.5,
+                fontsize=8,
+                rotation=90,
+            )
+            offset += bar_width
+
+        ax.set_title(plot_title)
+        ax.set_ylabel("Slowdown compiling\nAOT+Ext. vs. AOT")
+        ax.yaxis.set_major_formatter("{x: .1f}")
+        ax.set_xticks(ind + bar_width * (len(bar_order) - 1) / 2)
+        ax.set_xticklabels(batch)
+        yticks = ax.get_yticks()
+        ax.set_ylim((yticks.min(), yticks.max()))
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+
+        plt.xticks(rotation=15)
+        plt.tight_layout()
+        ax.legend(
+            ncol=len(bar_order),
+            bbox_to_anchor=(-0.2, 1.25),
+            loc="upper left",
+            handlelength=1.0,
+            handletextpad=0.5,
+            columnspacing=0.5,
+            fancybox=False,
+            shadow=False,
+            frameon=False,
             fontsize=8,
-            rotation=90,
         )
-        offset += bar_width
 
-    ax.set_title(plot_title)
-    ax.set_ylabel("Slowdown compiling\nAOT+Ext. vs. AOT")
-    ax.yaxis.set_major_formatter("{x: .1f}")
-    ax.set_xticks(ind + bar_width * (len(bar_order) - 1) / 2)
-    ax.set_xticklabels(tmp_df.Benchmark.unique())
-    yticks = ax.get_yticks()
-    ax.set_ylim((yticks.min(), yticks.max()))
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-
-    plt.xticks(rotation=15)
-    plt.tight_layout()
-    ax.legend(
-        ncol=len(bar_order),
-        bbox_to_anchor=(0, -0.1, 1.0, -0.1),
-        handlelength=1.0,
-        handletextpad=0.5,
-        fancybox=False,
-        shadow=False,
-        frameon=False,
-    )
-
-    fn = f"{plot_dir}/{machine}-bar-compilation-time-slowdown.{format}"
-    print(f"Storing to {fn}")
-    fig.savefig(fn, bbox_inches="tight", dpi=300)
-    plt.close(fig)
+        fn = f"{plot_dir}/{machine}-bar-compilation-time-slowdown-{i}.{format}"
+        print(f"Storing to {fn}")
+        fig.savefig(fn, bbox_inches="tight", dpi=300)
+        plt.close(fig)
 
 
 def main():

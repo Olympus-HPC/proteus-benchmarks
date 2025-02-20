@@ -1,0 +1,258 @@
+# todo(bowen) make a forall_jit variant, and add a RAJA_HIP_JIT variant to RAJAPerf
+[RAJAPerf]
+[RAJAPerf.config]
+path = "benchmarks/RAJAPerf"
+exe = "build/bin/raja-perf.exe"
+build_once = true
+[RAJAPerf.config.build.nvidia]
+command = ["export LLVM_INSTALL_DIR=$(llvm-config --prefix)",
+            """
+            cmake       -DCMAKE_BUILD_TYPE=Release \
+                        -DCMAKE_C_COMPILER=${LLVM_INSTALL_DIR}/bin/clang \
+                        -DCMAKE_CXX_COMPILER=${LLVM_INSTALL_DIR}/bin/clang++ \
+                        -DRAJA_ENABLE_EXTERNAL_ROCPRIM=Off \
+                        -DPROTEUS_INSTALL_DIR=${PROTEUS_PATH} \
+                        -DPROTEUS_ENABLE_CUDA=on \
+                        -DCMAKE_CUDA_ARCHITECTURES=70 \
+                        -DCMAKE_CUDA_COMPILER=${LLVM_INSTALL_DIR}/bin/clang++ \
+                        -DENABLE_JIT=On \
+                        -B build \
+            """,
+            "cmake --build build --target raja-perf.exe -- -j 8"]
+[RAJAPerf.config.build.amd]
+command = ["""
+            cmake       -DCMAKE_BUILD_TYPE=Release \
+                        -DCMAKE_C_COMPILER=/opt/rocm-6.2.1/llvm/bin/clang \
+                        -DCMAKE_CXX_COMPILER=/opt/rocm-6.2.1/llvm/bin/clang++ \
+                        -DRAJA_ENABLE_EXTERNAL_ROCPRIM=Off \
+                        -DPROTEUS_INSTALL_DIR=${PROTEUS_PATH} \
+                        -DENABLE_HIP=on \
+                        -DCMAKE_HIP_ARCHITECTURES=gfx90a  \
+                        -DGPU_TARGETS=gfx90a \
+                        -DENABLE_JIT=On \
+                        -B build \
+                        """,
+            "cmake --build build --target raja-perf.exe -- -j "]
+[RAJAPerf.config.nvidia.aot]
+args = "--variants Base_CUDA --disable-warmup"
+[RAJAPerf.config.nvidia.proteus]
+args = "--variants RAJA_CUDA --disable-warmup"
+[RAJAPerf.config.amd.aot]
+args = "--variants Base_HIP --disable-warmup"
+[RAJAPerf.config.amd.proteus]
+args = "--variants RAJA_HIP --disable-warmup" 
+
+[RAJAPerf.ATOMIC]
+args = "-k ATOMIC"
+[RAJAPerf.ATOMIC.inputs]
+default = ""
+
+[RAJAPerf.HISTOGRAM]
+args = "-k HISTOGRAM"
+[RAJAPerf.HISTOGRAM.inputs]
+default = ""
+
+[RAJAPerf.MEMCPY]
+args = "-k MEMCPY"
+[RAJAPerf.MEMCPY.inputs]
+default = ""
+
+[RAJAPerf.MEMSET]
+args = "-k MEMSET"
+[RAJAPerf.MEMSET.inputs]
+default = ""
+
+[RAJAPerf.REDUCE_SUM]
+args = "-k REDUCE_SUM"
+[RAJAPerf.REDUCE_SUM.inputs]
+default = ""
+
+[RAJAPerf.DEL_DOT_VEC_2D]
+args = "-k DEL_DOT_VEC_2D"
+[RAJAPerf.DEL_DOT_VEC_2D.inputs]
+default = ""
+
+[RAJAPerf.EDGE3D]
+args = "-k EDGE3D"
+[RAJAPerf.EDGE3D.inputs]
+default = ""
+
+[RAJAPerf.ENERGY]
+args = "-k ENERGY"
+[RAJAPerf.ENERGY.inputs]
+default = ""
+
+[RAJAPerf.FIR]
+args = "-k FIR"
+[RAJAPerf.FIR.inputs]
+default = ""
+
+[RAJAPerf.MATVEC_3D_STENCIL]
+args = "-k MATVEC_3D_STENCIL"
+[RAJAPerf.MATVEC_3D_STENCIL.inputs]
+default = ""
+
+[RAJAPerf.NODAL_ACCUMULATION_3D]
+args = "-k NODAL_ACCUMULATION_3D"
+[RAJAPerf.NODAL_ACCUMULATION_3D.inputs]
+default = ""
+
+[RAJAPerf.PRESSURE]
+args = "-k PRESSURE"
+[RAJAPerf.PRESSURE.inputs]
+default = ""
+
+[RAJAPerf.VOL3D]
+args = "-k VOL3D"
+[RAJAPerf.VOL3D.inputs]
+default = ""
+
+[RAJAPerf.ZONAL_ACCUMULATION_3D]
+args = "-k ZONAL_ACCUMULATION_3D"
+[RAJAPerf.ZONAL_ACCUMULATION_3D.inputs]
+default = ""
+
+[RAJAPerf.ARRAY_OF_PTRS]
+args = "-k ARRAY_OF_PTRS"
+[RAJAPerf.ARRAY_OF_PTRS.inputs]
+default = ""
+
+[RAJAPerf.COPY8]
+args = "-k COPY8"
+[RAJAPerf.COPY8.inputs]
+default = ""
+
+[RAJAPerf.DAXPY]
+args = "-k DAXPY"
+[RAJAPerf.DAXPY.inputs]
+default = ""
+
+[RAJAPerf.DAXPY_ATOMIC]
+args = "-k DAXPY_ATOMIC"
+[RAJAPerf.DAXPY_ATOMIC.inputs]
+default = ""
+
+[RAJAPerf.IF_QUAD]
+args = "-k IF_QUAD"
+[RAJAPerf.IF_QUAD.inputs]
+default = ""
+
+[RAJAPerf.INIT3]
+args = "-k INIT3"
+[RAJAPerf.INIT3.inputs]
+default = ""
+
+[RAJAPerf.INIT_VIEW1D]
+args = "-k INIT_VIEW1D"
+[RAJAPerf.INIT_VIEW1D.inputs]
+default = ""
+
+[RAJAPerf.INIT_VIEW1D_OFFSET]
+args = "-k INIT_VIEW1D_OFFSET"
+[RAJAPerf.INIT_VIEW1D_OFFSET.inputs]
+default = ""
+
+[RAJAPerf.MULADDSUB]
+args = "-k MULADDSUB"
+[RAJAPerf.MULADDSUB.inputs]
+default = ""
+
+[RAJAPerf.MULTI_REDUCE]
+args = "-k MULTI_REDUCE"
+[RAJAPerf.MULTI_REDUCE.inputs]
+default = ""
+
+[RAJAPerf.PI_ATOMIC]
+args = "-k PI_ATOMIC"
+[RAJAPerf.PI_ATOMIC.inputs]
+default = ""
+
+[RAJAPerf.PI_REDUCE]
+args = "-k PI_REDUCE"
+[RAJAPerf.PI_REDUCE.inputs]
+default = ""
+
+[RAJAPerf.REDUCE3_INT]
+args = "-k REDUCE3_INT"
+[RAJAPerf.REDUCE3_INT.inputs]
+default = ""
+
+[RAJAPerf.REDUCE_STRUCT]
+args = "-k REDUCE_STRUCT"
+[RAJAPerf.REDUCE_STRUCT.inputs]
+default = ""
+
+[RAJAPerf.TRAP_INT]
+args = "-k TRAP_INT"
+[RAJAPerf.TRAP_INT.inputs]
+default = ""
+
+[RAJAPerf.HALO_PACKING]
+args = "-k HALO_PACKING"
+[RAJAPerf.HALO_PACKING.inputs]
+default = ""
+
+[RAJAPerf.DIFF_PREDICT]
+args = "-k DIFF_PREDICT"
+[RAJAPerf.DIFF_PREDICT.inputs]
+default = ""
+
+[RAJAPerf.EOS]
+args = "-k EOS"
+[RAJAPerf.EOS.inputs]
+default = ""
+
+[RAJAPerf.FIRST_DIFF]
+args = "-k FIRST_DIFF"
+[RAJAPerf.FIRST_DIFF.inputs]
+default = ""
+
+[RAJAPerf.FIRST_MIN]
+args = "-k FIRST_MIN"
+[RAJAPerf.FIRST_MIN.inputs]
+default = ""
+
+[RAJAPerf.FIRST_SUM]
+args = "-k FIRST_SUM"
+[RAJAPerf.FIRST_SUM.inputs]
+default = ""
+
+[RAJAPerf.GEN_LIN_RECUR]
+args = "-k GEN_LIN_RECUR"
+[RAJAPerf.GEN_LIN_RECUR.inputs]
+default = ""
+
+[RAJAPerf.HYDRO_1D]
+args = "-k HYDRO_1D"
+[RAJAPerf.HYDRO_1D.inputs]
+default = ""
+
+[RAJAPerf.INT_PREDICT]
+args = "-k INT_PREDICT"
+[RAJAPerf.INT_PREDICT.inputs]
+default = ""
+
+[RAJAPerf.PLANCKIAN]
+args = "-k PLANCKIAN"
+[RAJAPerf.PLANCKIAN.inputs]
+default = ""
+
+[RAJAPerf.TRIDIAG_ELIM]
+args = "-k TRIDIAG_ELIM"
+[RAJAPerf.TRIDIAG_ELIM.inputs]
+default = ""
+
+[RAJAPerf.GEMVER]
+args = "-k GEMVER"
+[RAJAPerf.GEMVER.inputs]
+default = ""
+
+[RAJAPerf.JACOBI_1D]
+args = "-k JACOBI_1D"
+[RAJAPerf.JACOBI_1D.inputs]
+default = ""
+
+[RAJAPerf.ADD]
+args = "-k ADD"
+[RAJAPerf.ADD.inputs]
+default = ""
