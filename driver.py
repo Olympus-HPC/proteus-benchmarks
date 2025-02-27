@@ -38,10 +38,10 @@ class ProteusConfig:
 
     def __init__(self, **kwargs):
         self.valid_keys = [
-            "ENV_PROTEUS_USE_STORED_CACHE",
-            "ENV_PROTEUS_SET_LAUNCH_BOUNDS",
-            "ENV_PROTEUS_SPECIALIZE_ARGS",
-            "ENV_PROTEUS_SPECIALIZE_DIMS",
+            "PROTEUS_USE_STORED_CACHE",
+            "PROTEUS_SET_LAUNCH_BOUNDS",
+            "PROTEUS_SPECIALIZE_ARGS",
+            "PROTEUS_SPECIALIZE_DIMS",
         ]
         # Check expected
         for key, values in kwargs.items():
@@ -69,10 +69,10 @@ class AOTConfig:
     def get_env_configs(self):
         return [
             {
-                "ENV_PROTEUS_USE_STORED_CACHE": "0",
-                "ENV_PROTEUS_SET_LAUNCH_BOUNDS": "0",
-                "ENV_PROTEUS_SPECIALIZE_ARGS": "0",
-                "ENV_PROTEUS_SPECIALIZE_DIMS": "0",
+                "PROTEUS_USE_STORED_CACHE": "0",
+                "PROTEUS_SET_LAUNCH_BOUNDS": "0",
+                "PROTEUS_SPECIALIZE_ARGS": "0",
+                "PROTEUS_SPECIALIZE_DIMS": "0",
             }
         ]
 
@@ -81,10 +81,10 @@ class JitifyConfig:
     def get_env_configs(self):
         return [
             {
-                "ENV_PROTEUS_USE_STORED_CACHE": "0",
-                "ENV_PROTEUS_SET_LAUNCH_BOUNDS": "0",
-                "ENV_PROTEUS_SPECIALIZE_ARGS": "0",
-                "ENV_PROTEUS_SPECIALIZE_DIMS": "0",
+                "PROTEUS_USE_STORED_CACHE": "0",
+                "PROTEUS_SET_LAUNCH_BOUNDS": "0",
+                "PROTEUS_SPECIALIZE_ARGS": "0",
+                "PROTEUS_SPECIALIZE_DIMS": "0",
             }
         ]
 
@@ -156,7 +156,6 @@ class Nvprof:
 
 
 class Executor:
-
     # Class-wide flag to avoid re-building when build_once is True.
     build_done = False
 
@@ -273,17 +272,17 @@ class Executor:
                     cmd = f"./{self.executable_name} {args} {self.extra_args}"
 
                     set_launch_bounds = (
-                        False if env["ENV_PROTEUS_SET_LAUNCH_BOUNDS"] == "0" else True
+                        False if env["PROTEUS_SET_LAUNCH_BOUNDS"] == "0" else True
                     )
                     use_stored_cache = (
-                        False if env["ENV_PROTEUS_USE_STORED_CACHE"] == "0" else True
+                        False if env["PROTEUS_USE_STORED_CACHE"] == "0" else True
                     )
                     specialize_args = (
-                        False if env["ENV_PROTEUS_SPECIALIZE_ARGS"] == "0" else True
+                        False if env["PROTEUS_SPECIALIZE_ARGS"] == "0" else True
                     )
 
                     specialize_dims = (
-                        False if env["ENV_PROTEUS_SPECIALIZE_DIMS"] == "0" else True
+                        False if env["PROTEUS_SPECIALIZE_DIMS"] == "0" else True
                     )
 
                     if self.exemode == "proteus":
@@ -475,9 +474,9 @@ def main():
 
     with open(args.toml, "rb") as f:
         benchmark_group_configs = tomllib.load(f)
-        assert (
-            len(benchmark_group_configs.keys()) == 1
-        ), "Expected single, top-level key for the benchmark group"
+        assert len(benchmark_group_configs.keys()) == 1, (
+            "Expected single, top-level key for the benchmark group"
+        )
         benchmark_group = list(benchmark_group_configs)[0]
         benchmark_configs = benchmark_group_configs[benchmark_group]
         group_config = benchmark_configs.pop("config", None)
@@ -510,9 +509,9 @@ def main():
     else:
         raise Exception(f"Invalid exemode {args.exemode}")
     proteus_install = args.proteus_path
-    assert os.path.exists(
-        proteus_install
-    ), f"Error: Proteus install path '{proteus_install}' does not exist!"
+    assert os.path.exists(proteus_install), (
+        f"Error: Proteus install path '{proteus_install}' does not exist!"
+    )
 
     try:
         build_once = group_config["build_once"]

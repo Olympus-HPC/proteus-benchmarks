@@ -72,7 +72,7 @@ The option `--proteus-configs` which sets environment variable values to configu
 It expects a string representation of a dictionary specifying those env vars.
 For example:
 ```bash
-python driver.py -t benchmarks.toml -c hipcc -j $(realpath proteus-env/proteus/build-amd/install) -x proteus -p direct -m amd -r 1 --proteus-config '{"ENV_PROTEUS_USE_STORED_CACHE":["0", "1"], "ENV_PROTEUS_SET_LAUNCH_BOUNDS":["1"], "ENV_PROTEUS_SPECIALIZE_ARGS":["1"], "ENV_PROTEUS_SPECIALIZE_DIMS": ["1"]}' -b adam
+python driver.py -t benchmarks.toml -c hipcc -j $(realpath proteus-env/proteus/build-amd/install) -x proteus -p direct -m amd -r 1 --proteus-config '{"PROTEUS_USE_STORED_CACHE":["0", "1"], "PROTEUS_SET_LAUNCH_BOUNDS":["1"], "PROTEUS_SPECIALIZE_ARGS":["1"], "PROTEUS_SPECIALIZE_DIMS": ["1"]}' -b adam
 ```
 
 This will run the benchmark program `adam` under `proteus` in `direct` mode, so
