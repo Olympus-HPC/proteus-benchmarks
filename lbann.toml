@@ -1,15 +1,23 @@
 [LBANN]
 [LBANN.config]
-path = "benchmarks/lbann-bench"
 exe = "install/bin/lbann"
+path = "benchmarks/lbann-bench"
 build_once = true
 
-[LBANN.config.build.nvidia]
-command = ["echo not yet supported"]
+[LBANN.config.build.amd.aot]
+path = "benchmarks/lbann-bench/build-aot"
+[LBANN.config.build.amd.proteus]
+path = "benchmarks/lbann-bench/build-proteus"
+
 [LBANN.config.build.amd]
-command = ["/usr/workspace/proteus/lbann/setup-amd.sh",
-           "source /usr/workspace/proteus/lbann/prefix-path-amd.sh",
-           "ninja"]
+command = ["""
+           export LBANN_PATH=$(realpath ../../lbann)
+           /usr/workspace/proteus/lbann/setup-amd.sh
+           """,
+           """
+           source /usr/workspace/proteus/lbann/prefix-path-amd.sh
+           ninja
+           """]
 
 [LBANN.layernorm]
 args = "--disable_distconv --prototext=layernorm.prototext"
