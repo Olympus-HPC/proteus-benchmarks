@@ -173,6 +173,7 @@ class Executor:
         proteus_path,
         env_configs,
         build_once,
+        run_path,
     ):
         self.benchmark = benchmark
         self.path = path
@@ -189,6 +190,7 @@ class Executor:
         self.proteus_path = proteus_path
         self.env_configs = env_configs
         self.build_once = build_once
+        self.run_path = run_path
 
     def __str__(self):
         return f"{self.benchmark} {self.path} {self.exemode}"
@@ -216,11 +218,13 @@ class Executor:
         return p.stdout, p.stderr
 
     def clean(self):
-        os.chdir(self.path)
-        if self.clean_command is not None:
-            self.execute_command(self.clean_command)
+        if os.path.isdir(self.path):
+            os.chdir(self.path)
+            if self.clean_command is not None:
+                self.execute_command(self.clean_command)
 
     def build(self, do_jit):
+        os.makedirs(self.path, exist_ok=True)
         os.chdir(self.path)
         env = os.environ.copy()
         env["ENABLE_PROTEUS"] = "yes" if do_jit else "no"
@@ -247,6 +251,7 @@ class Executor:
         return t2 - t1
 
     def build_and_run(self, reps, profiler=None):
+        os.makedirs(self.path, exist_ok=True)
         os.chdir(self.path)
 
         results = pd.DataFrame()
@@ -269,7 +274,7 @@ class Executor:
                     cmd_env = os.environ.copy()
                     for k, v in env.items():
                         cmd_env[k] = v
-                    cmd = f"./{self.executable_name} {args} {self.extra_args}"
+                    cmd = f"{self.path}/{self.executable_name} {args} {self.extra_args}"
 
                     set_launch_bounds = (
                         False if env["PROTEUS_SET_LAUNCH_BOUNDS"] == "0" else True
@@ -302,7 +307,7 @@ class Executor:
                         self.execute_command(
                             cmd,
                             env=cmd_env,
-                            cwd=str(self.path),
+                            cwd=str(self.run_path),
                         )
 
                     stats = f"{os.getcwd()}/{self.exemode}-{input_id}-{time.time()}.csv"
@@ -314,7 +319,7 @@ class Executor:
                     out, _ = self.execute_command(
                         cmd,
                         env=cmd_env,
-                        cwd=str(self.path),
+                        cwd=str(self.run_path),
                     )
                     t2 = time.perf_counter()
 
@@ -322,10 +327,10 @@ class Executor:
                     cache_size_obj = 0
                     cache_size_bc = 0
                     if use_stored_cache:
-                        for file in Path(self.path).glob(".proteus/cache-jit-*.o"):
+                        for file in Path(self.run_path).glob(".proteus/cache-jit-*.o"):
                             # Size in bytes.
                             cache_size_obj += file.stat().st_size
-                        for file in Path(self.path).glob(".proteus/cache-jit-*.bc"):
+                        for file in Path(self.run_path).glob(".proteus/cache-jit-*.bc"):
                             # Size in bytes.
                             cache_size_bc += file.stat().st_size
                         # Delete amy previous cache files in the command path.
@@ -548,9 +553,20 @@ def main():
             pass
 
         try:
-            path = Path.cwd() / Path(config[args.machine][args.exemode]["path"])
+            build_path = Path.cwd() / Path(group_config["build"][args.machine][args.exemode]["path"])
         except KeyError:
-            path = Path.cwd() / Path(group_config["path"])
+            try:
+                build_path = Path.cwd() / Path(config[args.machine][args.exemode]["path"])
+            except KeyError:
+                build_path = Path.cwd() / Path(group_config["path"])
+
+        try:
+            run_path = Path.cwd() / Path(config[args.machine][args.exemode]["path"])
+        except KeyError:
+            try:
+                run_path = Path.cwd() / Path(config["path"])
+            except KeyError:
+                run_path = Path.cwd() / Path(group_config["path"])
 
         try:
             exe = Path(config[args.machine][args.exemode]["exe"])
@@ -560,7 +576,7 @@ def main():
         experiments.append(
             Executor(
                 benchmark,
-                path,
+                build_path,
                 exe,
                 extra_args,
                 args.exemode,
@@ -571,6 +587,7 @@ def main():
                 args.proteus_path,
                 env_configs,
                 build_once,
+                run_path
             )
         )
 
