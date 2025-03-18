@@ -35,7 +35,7 @@ def get_layernorm_sample(index):
 
 
 def num_layernorm_samples():
-    return 8
+    return 2
 
 
 def layernorm_sample_dims():
