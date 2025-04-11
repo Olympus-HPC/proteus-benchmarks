@@ -16,6 +16,12 @@ else
     USE_PROTEUS="OFF"
 fi
 
+git clone --depth 1 --single-branch --branch v1.4.2 https://github.com/LLNL/Aluminum.git ${LBANN_DEP_PATH}/Aluminum
+git clone https://github.com/LLNL/Elemental.git ${LBANN_DEP_PATH}/Hydrogen
+pushd ${LBANN_DEP_PATH}/Hydrogen && git checkout 4fa2f41c55d705fc6c4b65aa72e1cb691370f3bc && popd
+git clone https://github.com/LBANN/DiHydrogen.git ${LBANN_DEP_PATH}/DiHydrogen
+pushd ${LBANN_DEP_PATH}/DiHydrogen && git checkout f072d243af0320e8046ae99d04028f4b6371c52b && popd
+
 echo "Using proteus? ${USE_PROTEUS}"
 echo "PROTEUS_PATH: ${PROTEUS_PATH}"
 
@@ -159,7 +165,6 @@ cmake \
     -D LBANN_SB_LBANN_BUILD_SHARED_LIBS=ON \
     -D LBANN_SB_FWD_LBANN_LBANN_WITH_CALIPER=OFF \
     -D LBANN_SB_FWD_LBANN_LBANN_WITH_PROTEUS=${USE_PROTEUS} \
-    -D LBANN_SB_FWD_proteus_DIR=${PROTEUS_PATH}/lib64/cmake/proteus \
     -D LBANN_SB_FWD_LBANN_LBANN_WITH_DISTCONV=${USE_DISTCONV} \
     -D LBANN_SB_FWD_LBANN_LBANN_WITH_TBINF=OFF \
     -D LBANN_SB_FWD_LBANN_LBANN_WITH_UNIT_TESTING=ON \

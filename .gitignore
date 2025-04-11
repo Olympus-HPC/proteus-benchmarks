@@ -11,3 +11,4 @@ results
 benchmarks/**/*.csv
 .proteus
 .proteus-logs
+**/build-*
