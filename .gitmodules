@@ -1,3 +1,7 @@
 [submodule "RAJAPerf"]
 	path = benchmarks/RAJAPerf
 	url = https://github.com/Olympus-HPC/RAJAPerf.git
+[submodule "benchmarks/lbann"]
+	path = benchmarks/lbann-bench/lbann
+	url = https://github.com/Olympus-HPC/lbann.git
+	branch = proteus

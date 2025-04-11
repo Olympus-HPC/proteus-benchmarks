@@ -1,0 +1,967 @@
+data_reader {
+  reader {
+    name: "python"
+    role: "train"
+    fraction_of_data_to_use: 1.0
+    python {
+      module: "benchmark_dataloader"
+      module_dir: "."
+      sample_function: "get_layernorm_sample"
+      num_samples_function: "num_layernorm_samples"
+      sample_dims_function: "layernorm_sample_dims"
+    }
+  }
+}
+model {
+  objective_function {
+    layer_term {
+      scale_factor: 1.0
+      layer: "layer112"
+    }
+  }
+  metric {
+    layer_metric {
+      layer: "layer112"
+      name: "test"
+    }
+  }
+  num_epochs: 1
+  layer {
+    name: "layer1"
+    children: "layer2"
+    input {
+      data_field: "samples"
+    }
+  }
+  layer {
+    name: "layer2"
+    parents: "layer1"
+    children: "layer3"
+    slice {
+      slice_points: 0
+      slice_points: 25165824
+    }
+  }
+  layer {
+    name: "layer3"
+    parents: "layer2"
+    children: "layer5"
+    identity {
+    }
+  }
+  layer {
+    name: "layer4"
+    children: "layer5"
+    weights: "weights1"
+    weights_layer {
+      dims: 25165824
+    }
+  }
+  layer {
+    name: "layer5"
+    parents: "layer3"
+    parents: "layer4"
+    children: "layer6"
+    sum {
+    }
+  }
+  layer {
+    name: "layer6"
+    parents: "layer5"
+    children: "layer11"
+    reshape {
+      dims: 2048
+      dims: 12288
+    }
+  }
+  layer {
+    name: "layer11"
+    parents: "layer6"
+    children: "layer12"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer12"
+    parents: "layer11"
+    children: "layer13"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer13"
+    parents: "layer12"
+    children: "layer14"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer14"
+    parents: "layer13"
+    children: "layer15"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer15"
+    parents: "layer14"
+    children: "layer16"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer16"
+    parents: "layer15"
+    children: "layer17"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer17"
+    parents: "layer16"
+    children: "layer18"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer18"
+    parents: "layer17"
+    children: "layer19"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer19"
+    parents: "layer18"
+    children: "layer20"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer20"
+    parents: "layer19"
+    children: "layer21"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer21"
+    parents: "layer20"
+    children: "layer22"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer22"
+    parents: "layer21"
+    children: "layer23"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer23"
+    parents: "layer22"
+    children: "layer24"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer24"
+    parents: "layer23"
+    children: "layer25"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer25"
+    parents: "layer24"
+    children: "layer26"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer26"
+    parents: "layer25"
+    children: "layer27"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer27"
+    parents: "layer26"
+    children: "layer28"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer28"
+    parents: "layer27"
+    children: "layer29"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer29"
+    parents: "layer28"
+    children: "layer30"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer30"
+    parents: "layer29"
+    children: "layer31"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer31"
+    parents: "layer30"
+    children: "layer32"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer32"
+    parents: "layer31"
+    children: "layer33"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer33"
+    parents: "layer32"
+    children: "layer34"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer34"
+    parents: "layer33"
+    children: "layer35"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer35"
+    parents: "layer34"
+    children: "layer36"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer36"
+    parents: "layer35"
+    children: "layer37"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer37"
+    parents: "layer36"
+    children: "layer38"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer38"
+    parents: "layer37"
+    children: "layer39"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer39"
+    parents: "layer38"
+    children: "layer40"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer40"
+    parents: "layer39"
+    children: "layer41"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer41"
+    parents: "layer40"
+    children: "layer42"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer42"
+    parents: "layer41"
+    children: "layer43"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer43"
+    parents: "layer42"
+    children: "layer44"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer44"
+    parents: "layer43"
+    children: "layer45"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer45"
+    parents: "layer44"
+    children: "layer46"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer46"
+    parents: "layer45"
+    children: "layer47"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer47"
+    parents: "layer46"
+    children: "layer48"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer48"
+    parents: "layer47"
+    children: "layer49"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer49"
+    parents: "layer48"
+    children: "layer50"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer50"
+    parents: "layer49"
+    children: "layer51"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer51"
+    parents: "layer50"
+    children: "layer52"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer52"
+    parents: "layer51"
+    children: "layer53"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer53"
+    parents: "layer52"
+    children: "layer54"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer54"
+    parents: "layer53"
+    children: "layer55"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer55"
+    parents: "layer54"
+    children: "layer56"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer56"
+    parents: "layer55"
+    children: "layer57"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer57"
+    parents: "layer56"
+    children: "layer58"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer58"
+    parents: "layer57"
+    children: "layer59"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer59"
+    parents: "layer58"
+    children: "layer60"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer60"
+    parents: "layer59"
+    children: "layer61"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer61"
+    parents: "layer60"
+    children: "layer62"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer62"
+    parents: "layer61"
+    children: "layer63"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer63"
+    parents: "layer62"
+    children: "layer64"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer64"
+    parents: "layer63"
+    children: "layer65"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer65"
+    parents: "layer64"
+    children: "layer66"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer66"
+    parents: "layer65"
+    children: "layer67"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer67"
+    parents: "layer66"
+    children: "layer68"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer68"
+    parents: "layer67"
+    children: "layer69"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer69"
+    parents: "layer68"
+    children: "layer70"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer70"
+    parents: "layer69"
+    children: "layer71"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer71"
+    parents: "layer70"
+    children: "layer72"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer72"
+    parents: "layer71"
+    children: "layer73"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer73"
+    parents: "layer72"
+    children: "layer74"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer74"
+    parents: "layer73"
+    children: "layer75"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer75"
+    parents: "layer74"
+    children: "layer76"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer76"
+    parents: "layer75"
+    children: "layer77"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer77"
+    parents: "layer76"
+    children: "layer78"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer78"
+    parents: "layer77"
+    children: "layer79"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer79"
+    parents: "layer78"
+    children: "layer80"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer80"
+    parents: "layer79"
+    children: "layer81"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer81"
+    parents: "layer80"
+    children: "layer82"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer82"
+    parents: "layer81"
+    children: "layer83"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer83"
+    parents: "layer82"
+    children: "layer84"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer84"
+    parents: "layer83"
+    children: "layer85"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer85"
+    parents: "layer84"
+    children: "layer86"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer86"
+    parents: "layer85"
+    children: "layer87"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer87"
+    parents: "layer86"
+    children: "layer88"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer88"
+    parents: "layer87"
+    children: "layer89"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer89"
+    parents: "layer88"
+    children: "layer90"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer90"
+    parents: "layer89"
+    children: "layer91"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer91"
+    parents: "layer90"
+    children: "layer92"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer92"
+    parents: "layer91"
+    children: "layer93"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer93"
+    parents: "layer92"
+    children: "layer94"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer94"
+    parents: "layer93"
+    children: "layer95"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer95"
+    parents: "layer94"
+    children: "layer96"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer96"
+    parents: "layer95"
+    children: "layer97"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer97"
+    parents: "layer96"
+    children: "layer98"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer98"
+    parents: "layer97"
+    children: "layer99"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer99"
+    parents: "layer98"
+    children: "layer100"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer100"
+    parents: "layer99"
+    children: "layer101"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer101"
+    parents: "layer100"
+    children: "layer102"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer102"
+    parents: "layer101"
+    children: "layer103"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer103"
+    parents: "layer102"
+    children: "layer104"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer104"
+    parents: "layer103"
+    children: "layer105"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer105"
+    parents: "layer104"
+    children: "layer106"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer106"
+    parents: "layer105"
+    children: "layer107"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer107"
+    parents: "layer106"
+    children: "layer108"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer108"
+    parents: "layer107"
+    children: "layer109"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer109"
+    parents: "layer108"
+    children: "layer110"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer110"
+    parents: "layer109"
+    children: "layer111"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer111"
+    parents: "layer110"
+    children: "layer112"
+    children: "layer113"
+    layer_norm {
+      start_dim: -1
+    }
+  }
+  layer {
+    name: "layer113"
+    parents: "layer111"
+    children: "layer114"
+    operator_layer {
+      ops {
+        parameters {
+          [type.googleapis.com/lbann_data.SquareOperator] {
+          }
+        }
+      }
+    }
+  }
+  layer {
+    name: "layer114"
+    parents: "layer113"
+    reduction {
+      mode: "mean"
+    }
+  }
+  layer {
+    name: "layer7"
+    children: "layer8"
+    input {
+      data_field: "samples"
+    }
+  }
+  layer {
+    name: "layer8"
+    parents: "layer7"
+    children: "layer9"
+    slice {
+      slice_points: 25165824
+      slice_points: 50331648
+    }
+  }
+  layer {
+    name: "layer9"
+    parents: "layer8"
+    children: "layer10"
+    identity {
+    }
+  }
+  layer {
+    name: "layer10"
+    parents: "layer9"
+    children: "layer112"
+    reshape {
+      dims: 2048
+      dims: 12288
+    }
+  }
+  layer {
+    name: "layer112"
+    parents: "layer111"
+    parents: "layer10"
+    mean_squared_error {
+    }
+  }
+  weights {
+    name: "weights1"
+    initializer {
+      constant_initializer {
+      }
+    }
+  }
+  callback {
+    check_metric {
+      metric: "test"
+      upper_bound: 1e-07
+      error_on_failure: true
+      execution_modes: "train"
+    }
+  }
+}
+optimizer {
+  sgd {
+  }
+}
+trainer {
+  mini_batch_size: 2
+}

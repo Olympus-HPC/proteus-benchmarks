@@ -9,7 +9,6 @@ import pprint
 import re
 from itertools import product
 import shutil
-import json
 import tomllib
 import functools
 
@@ -28,72 +27,11 @@ def demangle(potentially_mangled_name):
     return result.stdout.strip()
 
 
-class ProteusConfig:
-    def check_valid(self, key, values):
-        if key not in self.valid_keys:
-            raise Exception(f"Invalid key {key} not in {self.valid_keys}")
-
-        if not all([o in ["0", "1"] for o in values]):
-            raise Exception(f"Expected values 0 or 1 for opt {key}, values: {values}")
-
-    def __init__(self, **kwargs):
-        self.valid_keys = [
-            "PROTEUS_USE_STORED_CACHE",
-            "PROTEUS_SET_LAUNCH_BOUNDS",
-            "PROTEUS_SPECIALIZE_ARGS",
-            "PROTEUS_SPECIALIZE_DIMS",
-        ]
-        # Check expected
-        for key, values in kwargs.items():
-            self.check_valid(key, values)
-        # Check all valid keys are present.
-        if list(kwargs.keys()) != self.valid_keys:
-            raise Exception(
-                f"Expected all keys {self.valid_keys} are defined but found only: {list(kwargs.keys())}"
-            )
-        # Generate all combinations of values
-        keys = kwargs.keys()
-        values = kwargs.values()
-        combinations = product(*values)
-
-        # Create a list of dictionaries from the combinations
-        self.env_configs = [
-            dict(zip(keys, combination)) for combination in combinations
-        ]
-
-    def get_env_configs(self):
-        return self.env_configs
-
-
-class AOTConfig:
-    def get_env_configs(self):
-        return [
-            {
-                "PROTEUS_USE_STORED_CACHE": "0",
-                "PROTEUS_SET_LAUNCH_BOUNDS": "0",
-                "PROTEUS_SPECIALIZE_ARGS": "0",
-                "PROTEUS_SPECIALIZE_DIMS": "0",
-            }
-        ]
-
-
-class JitifyConfig:
-    def get_env_configs(self):
-        return [
-            {
-                "PROTEUS_USE_STORED_CACHE": "0",
-                "PROTEUS_SET_LAUNCH_BOUNDS": "0",
-                "PROTEUS_SPECIALIZE_ARGS": "0",
-                "PROTEUS_SPECIALIZE_DIMS": "0",
-            }
-        ]
-
-
 class Rocprof:
-    def __init__(self, metrics, cwd):
+    def __init__(self, metrics):
         self.metrics = metrics
         if metrics:
-            metrics_file = f"{cwd}/vis-scripts/rocprof-metrics.txt"
+            metrics_file = f"{__file__}/vis/rocprof-metrics.txt"
             self.command = f"rocprof -i {metrics_file}" + " --timestamp on -o {0} {1}"
         else:
             self.command = "rocprof --timestamp on -o {0} {1}"
@@ -155,80 +93,62 @@ class Nvprof:
         return df
 
 
-class Executor:
-    # Class-wide flag to avoid re-building when build_once is True.
-    build_done = False
+class Runner:
+    @staticmethod
+    def execute_command(cmd, **kwargs):
+        print("=> Execute", cmd)
 
-    def __init__(
-        self,
-        benchmark,
-        path,
-        executable_name,
-        extra_args,
-        exemode,
-        build_command,
-        clean_command,
-        inputs,
-        cc,
-        proteus_path,
-        env_configs,
-        build_once,
-    ):
-        self.benchmark = benchmark
-        self.path = path
-        self.executable_name = executable_name
-        self.extra_args = extra_args
-        self.exemode = exemode
+        with subprocess.Popen(
+            cmd,
+            shell=True,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            **kwargs,
+        ) as p:
+            out = ""
+            for line in p.stdout:
+                print(line, end="")
+                out += line
+
+            p.wait()
+
+            err = p.stderr.read()
+            if p.returncode:
+                raise RuntimeError(f"Failed cmd {cmd}\n=== stderr ===\n{err}")
+
+            return out, err
+
+
+class Builder:
+    def __init__(self, build_path, build_command, clean_command, cc, proteus_path):
         # the build command is meant to be a full bash command to build the benchmark, eg
         # `cmake -DCMAKE_BUILD_TYPE=Debug --build` or `make benchmark`
         # If none is provided, it will default to `make`
-        self.build_command = "make" if build_command == None else build_command
+        self.build_path = build_path
+        self.build_command = build_command
         self.clean_command = clean_command
-        self.inputs = inputs
         self.cc = cc
         self.proteus_path = proteus_path
-        self.env_configs = env_configs
-        self.build_once = build_once
-
-    def __str__(self):
-        return f"{self.benchmark} {self.path} {self.exemode}"
-
-    def execute_command(self, cmd, **kwargs):
-        print("=> Execute", cmd)
-        try:
-            p = subprocess.run(
-                cmd, check=True, text=True, capture_output=True, shell=True, **kwargs
-            )
-        except subprocess.CalledProcessError as e:
-            print("Failed cmd", e.cmd)
-            print("ret", e.returncode)
-            print("stdout\n", e.stdout)
-            print("stderr\n", e.stderr)
-            print(e)
-            raise e
-
-        print("=========== stdout ===========")
-        print(p.stdout)
-        print("==============================")
-        print("=========== stderr ===========")
-        print(p.stderr)
-        print("==============================")
-        return p.stdout, p.stderr
 
     def clean(self):
-        os.chdir(self.path)
-        if self.clean_command is not None:
-            self.execute_command(self.clean_command)
+        if os.path.isdir(self.build_path):
+            os.chdir(self.build_path)
+            if self.clean_command is not None:
+                Runner.execute_command(self.clean_command)
 
-    def build(self, do_jit):
-        os.chdir(self.path)
+    def build(self, enable_proteus):
+        os.makedirs(self.build_path, exist_ok=True)
+        os.chdir(self.build_path)
+
+        self.clean()
+        print("BUILD", self.build_path, "enable_proteus?", enable_proteus)
+
         env = os.environ.copy()
-        env["ENABLE_PROTEUS"] = "yes" if do_jit else "no"
-        env["PROTEUS_PATH"] = self.proteus_path
         env["CC"] = self.cc
-        if self.build_once and Executor.build_done:
-            print(f"Build done with build once in effect for {self.benchmark}")
-            return -1
+        env["ENABLE_PROTEUS"] = "yes" if enable_proteus else "no"
+        if enable_proteus:
+            env["PROTEUS_PATH"] = self.proteus_path
 
         Executor.build_done = True
         t1 = time.perf_counter()
@@ -236,19 +156,46 @@ class Executor:
             "Build command",
             self.build_command,
             "CC=" + env["CC"],
-            "PROTEUS_PATH=" + env["PROTEUS_PATH"],
             "ENABLE_PROTEUS=" + env["ENABLE_PROTEUS"],
+            "PROTEUS_PATH=" + env["PROTEUS_PATH"] if enable_proteus else "",
         )
         if not isinstance(self.build_command, list):
             self.build_command = [self.build_command]
         for cmd in self.build_command:
-            self.execute_command(cmd, env=env)
+            Runner.execute_command(cmd, env=env)
         t2 = time.perf_counter()
-        return t2 - t1
+        self.ctime = t2 - t1
 
-    def build_and_run(self, reps, profiler=None):
-        os.chdir(self.path)
 
+class Executor:
+    def __init__(
+        self,
+        benchmark,
+        executable_name,
+        extra_args,
+        exemode,
+        inputs,
+        reps,
+        profiler,
+        env_configs,
+        run_path,
+        builder,
+    ):
+        self.benchmark = benchmark
+        self.executable_name = executable_name
+        self.extra_args = extra_args
+        self.exemode = exemode
+        self.inputs = inputs
+        self.profiler = profiler
+        self.reps = reps
+        self.env_configs = env_configs
+        self.run_path = run_path
+        self.builder = builder
+
+    def __str__(self):
+        return f"{self.benchmark} {self.run_path} {self.exemode}"
+
+    def run(self):
         results = pd.DataFrame()
         caching = pd.DataFrame()
         assert (
@@ -257,155 +204,238 @@ class Executor:
             or self.exemode == "jitify"
         ), "Expected aot or proteus or jitify for exemode"
 
-        self.clean()
-        print("BUILD", self.path, "type", self.exemode)
-        ctime = self.build(self.exemode != "aot")
-        exe_size = Path(f"{self.path}/{self.executable_name}").stat().st_size
-        print("=> BUILT")
+        ctime = self.builder.ctime
+        exe_size = (
+            Path(f"{self.builder.build_path}/{self.executable_name}").stat().st_size
+        )
 
-        for repeat in range(0, reps):
-            for input_id, args in self.inputs.items():
-                for env in self.env_configs:
-                    cmd_env = os.environ.copy()
-                    for k, v in env.items():
-                        cmd_env[k] = v
-                    cmd = f"./{self.executable_name} {args} {self.extra_args}"
+        for (input_id, args), env, repeat in product(
+            self.inputs.items(), self.env_configs, range(0, self.reps)
+        ):
+            cmd_env = os.environ.copy()
+            for k, v in env.items():
+                cmd_env[k] = v
+            cmd = f"{self.builder.build_path}/{self.executable_name} {args} {self.extra_args}"
 
-                    set_launch_bounds = (
-                        False if env["PROTEUS_SET_LAUNCH_BOUNDS"] == "0" else True
+            set_launch_bounds = (
+                False
+                if "PROTEUS_SET_LAUNCH_BOUNDS" not in env
+                or env["PROTEUS_SET_LAUNCH_BOUNDS"] == "0"
+                else True
+            )
+            use_stored_cache = (
+                False
+                if "PROTEUS_USE_STORED_CACHE" not in env
+                or env["PROTEUS_USE_STORED_CACHE"] == "0"
+                else True
+            )
+            specialize_args = (
+                False
+                if "PROTEUS_SPECIALIZE_ARGS" not in env
+                or env["PROTEUS_SPECIALIZE_ARGS"] == "0"
+                else True
+            )
+
+            specialize_dims = (
+                False
+                if "PROTEUS_SPECIALIZE_DIMS" not in env
+                or env["PROTEUS_SPECIALIZE_DIMS"] == "0"
+                else True
+            )
+
+            if self.exemode == "proteus":
+                print("Proteus env", env)
+
+            # Delete any previous generated Proteus stored cache.
+            if use_stored_cache:
+                # Delete amy previous cache files in the command path.
+                shutil.rmtree(".proteus", ignore_errors=True)
+                # Execute a warmup run if using the stored cache to
+                # generate the cache files.  CAUTION: We need to create
+                # the cache jit binaries right before running.
+                # Especially, Proteus launch bounds, runtime args,
+                # specialized dims will be baked into the binary so we
+                # need a "warmup" run for each setting before taking the
+                # measurement.
+                Runner.execute_command(
+                    cmd,
+                    env=cmd_env,
+                    cwd=str(self.run_path),
+                )
+
+            stats = f"{os.getcwd()}/{self.exemode}-{input_id}-{time.time()}.csv"
+            if self.profiler:
+                # Execute with profiler on.
+                cmd = self.profiler.get_command(stats, cmd)
+
+            t1 = time.perf_counter()
+            out, _ = Runner.execute_command(
+                cmd,
+                env=cmd_env,
+                cwd=str(self.run_path),
+            )
+            t2 = time.perf_counter()
+
+            # Cleanup from a stored cache run, removing cache files.
+            cache_size_obj = 0
+            cache_size_bc = 0
+            if use_stored_cache:
+                for file in Path(self.run_path).glob(".proteus/cache-jit-*.o"):
+                    # Size in bytes.
+                    cache_size_obj += file.stat().st_size
+                for file in Path(self.run_path).glob(".proteus/cache-jit-*.bc"):
+                    # Size in bytes.
+                    cache_size_bc += file.stat().st_size
+                # Delete amy previous cache files in the command path.
+                shutil.rmtree(".proteus", ignore_errors=True)
+
+            if self.profiler:
+                df = self.profiler.parse(stats)
+                os.remove(stats)
+                # Add new columns to the existing dataframe from the
+                # profiler.
+                df["Benchmark"] = self.benchmark
+                df["Input"] = input_id
+                df["Compile"] = self.exemode
+                df["Ctime"] = ctime
+                df["StoredCache"] = use_stored_cache
+                df["Bounds"] = set_launch_bounds
+                df["RuntimeConstprop"] = specialize_args
+                df["SpecializeDims"] = specialize_dims
+                df["ExeSize"] = exe_size
+                df["ExeTime"] = t2 - t1
+                # Drop memcpy operations (because Proteus adds DtoH copies
+                # to read kernel bitcodes that interfere with unique
+                # indexing and add RunIndex for nvprof to uniquely
+                # identify kernel invocations.
+                if isinstance(self.profiler, Nvprof):
+                    df.drop(
+                        df[df.Name.str.contains("CUDA memcpy")].index,
+                        inplace=True,
                     )
-                    use_stored_cache = (
-                        False if env["PROTEUS_USE_STORED_CACHE"] == "0" else True
-                    )
-                    specialize_args = (
-                        False if env["PROTEUS_SPECIALIZE_ARGS"] == "0" else True
-                    )
+                    # Reset index to sequential, integer index.
+                    df.reset_index(drop=True, inplace=True)
+                    df["RunIndex"] = df.index
+            else:
+                # Create a new dataframe row.
+                df = pd.DataFrame(
+                    {
+                        "Benchmark": [self.benchmark],
+                        "Input": [input_id],
+                        "Compile": [self.exemode],
+                        "Ctime": [ctime],
+                        "StoredCache": [use_stored_cache],
+                        "Bounds": [set_launch_bounds],
+                        "RuntimeConstprop": [specialize_args],
+                        "SpecializeDims": [specialize_dims],
+                        "ExeSize": [exe_size],
+                        "ExeTime": [t2 - t1],
+                    }
+                )
+            df["repeat"] = repeat
+            results = pd.concat((results, df), ignore_index=True)
 
-                    specialize_dims = (
-                        False if env["PROTEUS_SPECIALIZE_DIMS"] == "0" else True
-                    )
+            # Skip parsing caching stats when running AOT.
+            if self.exemode != "proteus":
+                continue
 
-                    if self.exemode == "proteus":
-                        print("Proteus env", env)
+            # Parse Proteus caching info.
+            matches = re.findall(
+                "HashValue ([0-9]+) NumExecs ([0-9]+) NumHits ([0-9]+)",
+                out,
+            )
+            cache_df = pd.DataFrame(
+                {
+                    "HashValue": [str(m[0]) for m in matches],
+                    "NumExecs": [int(m[1]) for m in matches],
+                    "NumHits": [int(m[2]) for m in matches],
+                }
+            )
+            cache_df["Benchmark"] = self.benchmark
+            cache_df["Input"] = input_id
+            cache_df["StoredCache"] = use_stored_cache
+            cache_df["Bounds"] = set_launch_bounds
+            cache_df["RuntimeConstprop"] = specialize_args
+            cache_df["SpecializeDims"] = specialize_dims
+            cache_df["repeat"] = repeat
+            cache_df["CacheSizeObj"] = cache_size_obj
+            cache_df["CacheSizeBC"] = cache_size_bc
 
-                    # Delete any previous generated Proteus stored cache.
-                    if use_stored_cache:
-                        # Delete amy previous cache files in the command path.
-                        shutil.rmtree(".proteus", ignore_errors=True)
-                        # Execute a warmup run if using the stored cache to
-                        # generate the cache files.  CAUTION: We need to create
-                        # the cache jit binaries right before running.
-                        # Especially, Proteus launch bounds, runtime args,
-                        # specialized dims will be baked into the binary so we
-                        # need a "warmup" run for each setting before taking the
-                        # measurement.
-                        self.execute_command(
-                            cmd,
-                            env=cmd_env,
-                            cwd=str(self.path),
-                        )
-
-                    stats = f"{os.getcwd()}/{self.exemode}-{input_id}-{time.time()}.csv"
-                    if profiler:
-                        # Execute with profiler on.
-                        cmd = profiler.get_command(stats, cmd)
-
-                    t1 = time.perf_counter()
-                    out, _ = self.execute_command(
-                        cmd,
-                        env=cmd_env,
-                        cwd=str(self.path),
-                    )
-                    t2 = time.perf_counter()
-
-                    # Cleanup from a stored cache run, removing cache files.
-                    cache_size_obj = 0
-                    cache_size_bc = 0
-                    if use_stored_cache:
-                        for file in Path(self.path).glob(".proteus/cache-jit-*.o"):
-                            # Size in bytes.
-                            cache_size_obj += file.stat().st_size
-                        for file in Path(self.path).glob(".proteus/cache-jit-*.bc"):
-                            # Size in bytes.
-                            cache_size_bc += file.stat().st_size
-                        # Delete amy previous cache files in the command path.
-                        shutil.rmtree(".proteus", ignore_errors=True)
-
-                    if profiler:
-                        df = profiler.parse(stats)
-                        os.remove(stats)
-                        # Add new columns to the existing dataframe from the
-                        # profiler.
-                        df["Benchmark"] = self.benchmark
-                        df["Input"] = input_id
-                        df["Compile"] = self.exemode
-                        df["Ctime"] = ctime
-                        df["StoredCache"] = use_stored_cache
-                        df["Bounds"] = set_launch_bounds
-                        df["RuntimeConstprop"] = specialize_args
-                        df["SpecializeDims"] = specialize_dims
-                        df["ExeSize"] = exe_size
-                        df["ExeTime"] = t2 - t1
-                        # Drop memcpy operations (because Proteus adds DtoH copies
-                        # to read kernel bitcodes that interfere with unique
-                        # indexing and add RunIndex for nvprof to uniquely
-                        # identify kernel invocations.
-                        if isinstance(profiler, Nvprof):
-                            df.drop(
-                                df[df.Name.str.contains("CUDA memcpy")].index,
-                                inplace=True,
-                            )
-                            # Reset index to sequential, integer index.
-                            df.reset_index(drop=True, inplace=True)
-                            df["RunIndex"] = df.index
-                    else:
-                        # Create a new dataframe row.
-                        df = pd.DataFrame(
-                            {
-                                "Benchmark": [self.benchmark],
-                                "Input": [input_id],
-                                "Compile": [self.exemode],
-                                "Ctime": [ctime],
-                                "StoredCache": [use_stored_cache],
-                                "Bounds": [set_launch_bounds],
-                                "RuntimeConstprop": [specialize_args],
-                                "SpecializeDims": [specialize_dims],
-                                "ExeSize": [exe_size],
-                                "ExeTime": [t2 - t1],
-                            }
-                        )
-                    df["repeat"] = repeat
-                    results = pd.concat((results, df), ignore_index=True)
-
-                    # Skip parsing caching stats when running AOT.
-                    if self.exemode != "proteus":
-                        continue
-
-                    # Parse Proteus caching info.
-                    matches = re.findall(
-                        "HashValue ([0-9]+) NumExecs ([0-9]+) NumHits ([0-9]+)",
-                        out,
-                    )
-                    cache_df = pd.DataFrame(
-                        {
-                            "HashValue": [str(m[0]) for m in matches],
-                            "NumExecs": [int(m[1]) for m in matches],
-                            "NumHits": [int(m[2]) for m in matches],
-                        }
-                    )
-                    cache_df["Benchmark"] = self.benchmark
-                    cache_df["Input"] = input_id
-                    cache_df["StoredCache"] = use_stored_cache
-                    cache_df["Bounds"] = set_launch_bounds
-                    cache_df["RuntimeConstprop"] = specialize_args
-                    cache_df["SpecializeDims"] = specialize_dims
-                    cache_df["repeat"] = repeat
-                    cache_df["CacheSizeObj"] = cache_size_obj
-                    cache_df["CacheSizeBC"] = cache_size_bc
-
-                    caching = pd.concat((caching, cache_df))
+            caching = pd.concat((caching, cache_df))
 
         return results, caching
+
+
+class Experiment:
+    def __init__(self, builder, executor):
+        self.builder = builder
+        self.executor = executor
+
+
+class ResultsCollector:
+    def __init__(
+        self,
+        executor,
+        machine,
+        result_dir,
+    ):
+        self.executor = executor
+        self.machine = machine
+        self.result_dir = result_dir
+
+    def gather_results(self):
+        results, caching = self.executor.run()
+
+        if self.executor.profiler:
+            suffix = "profiler"
+            suffix += "-metrics" if self.executor.profiler.metrics else ""
+        else:
+            suffix = "direct"
+        results.to_csv(
+            f"{self.result_dir}/{self.machine}-{self.executor.benchmark}-{self.executor.exemode}-results-{suffix}.csv"
+        )
+        caching.to_csv(
+            f"{self.result_dir}/{self.machine}-{self.executor.benchmark}-{self.executor.exemode}-caching-{suffix}.csv"
+        )
+
+        results.to_csv(
+            f"{self.result_dir}/{self.machine}-{self.executor.benchmark}-{self.executor.exemode}-results-{suffix}.csv"
+        )
+        caching.to_csv(
+            f"{self.result_dir}/{self.machine}-{self.executor.benchmark}-{self.executor.exemode}-caching-{suffix}.csv"
+        )
+
+
+def get_profiler(machine, profmode):
+    if profmode == "direct":
+        return None
+    elif profmode == "profiler" or profmode == "metrics":
+        metrics_flag = True if profmode == "metrics" else False
+        if machine == "amd":
+            return Rocprof(metrics=metrics_flag)
+        elif machine == "nvidia":
+            return Nvprof(metrics=metrics_flag)
+        else:
+            raise Exception(f"Machine {machine} is not supported.")
+    else:
+        raise Exception(f"Profiling mode {profmode} is not supported.")
+
+
+def check_valid_proteus_env(env_configs):
+    valid_keys = (
+        "PROTEUS_USE_STORED_CACHE",
+        "PROTEUS_SET_LAUNCH_BOUNDS",
+        "PROTEUS_SPECIALIZE_ARGS",
+        "PROTEUS_SPECIALIZE_DIMS",
+    )
+
+    for env in env_configs:
+        for key, value in env.items():
+            if key not in valid_keys:
+                raise Exception(f"Invalid key {key} not in {valid_keys}")
+
+            if not all([o in ["0", "1"] for o in value]):
+                raise Exception(f"Expected values 0 or 1 for opt {key}, value: {value}")
 
 
 def main():
@@ -436,12 +466,6 @@ def main():
         choices=("aot", "proteus", "jitify"),
     )
     parser.add_argument(
-        "-p",
-        "--profmode",
-        help="profiling mode",
-        choices=("direct", "profiler", "metrics"),
-    )
-    parser.add_argument(
         "-m",
         "--machine",
         help="the machine running on: amd|nvidia",
@@ -463,12 +487,12 @@ def main():
         "-b", "--bench", help="run a particular benchmark", nargs="+", default=[]
     )
     parser.add_argument(
-        "--proteus-config",
-        help="proteus env var configuration",
-        type=json.loads,
+        "--runconfig",
+        help="runtime configuration",
     )
     parser.add_argument(
-        "--suffix", help="add custom suffix to save CSV files", default=""
+        "--result-dir",
+        help="the directory to store results",
     )
     args = parser.parse_args()
 
@@ -494,24 +518,17 @@ def main():
     if args.machine == "amd" and args.exemode == "jitify":
         raise Exception("Jitify exemode is unavaible on amd")
 
-    cwd = os.getcwd()
-    res_dir = pathlib.Path(f"{cwd}/results/")
-    res_dir.mkdir(parents=True, exist_ok=True)
+    if args.compiler is None:
+        raise Exception("Compiler executable not specified")
 
-    if args.exemode == "aot":
-        env_configs = AOTConfig().get_env_configs()
-    elif args.exemode == "proteus":
-        if not args.proteus_config:
-            raise Exception("Missing --proteus-config specification through CLI")
-        env_configs = ProteusConfig(**args.proteus_config).get_env_configs()
-    elif args.exemode == "jitify":
-        env_configs = JitifyConfig().get_env_configs()
-    else:
-        raise Exception(f"Invalid exemode {args.exemode}")
-    proteus_install = args.proteus_path
-    assert os.path.exists(proteus_install), (
-        f"Error: Proteus install path '{proteus_install}' does not exist!"
-    )
+    if args.reps is None:
+        raise Exception("Provide number of repetitions per experiment, -r/--reps")
+
+    if args.result_dir is None:
+        raise Exception("Provide an output results director, --result-dir")
+
+    result_dir = pathlib.Path(f"{args.result_dir}").resolve()
+    result_dir.mkdir(parents=True, exist_ok=True)
 
     try:
         build_once = group_config["build_once"]
@@ -519,21 +536,31 @@ def main():
         build_once = False
 
     try:
-        build_command = group_config["build"][args.machine]["command"]
+        build_command = group_config["build"][args.machine][args.exemode]["command"]
     except KeyError:
-        raise Exception("Build instructions are missing")
+        try:
+            build_command = group_config["build"][args.machine]["command"]
+        except KeyError:
+            raise Exception("Build instructions are missing")
 
     try:
         clean_command = group_config["build"][args.machine]["clean"]["command"]
     except KeyError:
         clean_command = None
 
-    experiments = []
-    for benchmark in args.bench if args.bench else benchmark_configs:
-        # Skip the build key
-        if benchmark == "build" or benchmark == "config":
-            continue
+    with open(args.runconfig, "rb") as f:
+        runconfigs = tomllib.load(f)
 
+    if not runconfigs[args.exemode]:
+        raise Exception("Runconfig is empty")
+
+    if args.exemode == "proteus":
+        for runconfig in runconfigs[args.exemode]:
+            check_valid_proteus_env(runconfig["env"])
+
+    experiments = []
+    builders = []
+    for benchmark in args.bench if args.bench else benchmark_configs:
         config = benchmark_configs[benchmark]
         try:
             extra_args = config["args"]
@@ -548,80 +575,89 @@ def main():
             pass
 
         try:
-            path = Path.cwd() / Path(config[args.machine][args.exemode]["path"])
+            build_path = Path.cwd() / Path(
+                group_config["build"][args.machine][args.exemode]["path"]
+            )
         except KeyError:
-            path = Path.cwd() / Path(group_config["path"])
+            try:
+                build_path = Path.cwd() / Path(
+                    config[args.machine][args.exemode]["path"]
+                )
+            except KeyError:
+                build_path = Path.cwd() / Path(group_config["path"])
+
+        try:
+            run_path = Path.cwd() / Path(config[args.machine][args.exemode]["path"])
+        except KeyError:
+            try:
+                run_path = Path.cwd() / Path(config["path"])
+            except KeyError:
+                run_path = Path.cwd() / Path(group_config["path"])
 
         try:
             exe = Path(config[args.machine][args.exemode]["exe"])
         except KeyError:
             exe = Path(group_config["exe"])
 
-        experiments.append(
-            Executor(
+        if build_once:
+            if not builders:
+                builder = Builder(
+                    build_path,
+                    build_command,
+                    clean_command,
+                    args.compiler,
+                    args.proteus_path,
+                )
+                builders.append(builder)
+        else:
+            builder = Builder(
+                build_path,
+                build_command,
+                clean_command,
+                args.compiler,
+                args.proteus_path,
+            )
+            builders.append(builder)
+
+        for runconfig in runconfigs[args.exemode]:
+            executor = Executor(
                 benchmark,
-                path,
                 exe,
                 extra_args,
                 args.exemode,
-                build_command,
-                clean_command,
                 config["inputs"],
-                args.compiler,
-                args.proteus_path,
-                env_configs,
+                args.reps,
+                get_profiler(args.machine, runconfig["profmode"]),
+                runconfig["env"],
+                run_path,
+                builder,
+            )
+
+            experiments.append(Experiment(builder, executor))
+
+    def build_and_run_experiments(experiments):
+        # Build, run, and collect results for each experiment and profiling mode.
+        for builder in builders:
+            builder.build(args.exemode == "proteus")
+            print(
+                "=> Built",
+                builder.build_path,
+                "ctime",
+                builder.ctime,
+                "build_once?",
                 build_once,
             )
-        )
+        print("=> BUILD DONE")
 
-    def gather_profiler_results(metrics):
-        if args.machine == "amd":
-            results_profiler, caching_profiler = e.build_and_run(
-                args.reps, Rocprof(metrics, cwd)
-            )
-        elif args.machine == "nvidia":
-            results_profiler, caching_profiler = e.build_and_run(
-                args.reps, Nvprof(metrics)
-            )
-        else:
-            raise Exception("Expected amd or nvidia machine")
+        for e in experiments:
+            ResultsCollector(
+                e.executor,
+                args.machine,
+                result_dir,
+            ).gather_results()
 
-        # Store the intermediate, benchmark results.
-        metrics_suffix = "-metrics" if metrics else ""
-        results_profiler.to_csv(
-            f"{res_dir}/{args.machine}-{e.benchmark}-{args.exemode}-{args.suffix}-results-profiler{metrics_suffix}.csv"
-        )
-        caching_profiler.to_csv(
-            f"{res_dir}/{args.machine}-{e.benchmark}-{args.exemode}-{args.suffix}-caching-profiler{metrics_suffix}.csv"
-        )
-
-    def gather_results():
-        results, caching = e.build_and_run(args.reps)
-        # Store the intermediate, benchmark results.
-        results.to_csv(
-            f"{res_dir}/{args.machine}-{e.benchmark}-{args.exemode}-{args.suffix}-results.csv"
-        )
-        caching.to_csv(
-            f"{res_dir}/{args.machine}-{e.benchmark}-{args.exemode}-{args.suffix}-caching.csv"
-        )
-
-    # Build, run, and collect results for each experiment as gathered by glob
-    # directories. Do profiler runs with and without metrics, and a run without
-    # the profiler for end-to-end execution times.
-    for e in experiments:
-        # Gather results without the profiler.
-        if args.profmode == "direct":
-            gather_results()
-        # Gather results with the machine-specific profiler WITHOUT metrics (gpu
-        # counters)
-        if args.profmode == "profiler":
-            gather_profiler_results(metrics=False)
-        # Gather results with the machine-specific profiler WITH metrics (gpu
-        # counters).
-        if args.profmode == "metrics":
-            gather_profiler_results(metrics=True)
-
-    print("Results are stored in ", res_dir)
+    build_and_run_experiments(experiments)
+    print("Results are stored in ", result_dir)
 
 
 if __name__ == "__main__":

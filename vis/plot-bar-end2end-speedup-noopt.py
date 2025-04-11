@@ -158,7 +158,7 @@ def main():
     args = parser.parse_args()
 
     dfs = list()
-    for fn in glob.glob(f"{args.dir}/{args.machine}*-results.csv"):
+    for fn in glob.glob(f"{args.dir}/{args.machine}*-results-direct.csv"):
         df = pd.read_csv(fn, index_col=0)
         found = False
         for sz in ["large", "mid", "small", "default"]:
