@@ -276,3 +276,28 @@ default = ""
 args = "-k ADD"
 [RAJAPerf.ADD.inputs]
 default = ""
+
+[RAJAPerf.CONVECTION3DPA]
+args = "-k CONVECTION3DPA"
+[RAJAPerf.CONVECTION3DPA.inputs]
+default = ""
+
+[RAJAPerf.DIFFUSION3DPA]
+args = "-k DIFFUSION3DPA"
+[RAJAPerf.DIFFUSION3DPA.inputs]
+default = ""
+
+[RAJAPerf.MASS3DEA]
+args = "-k MASS3DEA"
+[RAJAPerf.MASS3DEA.inputs]
+default = ""
+
+[RAJAPerf.MASS3DPA]
+args = "-k MASS3DPA"
+[RAJAPerf.MASS3DPA.inputs]
+default = ""
+
+[RAJAPerf.MAT_MAT_SHARED]
+args = "-k MAT_MAT_SHARED"
+[RAJAPerf.MAT_MAT_SHARED.inputs]
+default = ""
