@@ -4,9 +4,10 @@
 path = "benchmarks/RAJAPerf"
 exe = "build/bin/raja-perf.exe"
 build_once = true
+[RAJAPerf.config.build.nvidia.clean]
+command = "rm -rf build"
 [RAJAPerf.config.build.nvidia]
-command = ["export LLVM_INSTALL_DIR=$(llvm-config --prefix)",
-            """
+command = ["export LLVM_INSTALL_DIR=$(llvm-config --prefix)", """
             cmake       -DCMAKE_BUILD_TYPE=Release \
                         -DCMAKE_C_COMPILER=${LLVM_INSTALL_DIR}/bin/clang \
                         -DCMAKE_CXX_COMPILER=${LLVM_INSTALL_DIR}/bin/clang++ \
@@ -17,10 +18,28 @@ command = ["export LLVM_INSTALL_DIR=$(llvm-config --prefix)",
                         -DCMAKE_CUDA_COMPILER=${LLVM_INSTALL_DIR}/bin/clang++ \
                         -DENABLE_JIT=On \
                         -B build \
-            """,
-            "cmake --build build --target raja-perf.exe -- -j 8"]
-[RAJAPerf.config.build.amd]
-command = ["""
+            """, "cmake --build build --target raja-perf.exe -- -j 8"]
+[RAJAPerf.config.build.amd.clean]
+command = "rm -rf build"
+[RAJAPerf.config.build.amd.aot]
+command = [
+    """
+            cmake       -DCMAKE_BUILD_TYPE=Release \
+                        -DCMAKE_C_COMPILER=/opt/rocm-6.2.1/llvm/bin/clang \
+                        -DCMAKE_CXX_COMPILER=/opt/rocm-6.2.1/llvm/bin/clang++ \
+                        -DRAJA_ENABLE_EXTERNAL_ROCPRIM=Off \
+                        -DPROTEUS_INSTALL_DIR=${PROTEUS_PATH} \
+                        -DENABLE_HIP=on \
+                        -DCMAKE_HIP_ARCHITECTURES=gfx90a  \
+                        -DGPU_TARGETS=gfx90a \
+                        -DENABLE_JIT=Off \
+                        -B build \
+                        """,
+    "cmake --build build --target raja-perf.exe -- -j ",
+]
+[RAJAPerf.config.build.amd.proteus]
+command = [
+    """
             cmake       -DCMAKE_BUILD_TYPE=Release \
                         -DCMAKE_C_COMPILER=/opt/rocm-6.2.1/llvm/bin/clang \
                         -DCMAKE_CXX_COMPILER=/opt/rocm-6.2.1/llvm/bin/clang++ \
@@ -32,15 +51,16 @@ command = ["""
                         -DENABLE_JIT=On \
                         -B build \
                         """,
-            "cmake --build build --target raja-perf.exe -- -j "]
+    "cmake --build build --target raja-perf.exe -- -j ",
+]
 [RAJAPerf.config.nvidia.aot]
-args = "--variants Base_CUDA --disable-warmup"
+args = "--variants RAJA_CUDA --disable-warmup"
 [RAJAPerf.config.nvidia.proteus]
 args = "--variants RAJA_CUDA --disable-warmup"
 [RAJAPerf.config.amd.aot]
-args = "--variants Base_HIP --disable-warmup"
+args = "--variants RAJA_HIP --disable-warmup"
 [RAJAPerf.config.amd.proteus]
-args = "--variants RAJA_HIP --disable-warmup" 
+args = "--variants RAJA_HIP --disable-warmup"
 
 [RAJAPerf.ATOMIC]
 args = "-k ATOMIC"

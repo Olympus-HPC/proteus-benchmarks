@@ -4,20 +4,24 @@ exe = "install/bin/lbann"
 path = "benchmarks/lbann-bench"
 build_once = true
 
+[LBANN.config.build.amd.clean]
+command = "rm -rf *"
 [LBANN.config.build.amd.aot]
 path = "benchmarks/lbann-bench/build-aot"
 [LBANN.config.build.amd.proteus]
 path = "benchmarks/lbann-bench/build-proteus"
 
 [LBANN.config.build.amd]
-command = ["""
-           export LBANN_PATH=$(realpath ../../lbann)
-           /usr/workspace/proteus/lbann/setup-amd.sh
-           """,
-           """
-           source /usr/workspace/proteus/lbann/prefix-path-amd.sh
-           ninja
-           """]
+command = """
+module load cpe
+module load rocm/6.2.1
+module load ninja
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${CRAY_LD_LIBRARY_PATH}
+../setup-amd.sh
+source ./lbann_sb_suggested_cmake_prefix_path.sh
+export CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:${PROTEUS_PATH}/lib64/cmake/proteus
+ninja
+"""
 
 [LBANN.layernorm]
 args = "--disable_distconv --prototext=layernorm.prototext"
