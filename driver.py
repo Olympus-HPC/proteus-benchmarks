@@ -377,11 +377,11 @@ class ResultsCollector:
         self,
         executor,
         machine,
-        result_dir,
+        results_dir,
     ):
         self.executor = executor
         self.machine = machine
-        self.result_dir = result_dir
+        self.results_dir = results_dir
 
     def gather_results(self):
         results, caching = self.executor.run()
@@ -392,17 +392,17 @@ class ResultsCollector:
         else:
             suffix = "direct"
         results.to_csv(
-            f"{self.result_dir}/{self.machine}-{self.executor.benchmark}-{self.executor.exemode}-results-{suffix}.csv"
+            f"{self.results_dir}/{self.machine}-{self.executor.benchmark}-{self.executor.exemode}-results-{suffix}.csv"
         )
         caching.to_csv(
-            f"{self.result_dir}/{self.machine}-{self.executor.benchmark}-{self.executor.exemode}-caching-{suffix}.csv"
+            f"{self.results_dir}/{self.machine}-{self.executor.benchmark}-{self.executor.exemode}-caching-{suffix}.csv"
         )
 
         results.to_csv(
-            f"{self.result_dir}/{self.machine}-{self.executor.benchmark}-{self.executor.exemode}-results-{suffix}.csv"
+            f"{self.results_dir}/{self.machine}-{self.executor.benchmark}-{self.executor.exemode}-results-{suffix}.csv"
         )
         caching.to_csv(
-            f"{self.result_dir}/{self.machine}-{self.executor.benchmark}-{self.executor.exemode}-caching-{suffix}.csv"
+            f"{self.results_dir}/{self.machine}-{self.executor.benchmark}-{self.executor.exemode}-caching-{suffix}.csv"
         )
 
 
@@ -491,7 +491,7 @@ def main():
         help="runtime configuration",
     )
     parser.add_argument(
-        "--result-dir",
+        "--results-dir",
         help="the directory to store results",
     )
     args = parser.parse_args()
@@ -524,11 +524,11 @@ def main():
     if args.reps is None:
         raise Exception("Provide number of repetitions per experiment, -r/--reps")
 
-    if args.result_dir is None:
-        raise Exception("Provide an output results director, --result-dir")
+    if args.results_dir is None:
+        raise Exception("Provide an output results directory, --results-dir")
 
-    result_dir = pathlib.Path(f"{args.result_dir}").resolve()
-    result_dir.mkdir(parents=True, exist_ok=True)
+    results_dir = pathlib.Path(f"{args.results_dir}").resolve()
+    results_dir.mkdir(parents=True, exist_ok=True)
 
     try:
         build_once = group_config["build_once"]
@@ -653,11 +653,11 @@ def main():
             ResultsCollector(
                 e.executor,
                 args.machine,
-                result_dir,
+                results_dir,
             ).gather_results()
 
     build_and_run_experiments(experiments)
-    print("Results are stored in ", result_dir)
+    print("Results are stored in ", results_dir)
 
 
 if __name__ == "__main__":
