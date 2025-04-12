@@ -16,6 +16,7 @@ else
     USE_PROTEUS="OFF"
 fi
 
+git clone --depth 1 --single-branch --branch proteus https://github.com/Olympus-HPC/lbann.git ${LBANN_PATH}
 git clone --depth 1 --single-branch --branch v1.4.2 https://github.com/LLNL/Aluminum.git ${LBANN_DEP_PATH}/Aluminum
 git clone https://github.com/LLNL/Elemental.git ${LBANN_DEP_PATH}/Hydrogen
 pushd ${LBANN_DEP_PATH}/Hydrogen && git checkout 4fa2f41c55d705fc6c4b65aa72e1cb691370f3bc && popd
