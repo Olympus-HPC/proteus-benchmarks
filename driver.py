@@ -122,9 +122,9 @@ class Runner:
 
 class Builder:
     def __init__(self, build_path, build_command, clean_command, cc, proteus_path):
-        # the build command is meant to be a full bash command to build the benchmark, eg
-        # `cmake -DCMAKE_BUILD_TYPE=Debug --build` or `make benchmark`
-        # If none is provided, it will default to `make`
+        # the build command is meant to be a full bash command to build the
+        # benchmark, e.g., `cmake -DCMAKE_BUILD_TYPE=Release --build` or `make
+        # benchmark.
         self.build_path = build_path
         self.build_command = build_command
         self.clean_command = clean_command
@@ -133,13 +133,11 @@ class Builder:
 
     def clean(self):
         if os.path.isdir(self.build_path):
-            os.chdir(self.build_path)
             if self.clean_command is not None:
-                Runner.execute_command(self.clean_command)
+                Runner.execute_command(self.clean_command, cwd=str(self.build_path))
 
     def build(self, enable_proteus):
         os.makedirs(self.build_path, exist_ok=True)
-        os.chdir(self.build_path)
 
         self.clean()
         print("BUILD", self.build_path, "enable_proteus?", enable_proteus)
@@ -162,7 +160,7 @@ class Builder:
         if not isinstance(self.build_command, list):
             self.build_command = [self.build_command]
         for cmd in self.build_command:
-            Runner.execute_command(cmd, env=env)
+            Runner.execute_command(cmd, env=env, cwd=self.build_path)
         t2 = time.perf_counter()
         self.ctime = t2 - t1
 
@@ -212,6 +210,18 @@ class Executor:
         for (input_id, args), env, repeat in product(
             self.inputs.items(), self.env_configs, range(0, self.reps)
         ):
+            info = f"""
+=== Experiment ===
+exe: {self.executable_name}
+profiler: {self.profiler}
+input: {input_id}
+args: {args}
+extra_args: {self.extra_args}
+env: {env}
+rep: {repeat}
+=== End of Experiment ==="""
+            print(info)
+
             cmd_env = os.environ.copy()
             for k, v in env.items():
                 cmd_env[k] = v
@@ -243,13 +253,9 @@ class Executor:
                 else True
             )
 
-            if self.exemode == "proteus":
-                print("Proteus env", env)
-
             # Delete any previous generated Proteus stored cache.
+            shutil.rmtree(self.run_path/".proteus", ignore_errors=True)
             if use_stored_cache:
-                # Delete amy previous cache files in the command path.
-                shutil.rmtree(".proteus", ignore_errors=True)
                 # Execute a warmup run if using the stored cache to
                 # generate the cache files.  CAUTION: We need to create
                 # the cache jit binaries right before running.
@@ -286,8 +292,9 @@ class Executor:
                 for file in Path(self.run_path).glob(".proteus/cache-jit-*.bc"):
                     # Size in bytes.
                     cache_size_bc += file.stat().st_size
-                # Delete amy previous cache files in the command path.
-                shutil.rmtree(".proteus", ignore_errors=True)
+
+            # Delete amy previous cache files in the command path.
+            shutil.rmtree(self.run_path/".proteus")
 
             if self.profiler:
                 df = self.profiler.parse(stats)
