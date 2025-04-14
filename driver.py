@@ -294,7 +294,7 @@ rep: {repeat}
                     cache_size_bc += file.stat().st_size
 
             # Delete amy previous cache files in the command path.
-            shutil.rmtree(self.run_path/".proteus")
+            shutil.rmtree(self.run_path/".proteus", ignore_errors=True)
 
             if self.profiler:
                 df = self.profiler.parse(stats)
