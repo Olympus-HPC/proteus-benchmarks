@@ -223,31 +223,26 @@ rep: {repeat}
             print(info)
 
             cmd_env = os.environ.copy()
-            # unconditionally disable proteus at runtime for AOT benchmarks
-            if self.exemode == "aot":
-                env["PROTEUS_DISABLE"] = "1"
             for k, v in env.items():
                 cmd_env[k] = v
             cmd = f"{self.builder.build_path}/{self.executable_name} {args} {self.extra_args}"
+
             set_launch_bounds = (
                 False
                 if "PROTEUS_SET_LAUNCH_BOUNDS" not in env
                 or env["PROTEUS_SET_LAUNCH_BOUNDS"] == "0"
-                or env["PROTEUS_DISABLE"] == "1"
                 else True
             )
             use_stored_cache = (
                 False
                 if "PROTEUS_USE_STORED_CACHE" not in env
                 or env["PROTEUS_USE_STORED_CACHE"] == "0"
-                or env["PROTEUS_DISABLE"] == "1"
                 else True
             )
             specialize_args = (
                 False
                 if "PROTEUS_SPECIALIZE_ARGS" not in env
                 or env["PROTEUS_SPECIALIZE_ARGS"] == "0"
-                or env["PROTEUS_DISABLE"] == "1"
                 else True
             )
 
@@ -255,7 +250,6 @@ rep: {repeat}
                 False
                 if "PROTEUS_SPECIALIZE_DIMS" not in env
                 or env["PROTEUS_SPECIALIZE_DIMS"] == "0"
-                or env["PROTEUS_DISABLE"] == "1"
                 else True
             )
 
