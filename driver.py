@@ -229,8 +229,8 @@ rep: {repeat}
 
             set_launch_bounds = (
                 False
-                if "PROTEUS_SET_LAUNCH_BOUNDS" not in env
-                or env["PROTEUS_SET_LAUNCH_BOUNDS"] == "0"
+                if "PROTEUS_SPECIALIZE_LAUNCH_BOUNDS" not in env
+                or env["PROTEUS_SPECIALIZE_LAUNCH_BOUNDS"] == "0"
                 else True
             )
             use_stored_cache = (
@@ -431,7 +431,7 @@ def get_profiler(machine, profmode):
 def check_valid_proteus_env(env_configs):
     valid_keys = (
         "PROTEUS_USE_STORED_CACHE",
-        "PROTEUS_SET_LAUNCH_BOUNDS",
+        "PROTEUS_SPECIALIZE_LAUNCH_BOUNDS",
         "PROTEUS_SPECIALIZE_ARGS",
         "PROTEUS_SPECIALIZE_DIMS",
     )
