@@ -262,16 +262,6 @@ args = "-k TRIDIAG_ELIM"
 [RAJAPerf.TRIDIAG_ELIM.inputs]
 default = ""
 
-[RAJAPerf.GEMVER]
-args = "-k GEMVER"
-[RAJAPerf.GEMVER.inputs]
-default = ""
-
-[RAJAPerf.JACOBI_1D]
-args = "-k JACOBI_1D"
-[RAJAPerf.JACOBI_1D.inputs]
-default = ""
-
 [RAJAPerf.ADD]
 args = "-k ADD"
 [RAJAPerf.ADD.inputs]
@@ -300,4 +290,70 @@ default = ""
 [RAJAPerf.MAT_MAT_SHARED]
 args = "-k MAT_MAT_SHARED"
 [RAJAPerf.MAT_MAT_SHARED.inputs]
+default = ""
+
+# Polybench
+[RAJAPerf.2MM]
+args = "-k 2MM"
+[RAJAPerf.2MM.inputs]
+default = ""
+
+[RAJAPerf.3MM]
+args = "-k 3MM"
+[RAJAPerf.3MM.inputs]
+default = ""
+
+[RAJAPerf.ADI]
+args = "-k ADI"
+[RAJAPerf.ADI.inputs]
+default = ""
+
+[RAJAPerf.ATAX]
+args = "-k ATAX"
+[RAJAPerf.ATAX.inputs]
+default = ""
+
+[RAJAPerf.FDTD_2D]
+args = "-k FDTD_2D"
+[RAJAPerf.FDTD_2D.inputs]
+default = ""
+
+[RAJAPerf.FLOYD_WARSHALL]
+args = "-k FLOYD_WARSHALL"
+[RAJAPerf.FLOYD_WARSHALL.inputs]
+default = ""
+
+[RAJAPerf.GEMM]
+args = "-k GEMM"
+[RAJAPerf.GEMM.inputs]
+default = ""
+
+[RAJAPerf.GEMVER]
+args = "-k GEMVER"
+[RAJAPerf.GEMVER.inputs]
+default = ""
+
+[RAJAPerf.GESUMMV]
+args = "-k GESUMMV"
+[RAJAPerf.GESUMMV.inputs]
+default = ""
+
+[RAJAPerf.HEAT_3D]
+args = "-k HEAT_3D"
+[RAJAPerf.HEAT_3D.inputs]
+default = ""
+
+[RAJAPerf.JACOBI_1D]
+args = "-k JACOBI_1D"
+[RAJAPerf.JACOBI_1D.inputs]
+default = ""
+
+[RAJAPerf.JACOBI_2D]
+args = "-k JACOBI_2D"
+[RAJAPerf.JACOBI_2D.inputs]
+default = ""
+
+[RAJAPerf.MVT]
+args = "-k MVT"
+[RAJAPerf.MVT.inputs]
 default = ""
