@@ -48,12 +48,12 @@ def visualize(df, machine, plot_dir, plot_title, format):
     df["label"] = df.apply(assign_label, axis=1)
     df = df[df.label != "DROP"]
 
-    df = df[["Benchmark", "label", "Speedup"]]
+    df = df[["Benchmark", "label", "Speedup", "SpeedupErr"]]
 
     bar_order = sorted(df.label.unique())
     bar_order.remove("AOT")
 
-    tmp_df = df.groupby(["Benchmark", "label"]).mean()[["Speedup"]].reset_index()
+    #tmp_df = df.groupby(["Benchmark", "label"]).mean()[["Speedup"]].reset_index()
     # Detect and fill missing rows (happens for Jitify lulesh)
     missing_df = [
         pd.DataFrame(
@@ -61,13 +61,14 @@ def visualize(df, machine, plot_dir, plot_title, format):
                 "Benchmark": [benchmark],
                 "label": [label],
                 "Speedup": [0.0],
+                "SpeedupErr": [0.0],
             },
         )
-        for benchmark, data_df in tmp_df.groupby("Benchmark")
-        for label in tmp_df.label.unique()
+        for benchmark, data_df in df.groupby("Benchmark")
+        for label in df.label.unique()
         if label not in data_df.label.to_list()
     ]
-    tmp_df = pd.concat([tmp_df, *missing_df])
+    tmp_df = pd.concat([df, *missing_df])
 
     tmp_df = tmp_df.sort_values(by="Benchmark", ascending=True)
 
@@ -89,6 +90,8 @@ def visualize(df, machine, plot_dir, plot_title, format):
                 plot_df[plot_df.label == bar]["Speedup"],
                 bar_width,
                 label=bar,
+                zorder=1,
+                yerr=plot_df[plot_df.label == bar]["SpeedupErr"],
             )
 
             if bar != "AOT":
@@ -105,7 +108,7 @@ def visualize(df, machine, plot_dir, plot_title, format):
                 )
             offset += bar_width
 
-        ax.set_title(plot_title)
+        #ax.set_title(plot_title)
         ax.set_ylabel("Speedup over AOT\n(kernel time only)")
         ax.yaxis.set_major_formatter("{x: .1f}")
         ax.set_xticks(ind + bar_width * (len(bar_order) - 1) / 2)
@@ -134,6 +137,8 @@ def visualize(df, machine, plot_dir, plot_title, format):
         fig.savefig(fn, bbox_inches="tight", dpi=300)
         plt.close(fig)
 
+def add_std_quadrature(s):
+    return np.sqrt((s ** 2).sum())
 
 def main():
     parser = argparse.ArgumentParser(description="Print results")
@@ -157,6 +162,7 @@ def main():
         df = pd.read_csv(
             fn,
             usecols=[
+                "Name",
                 "Duration",
                 "Benchmark",
                 "Input",
@@ -169,16 +175,31 @@ def main():
                 "repeat",
             ],
         )
+
         found = False
-        for sz in ["large", "mid", "small", "default"]:
-            if sz in df.Input.unique():
-                df = df[df.Input == sz]
-                found = True
-                break
-        assert found, f"In benchmark {df.Benchmark.unique()} we could not deduce input"
+        df = df[~df["Name"].str.contains(r"[\[\]]", na=False)]
+        df = df.groupby(
+            [
+                "Benchmark",
+                "Name",
+                "Input",
+                "Compile",
+                "StoredCache",
+                "Bounds",
+                "RuntimeConstprop",
+                "SpecializeDims",
+                "repeat",
+            ])["Duration"].agg(['mean', 'std'])
+        #for sz in ["large", "mid", "small", "default"]:
+        #    if sz in df.Input.unique():
+        #        df = df[df.Input == sz]
+        #        found = True
+        #        break
+        #assert found, f"In benchmark {df.Benchmark.unique()} we could not deduce input"
         dfs.append(df)
 
-    df = pd.concat(dfs)
+    df = pd.concat(dfs).reset_index()
+
 
     df = (
         df.groupby(
@@ -192,23 +213,39 @@ def main():
                 "SpecializeDims",
                 "repeat",
             ]
-        )["Duration"]
-        .sum()
+        )[["mean","std"]]
+        .agg({
+            "mean" : "sum",
+            "std" : add_std_quadrature
+            })
         .reset_index()
     )
+
+    df.rename(columns={'mean': 'Duration', 'std' : 'StdDev'}, inplace=True)
+
     # Convert to seconds
     df["Duration"] /= 1e9
+    df["StdDev"] /= 1e9
 
     # Compute speedup
     base_durations = df[df["Compile"] == "aot"].set_index(
         ["Benchmark", "Input", "repeat"]
     )["Duration"]
+    base_std_dev = df[df["Compile"] == "aot"].set_index(
+        ["Benchmark", "Input", "repeat"]
+    )["StdDev"]
     df["Speedup"] = df.apply(
         lambda row: base_durations[row["Benchmark"], row["Input"], row["repeat"]]
         / row["Duration"],
         axis=1,
     )
 
+    df["SpeedupErr"] = df.apply(
+        lambda row: row["Speedup"] *
+                    np.sqrt((base_std_dev[row["Benchmark"], row["Input"], row["repeat"]] / base_durations[row["Benchmark"], row["Input"], row["repeat"]]) ** 2
+                            + ( row["StdDev"] / row["Duration"] ) ** 2),
+        axis=1
+    )
     visualize(df, args.machine, args.plot_dir, args.plot_title, args.format)
 
 
