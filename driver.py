@@ -60,7 +60,7 @@ class Rocprof:
 class Nvprof:
     def __init__(self, metrics):
         if metrics:
-            self.command = "nvprof --metrics inst_per_warp,stall_exec_dependency --print-gpu-trace --normalized-time-unit ns --csv --log-file {0} {1}"
+            self.command = "nvprof --metrics inst_per_warp,stall_inst_fetch,stall_exec_dependency,global_hit_rate,tex_cache_hit_rate,l2_tex_read_hit_rate,l2_tex_write_hit_rate,inst_per_warp,stall_exec_dependency --print-gpu-trace --normalized-time-unit ns --csv --log-file {0} {1}"
         else:
             self.command = "nvprof --print-gpu-trace --normalized-time-unit ns --csv --log-file {0} {1}"
         self.metrics = metrics
@@ -270,6 +270,7 @@ rep: {repeat}
                 )
 
             stats = f"{os.getcwd()}/{self.exemode}-{input_id}-{time.time()}.csv"
+            shutil.rmtree(self.run_path/".proteus-logs", ignore_errors=True)
             if self.profiler:
                 # Execute with profiler on.
                 cmd = self.profiler.get_command(stats, cmd)
@@ -296,6 +297,22 @@ rep: {repeat}
             # Delete amy previous cache files in the command path.
             shutil.rmtree(self.run_path/".proteus", ignore_errors=True)
 
+            # collect compile time from the logs
+            num_logs = 0
+            jit_compile_time = 0.0
+            for file in Path(self.run_path, ".proteus-logs").iterdir():
+                if ".log" == str(file)[-4:]:
+                    print(file)
+                    num_logs += 1
+                    with open(file) as f:
+                        for line in f:
+                            if "Compiled kernel" in line and self.benchmark in line:
+                                t = line.split(" ")[-1]
+                                print(t[-3:-1])
+                                assert(t[-3:-1] == "ms")
+                                jit_compile_time = float(t[0:-3])
+            print(num_logs)
+            assert(num_logs == 1)
             if self.profiler:
                 df = self.profiler.parse(stats)
                 os.remove(stats)
@@ -311,6 +328,7 @@ rep: {repeat}
                 df["SpecializeDims"] = specialize_dims
                 df["ExeSize"] = exe_size
                 df["ExeTime"] = t2 - t1
+                df["JITCompileTime"] = jit_compile_time
                 # Drop memcpy operations (because Proteus adds DtoH copies
                 # to read kernel bitcodes that interfere with unique
                 # indexing and add RunIndex for nvprof to uniquely
@@ -323,7 +341,53 @@ rep: {repeat}
                     # Reset index to sequential, integer index.
                     df.reset_index(drop=True, inplace=True)
                     df["RunIndex"] = df.index
+            elif "raja" in str(self.executable_name):
+                duration = 0
+                df = pd.DataFrame()
+                raja_csv = pd.read_csv(self.run_path / Path("RAJAPerf-timing-Average.csv"), skiprows=1)
+                raja_csv.columns = raja_csv.columns.str.strip()
+                rajahip_timings = raja_csv["RAJA_HIP"]
+                print("KWORD")
+                print(raja_csv["RAJA_HIP"])
+                has_multiple_variants = (raja_csv.columns == 'RAJA_HIP').sum() > 1
+                if has_multiple_variants:
+                    for x,y in zip(rajahip_timings.iloc[0], rajahip_timings.iloc[1]):
+                        tmp_df = pd.DataFrame(
+                                    {
+                                        "Benchmark": [self.benchmark + "_" + str(x).strip()],
+                                        "Input": [input_id],
+                                        "Compile": [self.exemode],
+                                        "Ctime": [ctime],
+                                        "StoredCache": [use_stored_cache],
+                                        "Bounds": [set_launch_bounds],
+                                        "RuntimeConstprop": [specialize_args],
+                                        "SpecializeDims": [specialize_dims],
+                                        "ExeSize": [exe_size],
+                                        "ExeTime": [float(y)],
+                                    }
+                                )
+                        df = pd.concat((df, tmp_df), ignore_index=True)
+                else:
+                    duration = float(rajahip_timings.iloc[1])
+                    tmp_df = pd.DataFrame(
+                                    {
+                                        "Benchmark": [self.benchmark],
+                                        "Input": [input_id],
+                                        "Compile": [self.exemode],
+                                        "Ctime": [ctime],
+                                        "StoredCache": [use_stored_cache],
+                                        "Bounds": [set_launch_bounds],
+                                        "RuntimeConstprop": [specialize_args],
+                                        "SpecializeDims": [specialize_dims],
+                                        "ExeSize": [exe_size],
+                                        "ExeTime": [duration],
+                                    }
+                                )
+                    df = pd.concat((df, tmp_df), ignore_index=True)
+
+                print("generated ", df, " from RAJA out")
             else:
+                duration = t2 - t1
                 # Create a new dataframe row.
                 df = pd.DataFrame(
                     {
@@ -336,7 +400,7 @@ rep: {repeat}
                         "RuntimeConstprop": [specialize_args],
                         "SpecializeDims": [specialize_dims],
                         "ExeSize": [exe_size],
-                        "ExeTime": [t2 - t1],
+                        "ExeTime": [duration],
                     }
                 )
             df["repeat"] = repeat

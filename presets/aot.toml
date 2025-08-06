@@ -1,7 +1,3 @@
 [[aot]]
-profmode = "direct"
-[[aot.env]]
-
-[[aot]]
 profmode = "profiler"
 [[aot.env]]

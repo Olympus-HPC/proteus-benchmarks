@@ -1,4 +1,3 @@
-# todo(bowen) make a forall_jit variant, and add a RAJA_HIP_JIT variant to RAJAPerf
 [RAJAPerf]
 [RAJAPerf.config]
 path = "benchmarks/RAJAPerf"
@@ -6,27 +5,46 @@ exe = "build/bin/raja-perf.exe"
 build_once = true
 [RAJAPerf.config.build.nvidia.clean]
 command = "rm -rf build"
-[RAJAPerf.config.build.nvidia]
-command = ["export LLVM_INSTALL_DIR=$(llvm-config --prefix)", """
+[RAJAPerf.config.build.nvidia.proteus]
+command = ["export LLVM_INSTALL_DIR=/usr/tce/packages/clang/clang-ibm-18.1.8-cuda-11.8.0-gcc-11.2.1", """
             cmake       -DCMAKE_BUILD_TYPE=Release \
-                        -DCMAKE_C_COMPILER=${LLVM_INSTALL_DIR}/bin/clang \
-                        -DCMAKE_CXX_COMPILER=${LLVM_INSTALL_DIR}/bin/clang++ \
+                        -DCMAKE_C_COMPILER=/usr/tce/packages/clang/clang-ibm-18.1.8-cuda-11.8.0-gcc-11.2.1/bin/clang \
+                        -DCMAKE_CXX_COMPILER=/usr/tce/packages/clang/clang-ibm-18.1.8-cuda-11.8.0-gcc-11.2.1/bin/clang++ \
                         -DRAJA_ENABLE_EXTERNAL_ROCPRIM=Off \
                         -DPROTEUS_INSTALL_DIR=${PROTEUS_PATH} \
-                        -DPROTEUS_ENABLE_CUDA=on \
+                        -DENABLE_CUDA=on \
+                        -DENABLE_CLANG_CUDA=on \
+                        -DBLT_CLANG_CUDA_ARCH=sm_70 \
                         -DCMAKE_CUDA_ARCHITECTURES=70 \
                         -DCMAKE_CUDA_COMPILER=${LLVM_INSTALL_DIR}/bin/clang++ \
                         -DENABLE_JIT=On \
+                        -DBLT_CXX_STD=c++17 \
                         -B build \
-            """, "cmake --build build --target raja-perf.exe -- -j 8"]
+            """, "cmake --build build --target raja-perf.exe -- -j"]
+[RAJAPerf.config.build.nvidia.aot]
+command = ["export LLVM_INSTALL_DIR=/usr/tce/packages/clang/clang-ibm-18.1.8-cuda-11.8.0-gcc-11.2.1", """
+            cmake       -DCMAKE_BUILD_TYPE=Release \
+                        -DCMAKE_C_COMPILER=/usr/tce/packages/clang/clang-ibm-18.1.8-cuda-11.8.0-gcc-11.2.1/bin/clang \
+                        -DCMAKE_CXX_COMPILER=/usr/tce/packages/clang/clang-ibm-18.1.8-cuda-11.8.0-gcc-11.2.1/bin/clang++ \
+                        -DRAJA_ENABLE_EXTERNAL_ROCPRIM=Off \
+                        -DPROTEUS_INSTALL_DIR=${PROTEUS_PATH} \
+                        -DENABLE_CUDA=on \
+                        -DENABLE_CLANG_CUDA=on \
+                        -DBLT_CLANG_CUDA_ARCH=sm_70 \
+                        -DCMAKE_CUDA_ARCHITECTURES=70 \
+                        -DCMAKE_CUDA_COMPILER=${LLVM_INSTALL_DIR}/bin/clang++ \
+                        -DENABLE_JIT=Off \
+                        -DBLT_CXX_STD=c++17 \
+                        -B build \
+            """, "cmake --build build --target raja-perf.exe -- -j"]
 [RAJAPerf.config.build.amd.clean]
 command = "rm -rf build"
 [RAJAPerf.config.build.amd.aot]
 command = [
     """
             cmake       -DCMAKE_BUILD_TYPE=Release \
-                        -DCMAKE_C_COMPILER=/opt/rocm-6.2.1/llvm/bin/clang \
-                        -DCMAKE_CXX_COMPILER=/opt/rocm-6.2.1/llvm/bin/clang++ \
+                        -DCMAKE_C_COMPILER=/opt/rocm-5.7.1/llvm/bin/clang \
+                        -DCMAKE_CXX_COMPILER=/opt/rocm-5.7.1/llvm/bin/clang++ \
                         -DRAJA_ENABLE_EXTERNAL_ROCPRIM=Off \
                         -DPROTEUS_INSTALL_DIR=${PROTEUS_PATH} \
                         -DENABLE_HIP=on \
@@ -41,14 +59,17 @@ command = [
 command = [
     """
             cmake       -DCMAKE_BUILD_TYPE=Release \
-                        -DCMAKE_C_COMPILER=/opt/rocm-6.2.1/llvm/bin/clang \
-                        -DCMAKE_CXX_COMPILER=/opt/rocm-6.2.1/llvm/bin/clang++ \
+                        -DCMAKE_C_COMPILER=/opt/rocm-5.7.1/llvm/bin/clang \
+                        -DCMAKE_CXX_COMPILER=/opt/rocm-5.7.1/llvm/bin/clang++ \
                         -DRAJA_ENABLE_EXTERNAL_ROCPRIM=Off \
                         -DPROTEUS_INSTALL_DIR=${PROTEUS_PATH} \
                         -DENABLE_HIP=on \
+                        -DCMAKE_POSITION_INDEPENDENT_CODE=On \
+                        -DPOSITION_INDEPENDENT_CODE=On \
                         -DCMAKE_HIP_ARCHITECTURES=gfx90a  \
                         -DGPU_TARGETS=gfx90a \
                         -DENABLE_JIT=On \
+                        -DBLT_CXX_STD=c++17 \
                         -B build \
                         """,
     "cmake --build build --target raja-perf.exe -- -j ",
@@ -70,7 +91,7 @@ default = ""
 [RAJAPerf.HISTOGRAM]
 args = "-k HISTOGRAM"
 [RAJAPerf.HISTOGRAM.inputs]
-default = ""
+default = " --tunings atomic_direct_256"
 
 [RAJAPerf.MEMCPY]
 args = "-k MEMCPY"
@@ -85,7 +106,7 @@ default = ""
 [RAJAPerf.REDUCE_SUM]
 args = "-k REDUCE_SUM"
 [RAJAPerf.REDUCE_SUM.inputs]
-default = ""
+default = " --tunings blkdev_direct_256"
 
 [RAJAPerf.DEL_DOT_VEC_2D]
 args = "-k DEL_DOT_VEC_2D"
@@ -172,20 +193,50 @@ args = "-k INIT_VIEW1D_OFFSET"
 [RAJAPerf.INIT_VIEW1D_OFFSET.inputs]
 default = ""
 
+[RAJAPerf.INDEXLIST_3LOOP]
+args = "-k INDEXLIST_3LOOP"
+[RAJAPerf.INDEXLIST_3LOOP.inputs]
+default = ""
+
+[RAJAPerf.INDEXLIST]
+args = "-k INDEXLIST"
+[RAJAPerf.INDEXLIST.inputs]
+default = ""
+
+[RAJAPerf.LTIMES]
+args = "-k LTIMES"
+[RAJAPerf.LTIMES.inputs]
+default = ""
+
+[RAJAPerf.LTIMES_NOVIEW]
+args = "-k LTIMES_NOVIEW"
+[RAJAPerf.LTIMES_NOVIEW.inputs]
+default = ""
+
 [RAJAPerf.MULADDSUB]
 args = "-k MULADDSUB"
 [RAJAPerf.MULADDSUB.inputs]
 default = ""
 
+[RAJAPerf.MUL]
+args = "-k MUL"
+[RAJAPerf.MUL.inputs]
+default = ""
+
 [RAJAPerf.MULTI_REDUCE]
 args = "-k MULTI_REDUCE"
 [RAJAPerf.MULTI_REDUCE.inputs]
+default = " --tunings atomic_direct_256"
+
+[RAJAPerf.NESTED_INIT]
+args = "-k NESTED_INIT"
+[RAJAPerf.NESTED_INIT.inputs]
 default = ""
 
 [RAJAPerf.PI_ATOMIC]
 args = "-k PI_ATOMIC"
 [RAJAPerf.PI_ATOMIC.inputs]
-default = ""
+default = " --tunings atomic_direct_256"
 
 [RAJAPerf.PI_REDUCE]
 args = "-k PI_REDUCE"
@@ -195,22 +246,44 @@ default = ""
 [RAJAPerf.REDUCE3_INT]
 args = "-k REDUCE3_INT"
 [RAJAPerf.REDUCE3_INT.inputs]
-default = ""
+default = " --tunings blkdev_direct_256"
 
 [RAJAPerf.REDUCE_STRUCT]
 args = "-k REDUCE_STRUCT"
 [RAJAPerf.REDUCE_STRUCT.inputs]
-default = ""
+default = " --tunings blkdev_direct_256"
 
 [RAJAPerf.TRAP_INT]
 args = "-k TRAP_INT"
 [RAJAPerf.TRAP_INT.inputs]
-default = ""
+default = " --tunings blkdev_direct_256"
 
-[RAJAPerf.HALO_PACKING]
-args = "-k HALO_PACKING"
-[RAJAPerf.HALO_PACKING.inputs]
-default = ""
+# These studies are not considered for p3HPC 25 because the resulting times
+# have too high of a spread from the noise introduced from communication.
+#[RAJAPerf.HALO_PACKING]
+#args = "-k HALO_PACKING"
+#[RAJAPerf.HALO_PACKING.inputs]
+#default = ""
+#
+#[RAJAPerf.HALO_PACKING_FUSED]
+#args = "-k HALO_PACKING_FUSED"
+#[RAJAPerf.HALO_PACKING_FUSED.inputs]
+#default = ""
+#
+#[RAJAPerf.HALO_EXCHANGE]
+#args = "-k HALO_EXCHANGE"
+#[RAJAPerf.HALO_EXCHANGE.inputs]
+#default = ""
+#
+#[RAJAPerf.HALO_EXCHANGE_FUSED]
+#args = "-k HALO_EXCHANGE_FUSED"
+#[RAJAPerf.HALO_EXCHANGE_FUSED.inputs]
+#default = ""
+#
+#[RAJAPerf.HALO_SENDRECV]
+#args = "-k HALO_SENDRECV"
+#[RAJAPerf.HALO_SENDRECV.inputs]
+#default = ""
 
 [RAJAPerf.DIFF_PREDICT]
 args = "-k DIFF_PREDICT"
@@ -230,7 +303,7 @@ default = ""
 [RAJAPerf.FIRST_MIN]
 args = "-k FIRST_MIN"
 [RAJAPerf.FIRST_MIN.inputs]
-default = ""
+default = " --tunings blkdev_direct_256"
 
 [RAJAPerf.FIRST_SUM]
 args = "-k FIRST_SUM"
@@ -245,6 +318,11 @@ default = ""
 [RAJAPerf.HYDRO_1D]
 args = "-k HYDRO_1D"
 [RAJAPerf.HYDRO_1D.inputs]
+default = ""
+
+[RAJAPerf.HYDRO_2D]
+args = "-k HYDRO_2D"
+[RAJAPerf.HYDRO_2D.inputs]
 default = ""
 
 [RAJAPerf.INT_PREDICT]
@@ -292,7 +370,6 @@ args = "-k MAT_MAT_SHARED"
 [RAJAPerf.MAT_MAT_SHARED.inputs]
 default = ""
 
-# Polybench
 [RAJAPerf.2MM]
 args = "-k 2MM"
 [RAJAPerf.2MM.inputs]
@@ -356,4 +433,19 @@ default = ""
 [RAJAPerf.MVT]
 args = "-k MVT"
 [RAJAPerf.MVT.inputs]
+default = ""
+
+[RAJAPerf.TRIAD]
+args = "-k TRIAD"
+[RAJAPerf.TRIAD.inputs]
+default = ""
+
+[RAJAPerf.DOT]
+args = "-k DOT"
+[RAJAPerf.DOT.inputs]
+default = ""
+
+[RAJAPerf.COPY]
+args = "-k COPY"
+[RAJAPerf.COPY.inputs]
 default = ""
