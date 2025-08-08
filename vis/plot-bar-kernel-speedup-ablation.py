@@ -177,7 +177,7 @@ def main():
         )
 
         found = False
-        df = df[~df["Name"].str.contains(r"[\[\]]", na=False)]
+        df = df[df["Name"].str.contains("RAJA", na=False)]
         df = df.groupby(
             [
                 "Benchmark",
@@ -189,7 +189,7 @@ def main():
                 "RuntimeConstprop",
                 "SpecializeDims",
                 "repeat",
-            ])["Duration"].agg(['mean', 'std'])
+            ])["Duration"].agg(['mean', 'std', 'count'])
         #for sz in ["large", "mid", "small", "default"]:
         #    if sz in df.Input.unique():
         #        df = df[df.Input == sz]
@@ -200,7 +200,8 @@ def main():
 
     df = pd.concat(dfs).reset_index()
 
-
+    # Perform a second aggregation combining the device times of all
+    # kernel launches contained within a benchmark
     df = (
         df.groupby(
             [
@@ -213,15 +214,17 @@ def main():
                 "SpecializeDims",
                 "repeat",
             ]
-        )[["mean","std"]]
+        )[["mean","std","count"]]
         .agg({
             "mean" : "sum",
-            "std" : add_std_quadrature
+            # standard deviations must be added in quadrature
+            "std" : add_std_quadrature,
+            "count" : "min"
             })
         .reset_index()
     )
 
-    df.rename(columns={'mean': 'Duration', 'std' : 'StdDev'}, inplace=True)
+    df.rename(columns={'mean': 'Duration', 'std' : 'StdDev', "count" : "Count"}, inplace=True)
 
     # Convert to seconds
     df["Duration"] /= 1e9
@@ -241,7 +244,7 @@ def main():
     )
 
     df["SpeedupErr"] = df.apply(
-        lambda row: row["Speedup"] *
+        lambda row: (1 / np.sqrt(row["Count"]) ) * row["Speedup"] *
                     np.sqrt((base_std_dev[row["Benchmark"], row["Input"], row["repeat"]] / base_durations[row["Benchmark"], row["Input"], row["repeat"]]) ** 2
                             + ( row["StdDev"] / row["Duration"] ) ** 2),
         axis=1

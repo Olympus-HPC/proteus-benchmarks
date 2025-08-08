@@ -198,10 +198,11 @@ args = "-k INDEXLIST_3LOOP"
 [RAJAPerf.INDEXLIST_3LOOP.inputs]
 default = ""
 
-[RAJAPerf.INDEXLIST]
-args = "-k INDEXLIST"
-[RAJAPerf.INDEXLIST.inputs]
-default = ""
+# No RAJA HIP/ RAJA CUDA implementations exists
+#[RAJAPerf.INDEXLIST]
+#args = "-k INDEXLIST"
+#[RAJAPerf.INDEXLIST.inputs]
+#default = ""
 
 [RAJAPerf.LTIMES]
 args = "-k LTIMES"
@@ -233,10 +234,11 @@ args = "-k NESTED_INIT"
 [RAJAPerf.NESTED_INIT.inputs]
 default = ""
 
+# Make the default size smaller to avoid slow atomic ops
 [RAJAPerf.PI_ATOMIC]
 args = "-k PI_ATOMIC"
 [RAJAPerf.PI_ATOMIC.inputs]
-default = " --tunings atomic_direct_256"
+default = "--size 10000"
 
 [RAJAPerf.PI_REDUCE]
 args = "-k PI_REDUCE"
@@ -246,19 +248,19 @@ default = ""
 [RAJAPerf.REDUCE3_INT]
 args = "-k REDUCE3_INT"
 [RAJAPerf.REDUCE3_INT.inputs]
-default = " --tunings blkdev_direct_256"
+default = "--size 10000000 --tunings blkdev_direct_256"
 
 [RAJAPerf.REDUCE_STRUCT]
 args = "-k REDUCE_STRUCT"
 [RAJAPerf.REDUCE_STRUCT.inputs]
-default = " --tunings blkdev_direct_256"
+default = "--size 10000000 --tunings blkdev_direct_256"
 
 [RAJAPerf.TRAP_INT]
 args = "-k TRAP_INT"
 [RAJAPerf.TRAP_INT.inputs]
-default = " --tunings blkdev_direct_256"
+default = "--size 10000000 --tunings blkdev_direct_256"
 
-# These studies are not considered for p3HPC 25 because the resulting times
+# These studies are not considered for P3HPC 25 because the resulting times
 # have too high of a spread from the noise introduced from communication.
 #[RAJAPerf.HALO_PACKING]
 #args = "-k HALO_PACKING"

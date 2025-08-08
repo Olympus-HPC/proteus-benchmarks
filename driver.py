@@ -178,6 +178,7 @@ class Executor:
         env_configs,
         run_path,
         builder,
+        record_jit_time,
     ):
         self.benchmark = benchmark
         self.executable_name = executable_name
@@ -189,6 +190,7 @@ class Executor:
         self.env_configs = env_configs
         self.run_path = run_path
         self.builder = builder
+        self.record_jit_time = record_jit_time
 
     def __str__(self):
         return f"{self.benchmark} {self.run_path} {self.exemode}"
@@ -300,19 +302,19 @@ rep: {repeat}
             # collect compile time from the logs
             num_logs = 0
             jit_compile_time = 0.0
-            for file in Path(self.run_path, ".proteus-logs").iterdir():
-                if ".log" == str(file)[-4:]:
-                    print(file)
-                    num_logs += 1
-                    with open(file) as f:
-                        for line in f:
-                            if "Compiled kernel" in line and self.benchmark in line:
-                                t = line.split(" ")[-1]
-                                print(t[-3:-1])
-                                assert(t[-3:-1] == "ms")
-                                jit_compile_time = float(t[0:-3])
-            print(num_logs)
-            assert(num_logs == 1)
+            if self.record_jit_time and self.exemode == "proteus":
+                for file in Path(self.run_path, ".proteus-logs").iterdir():
+                    if ".log" == str(file)[-4:]:
+                        print(file)
+                        num_logs += 1
+                        with open(file) as f:
+                            for line in f:
+                                if "Compiled kernel" in line and self.benchmark in line:
+                                    t = line.split(" ")[-1]
+                                    print(t[-3:-1])
+                                    assert(t[-3:-1] == "ms")
+                                    jit_compile_time = float(t[0:-3])
+
             if self.profiler:
                 df = self.profiler.parse(stats)
                 os.remove(stats)
@@ -328,7 +330,8 @@ rep: {repeat}
                 df["SpecializeDims"] = specialize_dims
                 df["ExeSize"] = exe_size
                 df["ExeTime"] = t2 - t1
-                df["JITCompileTime"] = jit_compile_time
+                if self.record_jit_time:
+                    df["JITCompileTime"] = jit_compile_time
                 # Drop memcpy operations (because Proteus adds DtoH copies
                 # to read kernel bitcodes that interfere with unique
                 # indexing and add RunIndex for nvprof to uniquely
@@ -531,6 +534,11 @@ def main():
         help="path to proteus install directory",
     )
     parser.add_argument(
+        "--record-jit-time",
+        action='store_true',
+        help="flag telling the driver to parse Proteus logs and record JIT compilation time",
+    )
+    parser.add_argument(
         "-x",
         "--exemode",
         help="execution mode",
@@ -629,6 +637,8 @@ def main():
         for runconfig in runconfigs[args.exemode]:
             check_valid_proteus_env(runconfig["env"])
 
+    record_jit_time = args.record_jit_time != None and args.record_jit_time != False
+
     experiments = []
     builders = []
     for benchmark in args.bench if args.bench else benchmark_configs:
@@ -702,6 +712,7 @@ def main():
                 runconfig["env"],
                 run_path,
                 builder,
+                record_jit_time,
             )
 
             experiments.append(Experiment(builder, executor))
