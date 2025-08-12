@@ -6,33 +6,33 @@ build_once = true
 [RAJAPerf.config.build.nvidia.clean]
 command = "rm -rf build"
 [RAJAPerf.config.build.nvidia.proteus]
-command = ["export LLVM_INSTALL_DIR=/usr/tce/packages/clang/clang-ibm-18.1.8-cuda-11.8.0-gcc-11.2.1", """
+command = ["""
             cmake       -DCMAKE_BUILD_TYPE=Release \
-                        -DCMAKE_C_COMPILER=/usr/tce/packages/clang/clang-ibm-18.1.8-cuda-11.8.0-gcc-11.2.1/bin/clang \
-                        -DCMAKE_CXX_COMPILER=/usr/tce/packages/clang/clang-ibm-18.1.8-cuda-11.8.0-gcc-11.2.1/bin/clang++ \
+                        -DCMAKE_C_COMPILER=${CC} \
+                        -DCMAKE_CXX_COMPILER=${CC} \
                         -DRAJA_ENABLE_EXTERNAL_ROCPRIM=Off \
                         -DPROTEUS_INSTALL_DIR=${PROTEUS_PATH} \
                         -DENABLE_CUDA=on \
                         -DENABLE_CLANG_CUDA=on \
                         -DBLT_CLANG_CUDA_ARCH=sm_70 \
                         -DCMAKE_CUDA_ARCHITECTURES=70 \
-                        -DCMAKE_CUDA_COMPILER=${LLVM_INSTALL_DIR}/bin/clang++ \
+                        -DCMAKE_CUDA_COMPILER=${CC} \
                         -DENABLE_JIT=On \
                         -DBLT_CXX_STD=c++17 \
                         -B build \
             """, "cmake --build build --target raja-perf.exe -- -j"]
 [RAJAPerf.config.build.nvidia.aot]
-command = ["export LLVM_INSTALL_DIR=/usr/tce/packages/clang/clang-ibm-18.1.8-cuda-11.8.0-gcc-11.2.1", """
+command = ["""
             cmake       -DCMAKE_BUILD_TYPE=Release \
-                        -DCMAKE_C_COMPILER=/usr/tce/packages/clang/clang-ibm-18.1.8-cuda-11.8.0-gcc-11.2.1/bin/clang \
-                        -DCMAKE_CXX_COMPILER=/usr/tce/packages/clang/clang-ibm-18.1.8-cuda-11.8.0-gcc-11.2.1/bin/clang++ \
+                        -DCMAKE_C_COMPILER=${CC} \
+                        -DCMAKE_CXX_COMPILER=${CC} \
                         -DRAJA_ENABLE_EXTERNAL_ROCPRIM=Off \
                         -DPROTEUS_INSTALL_DIR=${PROTEUS_PATH} \
                         -DENABLE_CUDA=on \
                         -DENABLE_CLANG_CUDA=on \
                         -DBLT_CLANG_CUDA_ARCH=sm_70 \
                         -DCMAKE_CUDA_ARCHITECTURES=70 \
-                        -DCMAKE_CUDA_COMPILER=${LLVM_INSTALL_DIR}/bin/clang++ \
+                        -DCMAKE_CUDA_COMPILER=${CC} \
                         -DENABLE_JIT=Off \
                         -DBLT_CXX_STD=c++17 \
                         -B build \
@@ -43,8 +43,8 @@ command = "rm -rf build"
 command = [
     """
             cmake       -DCMAKE_BUILD_TYPE=Release \
-                        -DCMAKE_C_COMPILER=/opt/rocm-5.7.1/llvm/bin/clang \
-                        -DCMAKE_CXX_COMPILER=/opt/rocm-5.7.1/llvm/bin/clang++ \
+                        -DCMAKE_C_COMPILER=${CC} \
+                        -DCMAKE_CXX_COMPILER=${CC} \
                         -DRAJA_ENABLE_EXTERNAL_ROCPRIM=Off \
                         -DPROTEUS_INSTALL_DIR=${PROTEUS_PATH} \
                         -DENABLE_HIP=on \
@@ -59,8 +59,8 @@ command = [
 command = [
     """
             cmake       -DCMAKE_BUILD_TYPE=Release \
-                        -DCMAKE_C_COMPILER=/opt/rocm-5.7.1/llvm/bin/clang \
-                        -DCMAKE_CXX_COMPILER=/opt/rocm-5.7.1/llvm/bin/clang++ \
+                        -DCMAKE_C_COMPILER=${CC} \
+                        -DCMAKE_CXX_COMPILER=${CC} \
                         -DRAJA_ENABLE_EXTERNAL_ROCPRIM=Off \
                         -DPROTEUS_INSTALL_DIR=${PROTEUS_PATH} \
                         -DENABLE_HIP=on \
@@ -75,9 +75,9 @@ command = [
     "cmake --build build --target raja-perf.exe -- -j ",
 ]
 [RAJAPerf.config.nvidia.aot]
-args = "--variants RAJA_CUDA --disable-warmup"
+args = "--variants RAJA_CUDA --disable-warmup "
 [RAJAPerf.config.nvidia.proteus]
-args = "--variants RAJA_CUDA --disable-warmup"
+args = "--variants RAJA_CUDA --disable-warmup "
 [RAJAPerf.config.amd.aot]
 args = "--variants RAJA_HIP --disable-warmup"
 [RAJAPerf.config.amd.proteus]
@@ -88,10 +88,11 @@ args = "-k ATOMIC"
 [RAJAPerf.ATOMIC.inputs]
 default = ""
 
+# Set repfact larger for histogram because of tendency to pagefault on CUDA
 [RAJAPerf.HISTOGRAM]
 args = "-k HISTOGRAM"
 [RAJAPerf.HISTOGRAM.inputs]
-default = " --tunings atomic_direct_256"
+default = " --tunings atomic_direct_256 --repfact 3"
 
 [RAJAPerf.MEMCPY]
 args = "-k MEMCPY"
@@ -227,7 +228,7 @@ default = ""
 [RAJAPerf.MULTI_REDUCE]
 args = "-k MULTI_REDUCE"
 [RAJAPerf.MULTI_REDUCE.inputs]
-default = " --tunings atomic_direct_256"
+default = " --tunings atomic_direct_256 --repfact 3"
 
 [RAJAPerf.NESTED_INIT]
 args = "-k NESTED_INIT"
@@ -238,27 +239,28 @@ default = ""
 [RAJAPerf.PI_ATOMIC]
 args = "-k PI_ATOMIC"
 [RAJAPerf.PI_ATOMIC.inputs]
-default = "--size 10000"
+default = ""
 
+# Set repfact larger for histogram because of tendency to pagefault on CUDA
 [RAJAPerf.PI_REDUCE]
 args = "-k PI_REDUCE"
 [RAJAPerf.PI_REDUCE.inputs]
-default = ""
+default = " --tunings blkdev_direct_256"
 
 [RAJAPerf.REDUCE3_INT]
 args = "-k REDUCE3_INT"
 [RAJAPerf.REDUCE3_INT.inputs]
-default = "--size 10000000 --tunings blkdev_direct_256"
+default = " --tunings blkdev_direct_256"
 
 [RAJAPerf.REDUCE_STRUCT]
 args = "-k REDUCE_STRUCT"
 [RAJAPerf.REDUCE_STRUCT.inputs]
-default = "--size 10000000 --tunings blkdev_direct_256"
+default = " --tunings blkdev_direct_256"
 
 [RAJAPerf.TRAP_INT]
 args = "-k TRAP_INT"
 [RAJAPerf.TRAP_INT.inputs]
-default = "--size 10000000 --tunings blkdev_direct_256"
+default = " --tunings blkdev_direct_256"
 
 # These studies are not considered for P3HPC 25 because the resulting times
 # have too high of a spread from the noise introduced from communication.
@@ -357,10 +359,11 @@ args = "-k DIFFUSION3DPA"
 [RAJAPerf.DIFFUSION3DPA.inputs]
 default = ""
 
+# Defaul reps is too low, only 1
 [RAJAPerf.MASS3DEA]
 args = "-k MASS3DEA"
 [RAJAPerf.MASS3DEA.inputs]
-default = ""
+default = " --repfact 100 "
 
 [RAJAPerf.MASS3DPA]
 args = "-k MASS3DPA"
@@ -372,20 +375,22 @@ args = "-k MAT_MAT_SHARED"
 [RAJAPerf.MAT_MAT_SHARED.inputs]
 default = ""
 
+# default reps too low, only two
 [RAJAPerf.2MM]
 args = "-k 2MM"
 [RAJAPerf.2MM.inputs]
-default = ""
+default = " --repfact 5 "
 
+# default reps too low, only two
 [RAJAPerf.3MM]
 args = "-k 3MM"
 [RAJAPerf.3MM.inputs]
-default = ""
+default = "--repfact 5 "
 
 [RAJAPerf.ADI]
 args = "-k ADI"
 [RAJAPerf.ADI.inputs]
-default = ""
+default = "--repfact 3 "
 
 [RAJAPerf.ATAX]
 args = "-k ATAX"

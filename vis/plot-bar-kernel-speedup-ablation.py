@@ -158,6 +158,7 @@ def main():
     args = parser.parse_args()
 
     dfs = list()
+
     for fn in glob.glob(f"{args.dir}/{args.machine}*-results-profiler.csv"):
         df = pd.read_csv(
             fn,
@@ -176,8 +177,14 @@ def main():
             ],
         )
 
-        found = False
-        df = df[df["Name"].str.contains("RAJA", na=False)]
+        # Some rajaperf benchmarks use unified memory.  nvprof rolls this into kernel timing
+        # of the following benchmark.  Remove these entries from consideration
+        tmp = df["Name"].str.contains("Unified Memory remote map")
+        not_page_fault = pd.Series([True] * len(tmp), index=df.index)
+        for i in range(1, len(not_page_fault)):
+            not_page_fault.iloc[i] =  not tmp.iloc[i -1] if tmp.iloc[i -1] else True
+
+        df = df[df["Name"].str.contains("RAJA") & not_page_fault]# & unified_memory_page_fault_mask]
         df = df.groupby(
             [
                 "Benchmark",
