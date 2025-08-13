@@ -48,6 +48,7 @@ fi
 
 echo "Built and installed Proteus"
 echo "Setting up conda env"
+export CONDA_PLUGINS_AUTO_ACCEPT_TOS=1
 source setup/install-miniconda3.sh
 conda create -y -n proteus-repro -c conda-forge \
       python=3.12 cmake=3.24.3 pandas cxxfilt matplotlib
