@@ -1,5 +1,4 @@
-MACHINE=$(uname -m)
-MINICONDA_DIR=miniconda3-${MACHINE}
+MINICONDA_DIR=miniconda3-repro
 
 function setup() {
   mkdir -p ./${MINICONDA_DIR}

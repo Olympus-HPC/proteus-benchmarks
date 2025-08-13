@@ -239,9 +239,9 @@ default = ""
 [RAJAPerf.PI_ATOMIC]
 args = "-k PI_ATOMIC"
 [RAJAPerf.PI_ATOMIC.inputs]
-default = ""
+default = "--size 10000"
 
-# Set repfact larger for histogram because of tendency to pagefault on CUDA
+
 [RAJAPerf.PI_REDUCE]
 args = "-k PI_REDUCE"
 [RAJAPerf.PI_REDUCE.inputs]
