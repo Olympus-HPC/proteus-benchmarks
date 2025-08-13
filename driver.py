@@ -121,7 +121,7 @@ class Runner:
 
 
 class Builder:
-    def __init__(self, build_path, build_command, clean_command, cc, proteus_path):
+    def __init__(self, build_path, build_command, clean_command, cc, cxx, proteus_path):
         # the build command is meant to be a full bash command to build the
         # benchmark, e.g., `cmake -DCMAKE_BUILD_TYPE=Release --build` or `make
         # benchmark.
@@ -129,6 +129,7 @@ class Builder:
         self.build_command = build_command
         self.clean_command = clean_command
         self.cc = cc
+        self.cxx = cxx
         self.proteus_path = proteus_path
 
     def clean(self):
@@ -144,6 +145,7 @@ class Builder:
 
         env = os.environ.copy()
         env["CC"] = self.cc
+        env["CXX"] = self.cxx
         env["ENABLE_PROTEUS"] = "yes" if enable_proteus else "no"
         if enable_proteus:
             env["PROTEUS_PATH"] = self.proteus_path
@@ -529,6 +531,11 @@ def main():
         help="path to the compiler executable",
     )
     parser.add_argument(
+        "-cc",
+        "--c-compiler",
+        help="path to the C compiler executable",
+    )
+    parser.add_argument(
         "-j",
         "--proteus-path",
         help="path to proteus install directory",
@@ -599,6 +606,9 @@ def main():
 
     if args.compiler is None:
         raise Exception("Compiler executable not specified")
+
+    if args.c_compiler is None:
+        raise Exception("C compiler executable not specified")
 
     if args.reps is None:
         raise Exception("Provide number of repetitions per experiment, -r/--reps")
@@ -686,6 +696,7 @@ def main():
                     build_path,
                     build_command,
                     clean_command,
+                    args.c_compiler,
                     args.compiler,
                     args.proteus_path,
                 )
@@ -695,6 +706,7 @@ def main():
                 build_path,
                 build_command,
                 clean_command,
+                args.c_compiler,
                 args.compiler,
                 args.proteus_path,
             )

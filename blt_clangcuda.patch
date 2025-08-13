@@ -1,0 +1,36 @@
+diff --git a/cmake/thirdparty/BLTSetupCUDA.cmake b/cmake/thirdparty/BLTSetupCUDA.cmake
+index dc1f95a..fa00524 100644
+--- a/cmake/thirdparty/BLTSetupCUDA.cmake
++++ b/cmake/thirdparty/BLTSetupCUDA.cmake
+@@ -65,20 +65,21 @@ endif()
+ # language check fails when using clang-cuda
+ if (NOT BLT_ENABLE_CLANG_CUDA)
+     enable_language(CUDA)
+-endif()
+-
+-if(CMAKE_CUDA_STANDARD STREQUAL "17")
+-    if(NOT DEFINED CMAKE_CUDA_COMPILE_FEATURES OR (NOT "cuda_std_17" IN_LIST CMAKE_CUDA_COMPILE_FEATURES))
+-        message(FATAL_ERROR "CMake's CUDA_STANDARD does not support C++17.")
++
++    if(CMAKE_CUDA_STANDARD STREQUAL "17")
++        if(NOT DEFINED CMAKE_CUDA_COMPILE_FEATURES OR (NOT "cuda_std_17" IN_LIST CMAKE_CUDA_COMPILE_FEATURES))
++            message(FATAL_ERROR "CMake's CUDA_STANDARD does not support C++17.")
++        endif()
+     endif()
+-endif()
+-
+-if(CMAKE_CUDA_STANDARD STREQUAL "20")
+-    if(NOT DEFINED CMAKE_CUDA_COMPILE_FEATURES OR (NOT "cuda_std_20" IN_LIST CMAKE_CUDA_COMPILE_FEATURES))
+-        message(FATAL_ERROR "CMake's CUDA_STANDARD does not support C++20.")
++
++    if(CMAKE_CUDA_STANDARD STREQUAL "20")
++        if(NOT DEFINED CMAKE_CUDA_COMPILE_FEATURES OR (NOT "cuda_std_20" IN_LIST CMAKE_CUDA_COMPILE_FEATURES))
++            message(FATAL_ERROR "CMake's CUDA_STANDARD does not support C++20.")
++        endif()
+     endif()
+ endif()
+
++
+ ############################################################
+ # Map Legacy FindCUDA variables to native cmake variables
+ ############################################################

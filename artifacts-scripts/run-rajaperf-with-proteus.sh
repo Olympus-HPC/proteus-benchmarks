@@ -7,8 +7,11 @@ then
 fi
 
 git clone https://github.com/Olympus-HPC/proteus.git
+cd proteus
 git reset --hard 1ace4ca7c7cfe810065e37adb07a40a088c1e6e6
-# if building for AMD
+cd ..
+
+if building for AMD
 if [[ "$MACHINE" == "amd" ]]; then
   mkdir proteus/build-rocm
   cmake  \
@@ -49,8 +52,15 @@ echo "Setting up conda env"
 source setup/install-miniconda3.sh
 conda create -y -n proteus-repro -c conda-forge \
       python=3.12 cmake=3.24.3 pandas cxxfilt matplotlib
+
+source miniconda3-ppc64le/etc/profile.d/conda.sh
 conda activate proteus-repro
 
+# we need to patch BLT's CMake for RAJAPerf to work with clang cuda
+# This change needs to be upstreamed.
+cd benchmarks/RAJAPerf/blt
+git apply ../../../patch  --ignore-space-change --ignore-whitespace
+cd ../../../
 
-./artifacts-scripts/generate-results.sh install-proteus "$LLVM_INSTALL_DIR/bin/clang++" $MACHINE rajaperf.toml
+./artifacts-scripts/generate-results.sh install-proteus "$LLVM_INSTALL_DIR/bin/clang" "$LLVM_INSTALL_DIR/bin/clang++" $MACHINE rajaperf.toml
 ./artifacts-scripts/emit-ablation-studies.sh $MACHINE
