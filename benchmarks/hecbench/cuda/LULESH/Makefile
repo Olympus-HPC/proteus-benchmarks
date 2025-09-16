@@ -30,8 +30,9 @@ FLAGS += --cuda-gpu-arch=$(ARCH) --cuda-path=${CUDA_HOME} $(RFLAGS)
 ifeq ($(ENABLE_PROTEUS),yes)
   LIBLLVM_PATH=$(dir $(realpath $(CC)))../lib
   FLAGS += -fpass-plugin=${PROTEUS_PATH}/lib64/libProteusPass.so -DENABLE_PROTEUS
-  LINKFLAGS += -Wl,-rpath,$(LIBLLVM_PATH) -L$(LIBLLVM_PATH) -lLLVM \
-	       -Wl,-rpath,${PROTEUS_PATH}/lib64 -L${PROTEUS_PATH}/lib64/ -lproteus -lnvptxcompiler_static
+  LINKFLAGS += -Wl,-rpath,${PROTEUS_PATH}/lib64 -L${PROTEUS_PATH}/lib64/ -lproteus \
+             -lnvptxcompiler_static \
+             -Wl,-rpath,$(LIBLLVM_PATH) -L$(LIBLLVM_PATH) -lclang-cpp -lLLVM
 endif
 
 lulesh$(SUFFIX).x: allocator$(SUFFIX).o lulesh$(SUFFIX).o lulesh-comms$(SUFFIX).o lulesh-comms-gpu$(SUFFIX).o
