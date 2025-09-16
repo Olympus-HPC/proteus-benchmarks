@@ -28,7 +28,7 @@ const char *kernel_source =
     "  const size_t totThreads = gridDim.x*blockDim.x;\n"
     "\n"
     "  for (size_t j = i; j < vector_size; j += totThreads) {\n"
-    "    for (int t = 0; t < time_step; t++) {\n"
+    "    for (int t = 1; t <= time_step; t++) {\n"
     "      T scaled_grad = g[j]/grad_scale;\n"
     "      m[j] = b1*m[j] + (1.f-b1)*scaled_grad;\n"
     "      v[j] = b2*v[j] + (1.f-b2)*scaled_grad*scaled_grad;\n"
