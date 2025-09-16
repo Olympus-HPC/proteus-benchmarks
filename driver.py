@@ -534,6 +534,9 @@ def main():
     if args.results_dir is None:
         raise Exception("Provide an output results directory, --results-dir")
 
+    if args.runconfig is None:
+        raise Exception("Provide a runconfig file, --runconfig")
+
     results_dir = pathlib.Path(f"{args.results_dir}").resolve()
     results_dir.mkdir(parents=True, exist_ok=True)
 
