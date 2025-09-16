@@ -41,10 +41,7 @@ CFLAGS :=
 CFLAGS += -std=c++14
 
 # Linker Flags
-LDFLAGS = -L${ROCM_PATH}/lib -L${ROCM_PATH}/llvm/lib \
-	$(shell ${ROCM_PATH}/llvm/bin/llvm-config --libs) \
-	$(shell ${ROCM_PATH}/llvm/bin/llvm-config --system-libs) \
-  -llldCommon -llldELF
+LDFLAGS =
 
 # Debug Flags
 ifeq ($(DEBUG),yes)
@@ -65,7 +62,14 @@ endif
 
 ifeq ($(ENABLE_PROTEUS),yes)
   CFLAGS += -fpass-plugin=${PROTEUS_PATH}/lib64/libProteusPass.so -DENABLE_PROTEUS
-  LDFLAGS += -Wl,-rpath,${PROTEUS_PATH}/lib64 -L${PROTEUS_PATH}/lib64/ -lproteus
+  LDFLAGS += -Wl,-rpath,${PROTEUS_PATH}/lib64 -L${PROTEUS_PATH}/lib64/ -lproteus \
+          -L${ROCM_PATH}/lib -L${ROCM_PATH}/llvm/lib \
+          -Wl,--start-group \
+          $(shell ls ${ROCM_PATH}/llvm/lib/libclang*.a) \
+          $(shell ${ROCM_PATH}/llvm/bin/llvm-config --libs) \
+          -Wl,--end-group \
+          $(shell ${ROCM_PATH}/llvm/bin/llvm-config --system-libs) \
+          -llldCommon -llldELF
 endif
 
 #===============================================================================
