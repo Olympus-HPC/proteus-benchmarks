@@ -75,9 +75,9 @@ command = [
     "cmake --build build --target raja-perf.exe -- -j ",
 ]
 [RAJAPerf.config.nvidia.aot]
-args = "--variants RAJA_CUDA --disable-warmup "
+args = "--variants RAJA_CUDA  "
 [RAJAPerf.config.nvidia.proteus]
-args = "--variants RAJA_CUDA --disable-warmup "
+args = "--variants RAJA_CUDA  "
 [RAJAPerf.config.amd.aot]
 args = "--variants RAJA_HIP --disable-warmup"
 [RAJAPerf.config.amd.proteus]
@@ -127,7 +127,7 @@ default = ""
 [RAJAPerf.FIR]
 args = "-k FIR"
 [RAJAPerf.FIR.inputs]
-default = ""
+default = " --repfact 2 "
 
 [RAJAPerf.MATVEC_3D_STENCIL]
 args = "-k MATVEC_3D_STENCIL"
@@ -241,7 +241,6 @@ args = "-k PI_ATOMIC"
 [RAJAPerf.PI_ATOMIC.inputs]
 default = "--size 10000"
 
-
 [RAJAPerf.PI_REDUCE]
 args = "-k PI_REDUCE"
 [RAJAPerf.PI_REDUCE.inputs]
@@ -352,18 +351,18 @@ default = ""
 [RAJAPerf.CONVECTION3DPA]
 args = "-k CONVECTION3DPA"
 [RAJAPerf.CONVECTION3DPA.inputs]
-default = ""
+default = "--repfact 5 "
 
 [RAJAPerf.DIFFUSION3DPA]
 args = "-k DIFFUSION3DPA"
 [RAJAPerf.DIFFUSION3DPA.inputs]
 default = ""
 
-# Defaul reps is too low, only 1
+# # Defaul reps is too low, only 1
 [RAJAPerf.MASS3DEA]
 args = "-k MASS3DEA"
 [RAJAPerf.MASS3DEA.inputs]
-default = " --repfact 100 "
+default = " --repfact 1000 "
 
 [RAJAPerf.MASS3DPA]
 args = "-k MASS3DPA"
@@ -373,24 +372,24 @@ default = ""
 [RAJAPerf.MAT_MAT_SHARED]
 args = "-k MAT_MAT_SHARED"
 [RAJAPerf.MAT_MAT_SHARED.inputs]
-default = ""
+default = " --repfact 10 "
 
-# default reps too low, only two
+# # default reps too low, only two
 [RAJAPerf.2MM]
 args = "-k 2MM"
 [RAJAPerf.2MM.inputs]
-default = " --repfact 5 "
+default = " --repfact 10 "
 
-# default reps too low, only two
+# # default reps too low, only two
 [RAJAPerf.3MM]
 args = "-k 3MM"
 [RAJAPerf.3MM.inputs]
-default = "--repfact 5 "
+default = "--repfact 10 "
 
 [RAJAPerf.ADI]
 args = "-k ADI"
 [RAJAPerf.ADI.inputs]
-default = "--repfact 3 "
+default = "--repfact 10 "
 
 [RAJAPerf.ATAX]
 args = "-k ATAX"
@@ -410,7 +409,7 @@ default = ""
 [RAJAPerf.GEMM]
 args = "-k GEMM"
 [RAJAPerf.GEMM.inputs]
-default = ""
+default = "--repfact 20 "
 
 [RAJAPerf.GEMVER]
 args = "-k GEMVER"
