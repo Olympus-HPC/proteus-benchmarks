@@ -127,3 +127,23 @@ path = "benchmarks/hecbench/hip/wsm5"
 exe = "wsm5-proteus.x"
 [hecbench.wsm5.inputs]
 default = "10"
+
+[hecbench.conv3d]
+[hecbench.conv3d.amd.aot]
+path = "benchmarks/hecbench/hip/conv3d"
+exe = "conv3d-aot.x"
+[hecbench.conv3d.amd.proteus]
+path = "benchmarks/hecbench/hip/conv3d"
+exe = "conv3d-proteus.x"
+[hecbench.conv3d.inputs]
+default = "32 96 256 26 26 5 100"
+
+[hecbench.attention]
+[hecbench.attention.amd.aot]
+path = "benchmarks/hecbench/hip/attention"
+exe = "attention-aot.x"
+[hecbench.attention.amd.proteus]
+path = "benchmarks/hecbench/hip/attention"
+exe = "attention-proteus.x"
+[hecbench.attention.inputs]
+default = "65536 2048 100"
