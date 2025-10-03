@@ -3,10 +3,14 @@
 command = "make -j"
 [hecbench.config.build.nvidia.clean]
 command = "make -j clean"
+[hecbench.config.build.nvidia.dsl]
+command = "make -j"
 [hecbench.config.build.amd]
 command = "make -j"
 [hecbench.config.build.amd.clean]
 command = "make -j clean"
+[hecbench.config.build.amd.dsl]
+command = "make -j"
 
 [hecbench.adam]
 [hecbench.adam.nvidia]
@@ -127,3 +131,13 @@ path = "benchmarks/hecbench/hip/wsm5"
 exe = "wsm5-proteus.x"
 [hecbench.wsm5.inputs]
 default = "10"
+
+[hecbench.attention]
+[hecbench.attention.amd.dsl]
+path = "benchmarks/hecbench/dsl/attention"
+exe = "attention-proteus.x"
+[hecbench.attention.nvidia.dsl]
+path = "benchmarks/hecbench/dsl/attention"
+exe = "attention-proteus.x"
+[hecbench.attention.inputs]
+default = "65536 2048 100"

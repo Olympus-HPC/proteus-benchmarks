@@ -197,10 +197,8 @@ class Executor:
         results = pd.DataFrame()
         caching = pd.DataFrame()
         assert (
-            self.exemode == "aot"
-            or self.exemode == "proteus"
-            or self.exemode == "jitify"
-        ), "Expected aot or proteus or jitify for exemode"
+            self.exemode in ("aot", "proteus", "jitify", "dsl")
+        ), "Expected aot or proteus or jitify or dsl for exemode"
 
         ctime = self.builder.ctime
         exe_size = (
@@ -343,7 +341,7 @@ rep: {repeat}
             results = pd.concat((results, df), ignore_index=True)
 
             # Skip parsing caching stats when running AOT.
-            if self.exemode != "proteus":
+            if self.exemode not in ("proteus", "dsl"):
                 continue
 
             # Parse Proteus caching info.
@@ -470,7 +468,7 @@ def main():
         "-x",
         "--exemode",
         help="execution mode",
-        choices=("aot", "proteus", "jitify"),
+        choices=("aot", "proteus", "jitify", "dsl"),
     )
     parser.add_argument(
         "-m",
