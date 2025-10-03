@@ -3,7 +3,7 @@
 #===============================================================================
 
 # Compiler can be set below, or via environment variable
-CC        = ${PROTEUS_CC}
+CC        ?= ${PROTEUS_CC}
 OPTIMIZE  = yes
 DEBUG     = no
 LAUNCHER  =
