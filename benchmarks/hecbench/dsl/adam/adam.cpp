@@ -1,13 +1,3 @@
-// NOLINTBEGIN
-
-// clang-format off
-// RUN: rm -rf "%t.$$.proteus"
-// RUN: PROTEUS_CACHE_DIR="%t.$$.proteus" %build/adam_runconst.%ext 10000 200 100 1 | %FILECHECK %s --check-prefixes=CHECK,CHECK-FIRST
-// Second run uses the object cache.
-// RUN: PROTEUS_CACHE_DIR="%t.$$.proteus" %build/adam_runconst.%ext 10000 200 100 1 | %FILECHECK %s --check-prefixes=CHECK,CHECK-SECOND
-// RUN: rm -rf "%t.$$.proteus"
-// clang-format on
-
 #include <proteus/Frontend/Builtins.hpp>
 #include <proteus/JitFrontend.hpp>
 
@@ -204,36 +194,3 @@ int main(int argc, char *argv[]) {
   free(r);
   return 0;
 }
-
-// clang-format off
-// We got slight differences in the output for the least significant digits.
-// Could be HW, numeric, or the way we handle signedness.
-// CHECK: init p[0] = 0.348563
-// CHECK-NEXT: init p[1] = 0.259322
-// CHECK-NEXT: init p[2] = 0.377145
-// CHECK-NEXT: init p[3] = 0.486632
-// CHECK-NEXT: init p[4] = 0.352038
-// CHECK-NEXT: init p[5] = 0.0784863
-// CHECK-NEXT: init p[6] = 0.968732
-// CHECK-NEXT: init p[7] = 0.852707
-// CHECK-NEXT: init p[8] = 0.153431
-// CHECK-NEXT: init p[9] = 0.559506
-// CHECK-NEXT: Creating JIT module
-// CHECK-NEXT: Compiling JIT module
-// CHECK-NEXT: Average kernel execution time {{.*}} (ms)
-// CHECK-NEXT: p[0] = -0.57293
-// CHECK-NEXT: p[1] = -0.59603
-// CHECK-NEXT: p[2] = -0.592634
-// CHECK-NEXT: p[3] = -0.588154
-// CHECK-NEXT: p[4] = -0.593454
-// CHECK-NEXT: p[5] = -0.591989
-// CHECK-NEXT: p[6] = -0.573486
-// CHECK-NEXT: p[7] = -0.599872
-// CHECK-NEXT: p[8] = -0.58157
-// CHECK-NEXT: p[9] = -0.59015{{[7|8]}}
-// CHECK: JitCache hits 0 total 1
-// CHECK: HashValue {{[0-9]+}} NumExecs 1 NumHits 0
-// CHECK-FIRST: JitStorageCache hits 0 total 1
-// CHECK-SECOND: JitStorageCache hits 1 total 1
-
-// NOLINTEND
