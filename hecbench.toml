@@ -151,3 +151,13 @@ path = "benchmarks/hecbench/dsl/conv3d"
 exe = "conv3d-proteus.x"
 [hecbench.conv3d.inputs]
 default = "32 96 256 26 26 5 100"
+
+[hecbench.bezier-surface]
+[hecbench.bezier-surface.amd.dsl]
+path = "benchmarks/hecbench/dsl/bezier-surface"
+exe = "bezier-surface-proteus.x"
+[hecbench.bezier-surface.nvidia.dsl]
+path = "benchmarks/hecbench/dsl/bezier-surface"
+exe = "bezier-surface-proteus.x"
+[hecbench.bezier-surface.inputs]
+default = "-n 8192"
