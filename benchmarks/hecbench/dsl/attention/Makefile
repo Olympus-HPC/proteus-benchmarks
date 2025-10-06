@@ -40,7 +40,7 @@ ifeq ($(OPTIMIZE),yes)
 	CFLAGS += -O3
 endif
 
-CFLAGS += -fpass-plugin=${PROTEUS_PATH}/lib64/libProteusPass.so -I${PROTEUS_PATH}/include
+CFLAGS += -I${PROTEUS_PATH}/include
 LDFLAGS += -Wl,-rpath,${PROTEUS_PATH}/lib64 -L${PROTEUS_PATH}/lib64/ -lproteus \
     -L${ROCM_PATH}/lib -L${ROCM_PATH}/llvm/lib \
     -Wl,--start-group \
