@@ -141,3 +141,10 @@ path = "benchmarks/hecbench/dsl/attention"
 exe = "attention-proteus.x"
 [hecbench.attention.inputs]
 default = "65536 2048 100"
+
+[hecbench.conv3d]
+[hecbench.conv3d.amd.dsl]
+path = "benchmarks/hecbench/dsl/conv3d"
+exe = "conv3d-proteus.x"
+[hecbench.conv3d.inputs]
+default = "32 96 256 26 26 5 100"
