@@ -32,6 +32,14 @@ exe = "adam-proteus.x"
 [hecbench.adam.inputs]
 default = "160000 1600 1000"
 
+[hecbench.adam.dsl]
+[hecbench.adam.amd.dsl]
+path = "benchmarks/hecbench/dsl/adam"
+exe = "adam-proteus.x"
+[hecbench.adam.nvidia.dsl]
+path = "benchmarks/hecbench/dsl/adam"
+exe = "adam-proteus.x"
+
 [hecbench.feynman-kac]
 [hecbench.feynman-kac.nvidia]
 [hecbench.feynman-kac.nvidia.aot]
