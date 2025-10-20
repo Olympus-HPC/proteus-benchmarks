@@ -63,30 +63,32 @@ static auto getAttentionKernel1(int n, int d) {
 
     F.beginFunction();
     {
-      auto &Tidx = F.callBuiltin(getThreadIdX);
-      auto &Bidx = F.callBuiltin(getBlockIdX);
-      auto &Bdimx = F.callBuiltin(getBlockDimX);
+      auto Tidx = F.callBuiltin(getThreadIdX);
+      auto Bidx = F.callBuiltin(getBlockIdX);
+      auto Bdimx = F.callBuiltin(getBlockDimX);
 
-      auto &i = F.defVar(Bidx * Bdimx + Tidx);
-      auto &Nvar = F.defRuntimeConst(n);
-      auto &Dvar = F.defRuntimeConst(d);
-      auto &Zero = F.defRuntimeConst(0);
-      auto &One = F.defRuntimeConst(1);
+      auto i = F.defVar<int>(Bidx * Bdimx + Tidx);
+      auto Nvar = F.defRuntimeConst<int>(n);
+      auto Dvar = F.defRuntimeConst<int>(d);
+      auto Zero = F.defRuntimeConst<int>(0);
+      auto One = F.defRuntimeConst<int>(1);
 
       F.beginIf(i < Nvar);
       {
-        auto &sum = F.defVar(0.0f);
-        auto &j = F.declVar<int>("j");
+        auto sum = F.defVar<float>(0.0f);
+        auto j = F.declVar<int>("j");
 
-        F.forLoop({j, Zero, Dvar, One}, [&]() {
-          auto &keyIdx = i * Dvar + j;
+        F.beginFor(j, Zero, Dvar, One);
+        {
+          auto keyIdx = i * Dvar + j;
           sum = sum + (key[keyIdx] * query[j]);
-        }).emit();
+        }
+        F.endFor();
 
         dot_product[i] = sum;
 
-        auto &expVal = expf(sum);
-        F.atomicAdd( exp_sum, expVal);
+        auto expVal = expf(sum);
+        F.atomicAdd(exp_sum, F.convert<float>(expVal));
       }
       F.endIf();
 
@@ -110,17 +112,17 @@ static auto getAttentionKernel2(int n) {
 
     F.beginFunction();
     {
-      auto &Tidx = F.callBuiltin(getThreadIdX);
-      auto &Bidx = F.callBuiltin(getBlockIdX);
-      auto &Bdimx = F.callBuiltin(getBlockDimX);
+      auto Tidx = F.callBuiltin(getThreadIdX);
+      auto Bidx = F.callBuiltin(getBlockIdX);
+      auto Bdimx = F.callBuiltin(getBlockDimX);
 
-      auto &i = F.defVar(Bidx * Bdimx + Tidx);
-      auto &Nvar = F.defRuntimeConst(n);
+      auto i = F.defVar<int>(Bidx * Bdimx + Tidx);
+      auto Nvar = F.defRuntimeConst<int>(n);
 
       F.beginIf(i < Nvar);
       {
-        auto &expVal = expf(dot_product[i]);
-        auto &expSumVal = F.defVar(exp_sum[0]);
+        auto expVal = expf(dot_product[i]);
+        auto expSumVal = F.defVar<float>(exp_sum[0]);
         score[i] = expVal / expSumVal;
       }
       F.endIf();
@@ -145,25 +147,27 @@ static auto getAttentionKernel3(int n, int d) {
 
     F.beginFunction();
     {
-      auto &Tidx = F.callBuiltin(getThreadIdX);
-      auto &Bidx = F.callBuiltin(getBlockIdX);
-      auto &Bdimx = F.callBuiltin(getBlockDimX);
+      auto Tidx = F.callBuiltin(getThreadIdX);
+      auto Bidx = F.callBuiltin(getBlockIdX);
+      auto Bdimx = F.callBuiltin(getBlockDimX);
 
-      auto &j = F.defVar(Bidx * Bdimx + Tidx);
-      auto &Dvar = F.defRuntimeConst(d);
-      auto &Nvar = F.defRuntimeConst(n);
-      auto &Zero = F.defRuntimeConst(0);
-      auto &One = F.defRuntimeConst(1);
+      auto j = F.defVar<int>(Bidx * Bdimx + Tidx);
+      auto Dvar = F.defRuntimeConst<int>(d);
+      auto Nvar = F.defRuntimeConst<int>(n);
+      auto Zero = F.defRuntimeConst<int>(0);
+      auto One = F.defRuntimeConst<int>(1);
 
       F.beginIf(j < Dvar);
       {
-        auto &sum = F.defVar(0.0f);
-        auto &i = F.declVar<int>("i");
+        auto sum = F.defVar<float>(0.0f);
+        auto i = F.declVar<int>("i");
 
-        F.forLoop({i, Zero, Nvar, One}, [&]() {
-          auto &valueIdx = i * Dvar + j;
+        F.beginFor(i, Zero, Nvar, One);
+        {
+          auto valueIdx = i * Dvar + j;
           sum = sum + (score[i] * value[valueIdx]);
-        }).emit();
+        }
+        F.endFor();
 
         output[j] = sum;
       }

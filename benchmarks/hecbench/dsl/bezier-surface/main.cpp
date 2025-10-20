@@ -210,8 +210,7 @@ auto createJitModule(int _NI, int _NJ, int _RESOLUTIONI, int _RESOLUTIONJ) {
       auto [NI, NJ, RESOLUTIONI, RESOLUTIONJ] =
           F.defRuntimeConsts(_NI, _NJ, _RESOLUTIONI, _RESOLUTIONJ);
 
-      auto &i = F.declVar<int>();
-      i = F.callBuiltin(getBlockDimX) * F.callBuiltin(getBlockIdX) + F.callBuiltin(getThreadIdX);
+      auto i = F.callBuiltin(getBlockDimX) * F.callBuiltin(getBlockIdX) + F.callBuiltin(getThreadIdX);
 
       F.beginIf(i >= RESOLUTIONI);
       {
@@ -219,45 +218,44 @@ auto createJitModule(int _NI, int _NJ, int _RESOLUTIONI, int _RESOLUTIONJ) {
       }
       F.endIf();
 
-      auto &mui = F.declVar<float>();
-      mui = F.convert<float>(i) / F.convert<float>(RESOLUTIONI - F.defRuntimeConst<int>(1));
+      auto mui = F.convert<float>(i) / F.convert<float>(RESOLUTIONI - F.defRuntimeConst<int>(1));
 
-      auto &j = F.declVar<int>();
-      auto &InitJ = F.defRuntimeConst<int>(0);
-      auto &IncJ = F.defRuntimeConst<int>(1);
+      auto j = F.declVar<int>();
+      auto InitJ = F.defRuntimeConst<int>(0);
+      auto IncJ = F.defRuntimeConst<int>(1);
       F.beginFor(j, InitJ, RESOLUTIONJ, IncJ);
       {
-        auto &muj = F.convert<float>(j) / F.convert<float>(RESOLUTIONJ - F.defRuntimeConst<int>(1));
+        auto muj = F.convert<float>(j) / F.convert<float>(RESOLUTIONJ - F.defRuntimeConst<int>(1));
 
-        auto &OutX = F.defVar<float>(0.0f);
-        auto &OutY = F.defVar<float>(0.0f);
-        auto &OutZ = F.defVar<float>(0.0f);
+        auto OutX = F.defVar<float>(0.0f);
+        auto OutY = F.defVar<float>(0.0f);
+        auto OutZ = F.defVar<float>(0.0f);
 
-        auto &ki = F.declVar<int>();
-        auto &InitKi = F.defRuntimeConst<int>(0);
-        auto &UpperKi = NI + F.defRuntimeConst<int>(1);
-        auto &IncKi = F.defRuntimeConst<int>(1);
+        auto ki = F.declVar<int>();
+        auto InitKi = F.defRuntimeConst<int>(0);
+        auto UpperKi = NI + F.defRuntimeConst<int>(1);
+        auto IncKi = F.defRuntimeConst<int>(1);
         F.beginFor(ki, InitKi, UpperKi, IncKi);
         {
           // float bi = BezierBlend(ki, mui, NI);
-          auto &bi = F.call<float(int, float, int)>("BezierBlend", ki, mui, NI);
+          auto bi = F.call<float(int, float, int)>("BezierBlend", ki, mui, NI);
 
           // for(int kj = 0; kj <= NJ; kj++)
-          auto &kj = F.declVar<int>();
-          auto &InitKj = F.defRuntimeConst<int>(0);
-          auto &UpperKj = NJ + F.defRuntimeConst<int>(1);
-          auto &IncKj = F.defRuntimeConst<int>(1);
+          auto kj = F.declVar<int>();
+          auto InitKj = F.defRuntimeConst<int>(0);
+          auto UpperKj = NJ + F.defRuntimeConst<int>(1);
+          auto IncKj = F.defRuntimeConst<int>(1);
           F.beginFor(kj, InitKj, UpperKj, IncKj);
           {
             // float bj = BezierBlend(kj, muj, NJ);
-            auto &bj = F.call<float(int, float, int)>("BezierBlend", kj, muj, NJ);
+            auto bj = F.call<float(int, float, int)>("BezierBlend", kj, muj, NJ);
 
             // int idx = (ki * (NJ + 1) + kj) * 3;
-            auto &idx = F.declVar<int>();
+            auto idx = F.declVar<int>();
             idx = (ki * (NJ + F.defRuntimeConst<int>(1)) + kj) * F.defRuntimeConst<int>(3);
 
             // float coeff = bi * bj;
-            auto &coeff = F.declVar<float>();
+            auto coeff = F.declVar<float>();
             coeff = bi * bj;
 
             // out_x += inp[idx + 0] * coeff;
@@ -272,7 +270,7 @@ auto createJitModule(int _NI, int _NJ, int _RESOLUTIONI, int _RESOLUTIONJ) {
         F.endFor();
 
         // int out_idx = (i * RESOLUTIONJ + j) * 3;
-        auto &OutIdx = F.declVar<int>();
+        auto OutIdx = F.declVar<int>();
         OutIdx = (i * RESOLUTIONJ + j) * F.defRuntimeConst<int>(3);
 
         // outp[out_idx + 0] = out_x;
@@ -294,16 +292,15 @@ auto createJitModule(int _NI, int _NJ, int _RESOLUTIONI, int _RESOLUTIONJ) {
     F.beginFunction();
     {
       auto [k, mu, n] = F.getArgs();
-      auto &blend = F.defVar<float>(1.0f);
-      auto &nn = F.declVar<int>();
+      auto blend = F.defVar<float>(1.0f);
+      auto nn = F.declVar<int>();
       nn = n;
-      auto &kn = F.declVar<int>();
+      auto kn = F.declVar<int>();
       kn = k;
-      auto &nkn = F.declVar<int>();
+      auto nkn = F.declVar<int>();
       nkn = n - k;
 
-      auto &Cond = nn >= F.defRuntimeConst<int>(1);
-      F.beginWhile(Cond);
+      F.beginWhile([&]() { return nn >= 1; });
       {
         blend *= F.convert<float>(nn);
         nn -= F.defRuntimeConst<int>(1);
@@ -322,7 +319,6 @@ auto createJitModule(int _NI, int _NJ, int _RESOLUTIONI, int _RESOLUTIONJ) {
         }
         F.endIf();
         
-        Cond = nn >= F.defRuntimeConst<int>(1);
       }
       F.endWhile();
 
