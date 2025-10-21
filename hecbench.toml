@@ -3,10 +3,14 @@
 command = "make -j"
 [hecbench.config.build.nvidia.clean]
 command = "make -j clean"
+[hecbench.config.build.nvidia.dsl]
+command = "make -j"
 [hecbench.config.build.amd]
 command = "make -j"
 [hecbench.config.build.amd.clean]
 command = "make -j clean"
+[hecbench.config.build.amd.dsl]
+command = "make -j"
 
 [hecbench.adam]
 [hecbench.adam.nvidia]
@@ -27,6 +31,14 @@ path = "benchmarks/hecbench/hip/adam"
 exe = "adam-proteus.x"
 [hecbench.adam.inputs]
 default = "160000 1600 1000"
+
+[hecbench.adam.dsl]
+[hecbench.adam.amd.dsl]
+path = "benchmarks/hecbench/dsl/adam"
+exe = "adam-proteus.x"
+[hecbench.adam.nvidia.dsl]
+path = "benchmarks/hecbench/dsl/adam"
+exe = "adam-proteus.x"
 
 [hecbench.feynman-kac]
 [hecbench.feynman-kac.nvidia]
@@ -127,3 +139,73 @@ path = "benchmarks/hecbench/hip/wsm5"
 exe = "wsm5-proteus.x"
 [hecbench.wsm5.inputs]
 default = "10"
+
+[hecbench.attention]
+[hecbench.attention.amd.dsl]
+path = "benchmarks/hecbench/dsl/attention"
+exe = "attention-proteus.x"
+[hecbench.attention.nvidia.dsl]
+path = "benchmarks/hecbench/dsl/attention"
+exe = "attention-proteus.x"
+[hecbench.attention.inputs]
+default = "65536 2048 100"
+
+[hecbench.gemm]
+[hecbench.gemm.amd.dsl]
+path = "benchmarks/hecbench/dsl/gemm"
+exe = "gemm-proteus.x"
+[hecbench.gemm.nvidia.dsl]
+path = "benchmarks/hecbench/dsl/gemm"
+exe = "gemm-proteus.x"
+[hecbench.gemm.inputs]
+default = "--no-verify --N 8192 --kernel jit_regtiled"
+
+[hecbench.conv3d]
+[hecbench.conv3d.amd.dsl]
+path = "benchmarks/hecbench/dsl/conv3d"
+exe = "conv3d-proteus.x"
+[hecbench.conv3d.nvidia.dsl]
+path = "benchmarks/hecbench/dsl/conv3d"
+exe = "conv3d-proteus.x"
+[hecbench.conv3d.inputs]
+default = "32 96 256 26 26 5 100"
+
+[hecbench.floyd-warshall]
+[hecbench.floyd-warshall.amd.dsl]
+path = "benchmarks/hecbench/dsl/floyd-warshall"
+exe = "floyd-warshall-proteus.x"
+[hecbench.floyd-warshall.nvidia.dsl]
+path = "benchmarks/hecbench/dsl/floyd-warshall"
+exe = "floyd-warshall-proteus.x"
+[hecbench.floyd-warshall.inputs]
+default = "8192 10 16 0"
+
+[hecbench.bezier-surface]
+[hecbench.bezier-surface.amd.dsl]
+path = "benchmarks/hecbench/dsl/bezier-surface"
+exe = "bezier-surface-proteus.x"
+[hecbench.bezier-surface.nvidia.dsl]
+path = "benchmarks/hecbench/dsl/bezier-surface"
+exe = "bezier-surface-proteus.x"
+[hecbench.bezier-surface.inputs]
+default = "-n 8192"
+
+[hecbench.minibude]
+[hecbench.minibude.amd.dsl]
+path = "benchmarks/hecbench/dsl/minibude"
+exe = "minibude-proteus.x"
+[hecbench.minibude.nvidia.dsl]
+path = "benchmarks/hecbench/dsl/minibude"
+exe = "minibude-proteus.x"
+[hecbench.minibude.inputs]
+default = "--deck ../../data/minibude/bm2 --wgsize 256 --iterations 5"
+
+[hecbench.3mm]
+[hecbench.3mm.amd.dsl]
+path = "benchmarks/hecbench/dsl/3mm"
+exe = "3mm-proteus.x"
+[hecbench.3mm.nvidia.dsl]
+path = "benchmarks/hecbench/dsl/3mm"
+exe = "3mm-proteus.x"
+[hecbench.3mm.inputs]
+default = "--no-verify --N 8192 --kernel jit_regtiled"
