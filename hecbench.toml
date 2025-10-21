@@ -150,6 +150,16 @@ exe = "attention-proteus.x"
 [hecbench.attention.inputs]
 default = "65536 2048 100"
 
+[hecbench.gemm]
+[hecbench.gemm.amd.dsl]
+path = "benchmarks/hecbench/dsl/gemm"
+exe = "gemm-proteus.x"
+[hecbench.gemm.nvidia.dsl]
+path = "benchmarks/hecbench/dsl/gemm"
+exe = "gemm-proteus.x"
+[hecbench.gemm.inputs]
+default = "--no-verify --N 8192 --kernel jit_regtiled"
+
 [hecbench.conv3d]
 [hecbench.conv3d.amd.dsl]
 path = "benchmarks/hecbench/dsl/conv3d"
@@ -159,6 +169,16 @@ path = "benchmarks/hecbench/dsl/conv3d"
 exe = "conv3d-proteus.x"
 [hecbench.conv3d.inputs]
 default = "32 96 256 26 26 5 100"
+
+[hecbench.floyd-warshall]
+[hecbench.floyd-warshall.amd.dsl]
+path = "benchmarks/hecbench/dsl/floyd-warshall"
+exe = "floyd-warshall-proteus.x"
+[hecbench.floyd-warshall.nvidia.dsl]
+path = "benchmarks/hecbench/dsl/floyd-warshall"
+exe = "floyd-warshall-proteus.x"
+[hecbench.floyd-warshall.inputs]
+default = "8192 10 16 0"
 
 [hecbench.bezier-surface]
 [hecbench.bezier-surface.amd.dsl]
