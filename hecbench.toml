@@ -169,3 +169,23 @@ path = "benchmarks/hecbench/dsl/bezier-surface"
 exe = "bezier-surface-proteus.x"
 [hecbench.bezier-surface.inputs]
 default = "-n 8192"
+
+[hecbench.minibude]
+[hecbench.minibude.amd.dsl]
+path = "benchmarks/hecbench/dsl/minibude"
+exe = "minibude-proteus.x"
+[hecbench.minibude.nvidia.dsl]
+path = "benchmarks/hecbench/dsl/minibude"
+exe = "minibude-proteus.x"
+[hecbench.minibude.inputs]
+default = "--deck ../../data/minibude/bm2 --wgsize 256 --iterations 5"
+
+[hecbench.3mm]
+[hecbench.3mm.amd.dsl]
+path = "benchmarks/hecbench/dsl/3mm"
+exe = "3mm-proteus.x"
+[hecbench.3mm.nvidia.dsl]
+path = "benchmarks/hecbench/dsl/3mm"
+exe = "3mm-proteus.x"
+[hecbench.3mm.inputs]
+default = "--no-verify --N 8192 --kernel jit_regtiled"
